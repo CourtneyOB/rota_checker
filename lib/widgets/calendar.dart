@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/widgets/calendar_card.dart';
+import 'package:rota_checker/widgets/inactive_calendar_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
 
@@ -36,14 +37,25 @@ class Calendar extends ConsumerWidget {
 
       List<Expanded> cards = [];
       for (int i = 0; i < firstDayOfWeek - 1; i++) {
-        //Add blank spaces if doesn't start on a Monday
+        //Add previous month's dates if doesn't start on a Monday
+
+        //calculates the relevant date from the previous month
+        DateTime lastMonth =
+            DateTime(focusDate.year, focusDate.month - 1, focusDate.day);
+        DateTime date = DateTime(lastMonth.year, lastMonth.month,
+            DateTime(focusDate.year, focusDate.month, 0).day - i);
+
         cards.add(Expanded(
-          child: Card(
-            elevation: kCalendarCardElevation,
-            color: kLightGrey,
+          child: InactiveCalendarCard(
+            date: date.day.toString(),
+            day: date.dayOfWeekToString(),
           ),
         ));
       }
+
+      //requires reversal as iterating backwards
+      cards = cards.reversed.toList();
+
       for (int i = 1; i <= daysInMonth; i++) {
         DateTime date = DateTime(focusDate.year, focusDate.month, i);
         cards.add(Expanded(
@@ -57,14 +69,21 @@ class Calendar extends ConsumerWidget {
           ),
         ));
       }
+
       for (int i = 0; i < 7 - lastDayOfWeek; i++) {
+        //calculates the relevant date for the next month
+        DateTime lastMonth =
+            DateTime(focusDate.year, focusDate.month + 1, focusDate.day);
+        DateTime date = DateTime(lastMonth.year, lastMonth.month, i + 1);
         //Add blank spaces if doesn't end on a Sunday
-        cards.add(Expanded(
-          child: Card(
-            elevation: kCalendarCardElevation,
-            color: kLightGrey,
+        cards.add(
+          Expanded(
+            child: InactiveCalendarCard(
+              date: date.day.toString(),
+              day: date.dayOfWeekToString(),
+            ),
           ),
-        ));
+        );
       }
 
       List<Widget> rowList = [];

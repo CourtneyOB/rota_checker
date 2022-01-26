@@ -4,7 +4,7 @@ import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/on_call_template.dart';
 
 class Rota {
-  DateTime displayMonth = DateTime(2022, 1, 1);
+  DateTime displayMonth = DateTime(2022, 1, 7);
   List<Template> templateLibrary = [
     ShiftTemplate('Normal Working Day', DateTime(2022, 1, 1, 9, 00), 8.5,
         kTemplateColors[0]),
