@@ -20,4 +20,13 @@ class DataProvider extends StateNotifier<Rota> {
     state.selectedTemplate = state.templateLibrary[index];
     state = state.clone();
   }
+
+  void selectDate(DateTime date) {
+    if (state.selectedDates.contains(date)) {
+      state.selectedDates.remove(date);
+    } else {
+      state.selectedDates.add(date);
+    }
+    state = state.clone();
+  }
 }

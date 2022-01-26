@@ -20,7 +20,7 @@ class HomePage extends ConsumerWidget {
           children: [
             Expanded(
               child: Calendar(
-                selectedDate: ref.watch(dataProvider).displayMonth,
+                focusDate: ref.watch(dataProvider).displayMonth,
                 forwardAction: ref.read(dataProvider.notifier).addMonth,
                 backwardAction: ref.read(dataProvider.notifier).subtractMonth,
               ),

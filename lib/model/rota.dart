@@ -26,11 +26,13 @@ class Rota {
         kTemplateColors[1], 4.0),
   ];
   Template? selectedTemplate;
+  List<DateTime> selectedDates = [];
 
   Rota clone() {
     return Rota()
       ..displayMonth = this.displayMonth
       ..templateLibrary = this.templateLibrary
-      ..selectedTemplate = this.selectedTemplate;
+      ..selectedTemplate = this.selectedTemplate
+      ..selectedDates = this.selectedDates;
   }
 }
