@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/constants.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rota_checker/widgets/calendar_card.dart';
 
 class Calendar extends StatelessWidget {
   Calendar(
@@ -42,15 +42,8 @@ class Calendar extends StatelessWidget {
     }
     for (int i = 1; i <= daysInMonth; i++) {
       cards.add(Expanded(
-        child: Card(
-          elevation: kCalendarCardElevation,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              i.toString(),
-              style: TextStyle(color: kText, fontSize: kCalendarCardTextSize),
-            ),
-          ),
+        child: CalendarCard(
+          date: i.toString(),
         ),
       ));
     }

@@ -10,4 +10,6 @@ const Color kSecondaryText = Color(0xFF757575);
 
 const double kCalendarCardElevation = 10.0;
 const double kCalendarCardTextSize = 16.0;
+const double kCalendarCardMiniTextSize = 10.0;
 const double kTemplateCardWidth = 150.0;
+const double kTemplateBarHeight = 170.0;

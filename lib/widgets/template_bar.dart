@@ -20,7 +20,7 @@ class TemplateBar extends ConsumerWidget {
         )),
         color: Colors.white,
       ),
-      height: screenHeight(context) * 0.2,
+      height: kTemplateBarHeight,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
