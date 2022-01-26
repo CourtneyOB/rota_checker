@@ -13,10 +13,10 @@ class Rota {
         'Long Day', DateTime(2022, 1, 1, 9, 00), 13.0, kTemplateColors[1]),
     OnCallTemplate('24 Hour On Call', DateTime(2022, 1, 1, 9, 30), 24.0,
         kTemplateColors[2], 4.0),
-    OnCallTemplate('24 Hour On Call', DateTime(2022, 1, 1, 9, 30), 24.0,
-        kTemplateColors[3], 4.0),
-    OnCallTemplate('24 Hour On Call', DateTime(2022, 1, 1, 9, 30), 24.0,
-        kTemplateColors[4], 4.0),
+    ShiftTemplate(
+        'Night Shift', DateTime(2022, 1, 1, 21, 30), 13.0, kTemplateColors[3]),
+    ShiftTemplate(
+        'Long Day', DateTime(2022, 1, 1, 11, 00), 13.0, kTemplateColors[4]),
     OnCallTemplate('24 Hour On Call', DateTime(2022, 1, 1, 9, 30), 24.0,
         kTemplateColors[5], 4.0),
     OnCallTemplate('24 Hour On Call', DateTime(2022, 1, 1, 9, 30), 24.0,

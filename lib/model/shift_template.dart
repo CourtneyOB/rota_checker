@@ -15,7 +15,9 @@ class ShiftTemplate extends Template {
       }
     }
     if (length > 10) {
-      isLong = true;
+      if (!isNight) {
+        isLong = true;
+      }
     }
   }
   bool isNightShift() {
@@ -64,6 +66,12 @@ class ShiftTemplate extends Template {
         if (duration.inHours >= 3) {
           return true;
         }
+      }
+    } else {
+      if (DateTime(startTime.year, startTime.month, startTime.day)
+              .add(Duration(days: 1)) ==
+          DateTime(endTime.year, endTime.month, endTime.day)) {
+        return true;
       }
     }
     return false;

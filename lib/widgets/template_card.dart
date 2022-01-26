@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/constants.dart';
+import 'package:rota_checker/widgets/circle_avatar_letter.dart';
 
 class TemplateCard extends StatelessWidget {
   final String name;
@@ -10,6 +11,9 @@ class TemplateCard extends StatelessWidget {
   final DateTime endTime;
   final bool isOnCall;
   final double? expectedHours;
+  final bool isNight;
+  final bool isLong;
+  final bool isEveningFinish;
 
   final Function() onPress;
 
@@ -22,6 +26,9 @@ class TemplateCard extends StatelessWidget {
       required this.endTime,
       required this.isOnCall,
       required this.expectedHours,
+      required this.isNight,
+      required this.isLong,
+      required this.isEveningFinish,
       required this.isSelected,
       required this.onPress});
 
@@ -32,7 +39,7 @@ class TemplateCard extends StatelessWidget {
       child: Card(
         shape: isSelected
             ? RoundedRectangleBorder(
-                side: BorderSide(color: kDarkPrimary, width: 1.5),
+                side: BorderSide(color: kPrimary, width: 1.5),
                 borderRadius: BorderRadius.circular(4.0))
             : null,
         elevation: kCalendarCardElevation,
@@ -69,9 +76,37 @@ class TemplateCard extends StatelessWidget {
                 SizedBox(
                   height: 2.0,
                 ),
-                Text(
-                  'Type: ${isOnCall ? 'On Call' : 'Shift'}',
-                  style: TextStyle(color: kSecondaryText),
+                Row(
+                  children: [
+                    Text(
+                      'Type: ${isOnCall ? 'On Call' : 'Shift'}',
+                      style: TextStyle(color: kSecondaryText),
+                    ),
+                    SizedBox(
+                      width: 2.0,
+                    ),
+                    if (isNight)
+                      CircleAvatarLetter(
+                        text: 'N',
+                        colour: Colors.red,
+                      ),
+                    SizedBox(
+                      width: 2.0,
+                    ),
+                    if (isLong)
+                      CircleAvatarLetter(
+                        text: 'L',
+                        colour: Colors.green,
+                      ),
+                    SizedBox(
+                      width: 2.0,
+                    ),
+                    if (isEveningFinish)
+                      CircleAvatarLetter(
+                        text: 'E',
+                        colour: Colors.blue,
+                      ),
+                  ],
                 ),
                 SizedBox(
                   height: 8.0,
