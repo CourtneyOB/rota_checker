@@ -35,7 +35,7 @@ class Calendar extends StatelessWidget {
       //Add blank spaces if doesn't start on a Monday
       cards.add(Expanded(
         child: Card(
-          elevation: kCardElevation,
+          elevation: kCalendarCardElevation,
           color: kLightGrey,
         ),
       ));
@@ -43,12 +43,12 @@ class Calendar extends StatelessWidget {
     for (int i = 1; i <= daysInMonth; i++) {
       cards.add(Expanded(
         child: Card(
-          elevation: kCardElevation,
+          elevation: kCalendarCardElevation,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               i.toString(),
-              style: TextStyle(color: kText, fontSize: kCardTextSize),
+              style: TextStyle(color: kText, fontSize: kCalendarCardTextSize),
             ),
           ),
         ),
@@ -58,7 +58,7 @@ class Calendar extends StatelessWidget {
       //Add blank spaces if doesn't end on a Sunday
       cards.add(Expanded(
         child: Card(
-          elevation: kCardElevation,
+          elevation: kCalendarCardElevation,
           color: kLightGrey,
         ),
       ));
@@ -84,19 +84,23 @@ class Calendar extends StatelessWidget {
       children: [
         Expanded(
           child: Card(
-            elevation: kCardElevation,
+            elevation: kCalendarCardElevation,
             color: Colors.white,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: Row(
                 children: [
-                  Text(
-                    '${months[selectedDate.month - 1]} ${selectedDate.year}',
-                    style: TextStyle(
-                        color: kDarkPrimary,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w900),
+                  Container(
+                    //Fixed width to allow for all month texts of varying lengths
+                    width: 180.0,
+                    child: Text(
+                      '${months[selectedDate.month - 1]} ${selectedDate.year}',
+                      style: TextStyle(
+                          color: kDarkPrimary,
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w900),
+                    ),
                   ),
                   SizedBox(
                     width: 10.0,
@@ -147,8 +151,8 @@ class Calendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: screenHeight(context) * 0.05,
-          horizontal: screenWidth(context) * 0.05),
+          vertical: screenHeight(context) * 0.02,
+          horizontal: screenWidth(context) * 0.02),
       child: Container(
         child: Column(
           children: generateRows(),
