@@ -15,4 +15,9 @@ class DataProvider extends StateNotifier<Rota> {
         state.displayMonth.month - 1, state.displayMonth.day);
     state = state.clone();
   }
+
+  void selectTemplate(int index) {
+    state.selectedTemplate = state.templateLibrary[index];
+    state = state.clone();
+  }
 }

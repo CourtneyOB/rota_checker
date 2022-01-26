@@ -3,8 +3,8 @@ import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/custom_scroll_behaviour.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/model/on_call_template.dart';
-import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/widgets/template_card.dart';
+import 'package:rota_checker/model/template.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TemplateBar extends ConsumerWidget {
@@ -12,15 +12,23 @@ class TemplateBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<TemplateCard> templates = ref
-        .watch(dataProvider)
-        .templateLibrary
+    Template? selectedTemplate = ref.watch(dataProvider).selectedTemplate;
+    List<Template> templateLibrary = ref.watch(dataProvider).templateLibrary;
+
+    List<TemplateCard> templates = templateLibrary
         .map((item) => TemplateCard(
               name: item.name,
+              colour: item.colour,
               startTime: item.startTime,
               endTime: item.endTime,
               isOnCall: item is OnCallTemplate ? true : false,
               expectedHours: item is OnCallTemplate ? item.expectedHours : null,
+              isSelected: item == selectedTemplate ? true : false,
+              onPress: () {
+                ref
+                    .read(dataProvider.notifier)
+                    .selectTemplate(templateLibrary.indexOf(item));
+              },
             ))
         .toList();
 
