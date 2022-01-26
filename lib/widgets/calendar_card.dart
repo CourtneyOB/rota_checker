@@ -28,6 +28,7 @@ class CalendarCard extends StatelessWidget {
               text: '$date ',
               style: TextStyle(
                   color: isSelected ? Colors.white : kText,
+                  fontWeight: FontWeight.bold,
                   fontSize: screenHeight(context) > 550
                       ? kCalendarCardPrimaryTextSize
                       : kCalendarCardMiniPrimaryTextSize),
@@ -36,6 +37,7 @@ class CalendarCard extends StatelessWidget {
                     text: day,
                     style: TextStyle(
                         color: isSelected ? Colors.white : kSecondaryText,
+                        fontWeight: FontWeight.normal,
                         fontSize: screenHeight(context) > 550
                             ? kCalendarCardSecondaryTextSize
                             : kCalendarCardMiniSecondaryTextSize)),

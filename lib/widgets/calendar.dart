@@ -49,6 +49,10 @@ class Calendar extends ConsumerWidget {
           child: InactiveCalendarCard(
             date: date.day.toString(),
             day: date.dayOfWeekToString(),
+            onPress: () {
+              ref.read(dataProvider.notifier).selectDate(date);
+            },
+            isSelected: selectedDates.contains(date) ? true : false,
           ),
         ));
       }
@@ -81,6 +85,10 @@ class Calendar extends ConsumerWidget {
             child: InactiveCalendarCard(
               date: date.day.toString(),
               day: date.dayOfWeekToString(),
+              onPress: () {
+                ref.read(dataProvider.notifier).selectDate(date);
+              },
+              isSelected: selectedDates.contains(date) ? true : false,
             ),
           ),
         );
