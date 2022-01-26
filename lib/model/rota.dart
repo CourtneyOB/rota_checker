@@ -2,6 +2,7 @@ import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/on_call_template.dart';
+import 'package:rota_checker/model/shift.dart';
 
 class Rota {
   DateTime displayMonth = DateTime(2022, 1, 7);
