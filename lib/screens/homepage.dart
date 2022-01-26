@@ -14,7 +14,7 @@ class HomePage extends ConsumerWidget {
         backgroundColor: kDarkPrimary,
       ),
       body: Container(
-        color: kPrimary,
+        color: kBackground,
         child: Calendar(
           selectedDate: ref.watch(dataProvider).displayMonth,
           forwardAction: ref.read(dataProvider.notifier).addMonth,

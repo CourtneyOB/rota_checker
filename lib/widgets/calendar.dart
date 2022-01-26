@@ -36,7 +36,7 @@ class Calendar extends StatelessWidget {
       cards.add(Expanded(
         child: Card(
           elevation: kCardElevation,
-          color: klightGrey,
+          color: kLightGrey,
         ),
       ));
     }
@@ -59,7 +59,7 @@ class Calendar extends StatelessWidget {
       cards.add(Expanded(
         child: Card(
           elevation: kCardElevation,
-          color: klightGrey,
+          color: kLightGrey,
         ),
       ));
     }
@@ -93,7 +93,10 @@ class Calendar extends StatelessWidget {
                 children: [
                   Text(
                     '${months[selectedDate.month - 1]} ${selectedDate.year}',
-                    style: TextStyle(color: kText, fontSize: kCardTextSize),
+                    style: TextStyle(
+                        color: kDarkPrimary,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w900),
                   ),
                   SizedBox(
                     width: 10.0,
@@ -101,7 +104,7 @@ class Calendar extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       Icons.chevron_left,
-                      color: kText,
+                      color: kDarkPrimary,
                     ),
                     splashRadius: 15.0,
                     onPressed: backwardAction,
@@ -109,7 +112,7 @@ class Calendar extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       Icons.chevron_right,
-                      color: kText,
+                      color: kDarkPrimary,
                     ),
                     splashRadius: 15.0,
                     onPressed: forwardAction,
