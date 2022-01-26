@@ -17,7 +17,11 @@ class DataProvider extends StateNotifier<Rota> {
   }
 
   void selectTemplate(int index) {
-    state.selectedTemplate = state.templateLibrary[index];
+    if (state.selectedTemplate == state.templateLibrary[index]) {
+      state.selectedTemplate = null;
+    } else {
+      state.selectedTemplate = state.templateLibrary[index];
+    }
     state = state.clone();
   }
 
