@@ -3,6 +3,7 @@ import 'package:rota_checker/main.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/widgets/calendar_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rota_checker/extension_methods.dart';
 
 class Calendar extends ConsumerWidget {
   Calendar(
@@ -44,18 +45,15 @@ class Calendar extends ConsumerWidget {
         ));
       }
       for (int i = 1; i <= daysInMonth; i++) {
+        DateTime date = DateTime(focusDate.year, focusDate.month, i);
         cards.add(Expanded(
           child: CalendarCard(
             onPress: () {
-              ref
-                  .read(dataProvider.notifier)
-                  .selectDate(DateTime(focusDate.year, focusDate.month, i));
+              ref.read(dataProvider.notifier).selectDate(date);
             },
             date: i.toString(),
-            isSelected: selectedDates
-                    .contains(DateTime(focusDate.year, focusDate.month, i))
-                ? true
-                : false,
+            day: date.dayOfWeekToString(),
+            isSelected: selectedDates.contains(date) ? true : false,
           ),
         ));
       }
@@ -71,20 +69,6 @@ class Calendar extends ConsumerWidget {
 
       List<Widget> rowList = [];
       //first row displays month
-      List<String> months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ];
       rowList.add(Row(
         children: [
           Expanded(
@@ -100,7 +84,7 @@ class Calendar extends ConsumerWidget {
                       //Fixed width to allow for all month texts of varying lengths
                       width: 180.0,
                       child: Text(
-                        '${months[focusDate.month - 1]} ${focusDate.year}',
+                        '${focusDate.monthToString()} ${focusDate.year}',
                         style: TextStyle(
                             color: kDarkPrimary,
                             fontSize: 22.0,
