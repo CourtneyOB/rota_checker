@@ -48,9 +48,26 @@ class TemplateBar extends ConsumerWidget {
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            child: Text(
-              'Choose a Template',
-              style: TextStyle(color: kText),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  ref.watch(dataProvider).selectedTemplate == null
+                      ? 'Choose a Template'
+                      : 'Select dates',
+                  style: TextStyle(color: kText),
+                ),
+                if (ref.watch(dataProvider).selectedTemplate != null &&
+                    ref.watch(dataProvider).selectedDates.isNotEmpty)
+                  TextButton(
+                    style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                    child: Text('Apply'),
+                    onPressed: () {},
+                  ),
+              ],
             ),
           ),
           Expanded(
