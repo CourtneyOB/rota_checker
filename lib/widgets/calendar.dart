@@ -5,6 +5,8 @@ import 'package:rota_checker/widgets/calendar_card.dart';
 import 'package:rota_checker/widgets/inactive_calendar_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
+import 'package:rota_checker/model/work_duty.dart';
+import 'package:rota_checker/widgets/template_title.dart';
 
 class Calendar extends ConsumerWidget {
   Calendar(
@@ -21,6 +23,14 @@ class Calendar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<DateTime> selectedDates = ref.watch(dataProvider).selectedDates;
+    List<TemplateTitle> dutiesOnDate(DateTime date) {
+      return ref
+          .read(dataProvider.notifier)
+          .getDutiesOnDate(date)
+          .map((item) => TemplateTitle(
+              colour: item.template.colour, name: item.template.name))
+          .toList();
+    }
 
     List<Widget> generateRows() {
       //Providing a day value of zero for the next month gives you the previous month's last day
@@ -49,6 +59,7 @@ class Calendar extends ConsumerWidget {
           child: InactiveCalendarCard(
             date: date.day.toString(),
             day: date.dayOfWeekToString(),
+            duties: dutiesOnDate(date),
             onPress: () {
               ref.read(dataProvider.notifier).selectDate(date);
             },
@@ -56,7 +67,6 @@ class Calendar extends ConsumerWidget {
           ),
         ));
       }
-
       //requires reversal as iterating backwards
       cards = cards.reversed.toList();
 
@@ -69,6 +79,7 @@ class Calendar extends ConsumerWidget {
             },
             date: i.toString(),
             day: date.dayOfWeekToString(),
+            duties: dutiesOnDate(date),
             isSelected: selectedDates.contains(date) ? true : false,
           ),
         ));
@@ -85,6 +96,7 @@ class Calendar extends ConsumerWidget {
             child: InactiveCalendarCard(
               date: date.day.toString(),
               day: date.dayOfWeekToString(),
+              duties: dutiesOnDate(date),
               onPress: () {
                 ref.read(dataProvider.notifier).selectDate(date);
               },
