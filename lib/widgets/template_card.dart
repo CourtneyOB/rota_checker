@@ -50,7 +50,10 @@ class TemplateCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TemplateTitle(colour: colour, name: name),
+                TemplateTitle(
+                  colour: colour,
+                  name: name,
+                ),
                 SizedBox(
                   height: 2.0,
                 ),

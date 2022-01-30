@@ -27,7 +27,13 @@ class Calendar extends ConsumerWidget {
           .read(dataProvider.notifier)
           .getDutiesOnDate(date)
           .map((item) => TemplateTitle(
-              colour: item.template.colour, name: item.template.name))
+                colour: item.template.colour,
+                name: item.template.name,
+                textColour: selectedDates.contains(date)
+                    ? Colors.white
+                    : kSecondaryText,
+                maxFontSize: 12.0,
+              ))
           .toList();
     }
 

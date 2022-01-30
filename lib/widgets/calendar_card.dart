@@ -50,6 +50,9 @@ class CalendarCard extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 5.0,
+              ),
               ...duties,
             ],
           ),

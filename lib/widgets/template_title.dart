@@ -7,10 +7,14 @@ class TemplateTitle extends StatelessWidget {
     Key? key,
     required this.colour,
     required this.name,
+    this.textColour = kText,
+    this.maxFontSize = 14.0,
   }) : super(key: key);
 
   final Color colour;
   final String name;
+  final Color textColour;
+  final double maxFontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +34,9 @@ class TemplateTitle extends StatelessWidget {
           child: AutoSizeText(
             name,
             maxLines: 1,
+            maxFontSize: maxFontSize,
             style: TextStyle(
-              color: kText,
+              color: textColour,
             ),
           ),
         ),
