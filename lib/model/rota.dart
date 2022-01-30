@@ -3,6 +3,7 @@ import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/on_call_template.dart';
 import 'package:rota_checker/model/shift.dart';
+import 'package:rota_checker/model/work_duty.dart';
 
 class Rota {
   DateTime displayMonth = DateTime(2022, 1, 7);
@@ -28,12 +29,21 @@ class Rota {
   ];
   Template? selectedTemplate;
   List<DateTime> selectedDates = [];
+  List<WorkDuty> duties = [
+    Shift(
+      DateTime(2022, 1, 5, 9, 0, 0),
+      DateTime(2022, 1, 5, 17, 0, 0),
+      ShiftTemplate('Normal Working Day', DateTime(2022, 1, 1, 9, 00), 8.5,
+          kTemplateColors[0]),
+    )
+  ];
 
   Rota clone() {
     return Rota()
       ..displayMonth = this.displayMonth
       ..templateLibrary = this.templateLibrary
       ..selectedTemplate = this.selectedTemplate
-      ..selectedDates = this.selectedDates;
+      ..selectedDates = this.selectedDates
+      ..duties = this.duties;
   }
 }
