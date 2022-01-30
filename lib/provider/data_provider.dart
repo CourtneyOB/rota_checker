@@ -1,7 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/model/rota.dart';
+import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/extension_methods.dart';
+import 'package:rota_checker/model/on_call_template.dart';
+import 'package:rota_checker/model/shift.dart';
+import 'package:rota_checker/model/on_call.dart';
 
 class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
@@ -36,7 +40,19 @@ class DataProvider extends StateNotifier<Rota> {
     state = state.clone();
   }
 
-  void addTemplateToDates() {}
+  void addTemplateToDates() {
+    if (state.selectedTemplate is ShiftTemplate) {
+      for (DateTime date in state.selectedDates) {
+        state.addShift(date, state.selectedTemplate! as ShiftTemplate);
+      }
+    } else {
+      for (DateTime date in state.selectedDates) {
+        state.addOnCall(date, state.selectedTemplate! as OnCallTemplate);
+      }
+    }
+    state.selectedDates.clear();
+    state = state.clone();
+  }
 
   List<WorkDuty> getDutiesOnDate(DateTime date) {
     return state.duties

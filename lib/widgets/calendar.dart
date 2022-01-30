@@ -5,7 +5,6 @@ import 'package:rota_checker/widgets/calendar_card.dart';
 import 'package:rota_checker/widgets/inactive_calendar_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
-import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/widgets/template_title.dart';
 
 class Calendar extends ConsumerWidget {

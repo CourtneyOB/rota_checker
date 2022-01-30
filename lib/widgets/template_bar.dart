@@ -59,7 +59,7 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
                   onPress: ref.watch(dataProvider).selectedTemplate != null &&
                           ref.watch(dataProvider).selectedDates.isNotEmpty
                       ? () {
-                          print('tap!');
+                          ref.read(dataProvider.notifier).addTemplateToDates();
                         }
                       : () {
                           //Enlarge and decrease the size of the text informing the user what to do
