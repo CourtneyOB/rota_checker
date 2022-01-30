@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/widgets/circle_avatar_letter.dart';
+import 'package:rota_checker/widgets/template_title.dart';
 
 class TemplateCard extends StatelessWidget {
   final String name;
@@ -50,29 +50,7 @@ class TemplateCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 12.0,
-                      width: 8.0,
-                      decoration: BoxDecoration(
-                          color: colour,
-                          borderRadius: BorderRadius.all(Radius.circular(1.0))),
-                    ),
-                    SizedBox(
-                      width: 5.0,
-                    ),
-                    Expanded(
-                      child: AutoSizeText(
-                        name,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: kText,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                TemplateTitle(colour: colour, name: name),
                 SizedBox(
                   height: 2.0,
                 ),
