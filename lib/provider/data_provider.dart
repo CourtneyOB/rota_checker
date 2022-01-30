@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/model/rota.dart';
+import 'package:rota_checker/model/work_duty.dart';
+import 'package:rota_checker/extension_methods.dart';
 
 class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
@@ -32,5 +34,13 @@ class DataProvider extends StateNotifier<Rota> {
       state.selectedDates.add(date);
     }
     state = state.clone();
+  }
+
+  void addTemplateToDates() {}
+
+  List<WorkDuty> getDutiesOnDate(DateTime date) {
+    return state.duties
+        .where((item) => item.startTime.isSameDate(date))
+        .toList();
   }
 }
