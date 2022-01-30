@@ -24,4 +24,4 @@ const double kCalendarCardMiniPrimaryTextSize = 10.0;
 const double kCalendarCardSecondaryTextSize = 14.0;
 const double kCalendarCardMiniSecondaryTextSize = 8.0;
 const double kTemplateCardWidth = 150.0;
-const double kTemplateBarHeight = 170.0;
+const double kTemplateBarHeight = 180.0;
