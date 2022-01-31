@@ -13,6 +13,8 @@ class _TemplateFormState extends State<TemplateForm> {
   final formKey = GlobalKey<FormState>();
   late FocusNode focusNode;
 
+  int? choice;
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +57,65 @@ class _TemplateFormState extends State<TemplateForm> {
               ),
             ),
             style: TextStyle(color: kText),
+          ),
+          SizedBox(
+            height: 16.0,
+          ),
+          FormField(
+            builder: (FormFieldState<bool> state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Radio(
+                            value: 1,
+                            groupValue: choice,
+                            onChanged: (int? value) {
+                              setState(() {
+                                choice = value;
+                                state.setValue(true);
+                              });
+                            }),
+                        Text('Choice 1'),
+                      ],
+                    )),
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Radio(
+                            value: 2,
+                            groupValue: choice,
+                            onChanged: (int? value) {
+                              setState(() {
+                                choice = value;
+                                state.setValue(true);
+                              });
+                            }),
+                        Text('Choice 2'),
+                      ],
+                    )),
+                  ]),
+                  if (state.hasError)
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                  if (state.hasError)
+                    Text(
+                      state.errorText!,
+                      style: Theme.of(context).inputDecorationTheme.errorStyle,
+                    )
+                ],
+              );
+            },
+            validator: (value) {
+              if (value != true) {
+                return 'Please choose an option';
+              }
+              return null;
+            },
           ),
           SizedBox(
             height: 16.0,

@@ -27,8 +27,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: HomePage(),
       theme: ThemeData(
-          textSelectionTheme:
-              TextSelectionThemeData(cursorColor: kDarkPrimary)),
+          textSelectionTheme: TextSelectionThemeData(cursorColor: kDarkPrimary),
+          inputDecorationTheme: InputDecorationTheme(
+            errorStyle: TextStyle(color: Colors.red[700], fontSize: 12.0),
+          )),
     );
   }
 }

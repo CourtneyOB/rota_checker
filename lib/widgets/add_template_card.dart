@@ -7,28 +7,31 @@ class AddTemplateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Add template'),
-                content: TemplateForm(),
-              );
-            });
-      },
-      child: Card(
-        elevation: kCalendarCardElevation,
-        color: kBackground,
-        child: Container(
-          width: kTemplateCardWidth,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.add,
-              size: 80.0,
-              color: kLightGrey,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Add template'),
+                  content: TemplateForm(),
+                );
+              });
+        },
+        child: Card(
+          elevation: kCalendarCardElevation,
+          color: kBackground,
+          child: Container(
+            width: kTemplateCardWidth,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.add,
+                size: 80.0,
+                color: kLightGrey,
+              ),
             ),
           ),
         ),
