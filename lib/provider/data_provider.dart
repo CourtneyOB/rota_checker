@@ -40,18 +40,28 @@ class DataProvider extends StateNotifier<Rota> {
     state = state.clone();
   }
 
-  void addTemplateToDates() {
+  List<String> addTemplateToDates() {
+    List<String> errorMessages = [];
     if (state.selectedTemplate is ShiftTemplate) {
       for (DateTime date in state.selectedDates) {
-        state.addShift(date, state.selectedTemplate! as ShiftTemplate);
+        try {
+          state.addShift(date, state.selectedTemplate! as ShiftTemplate);
+        } catch (e) {
+          errorMessages.add(e.toString());
+        }
       }
     } else {
       for (DateTime date in state.selectedDates) {
-        state.addOnCall(date, state.selectedTemplate! as OnCallTemplate);
+        try {
+          state.addOnCall(date, state.selectedTemplate! as OnCallTemplate);
+        } catch (e) {
+          errorMessages.add(e.toString());
+        }
       }
     }
     state.selectedDates.clear();
     state = state.clone();
+    return errorMessages;
   }
 
   List<WorkDuty> getDutiesOnDate(DateTime date) {

@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/model/shift_template.dart';
@@ -7,6 +5,8 @@ import 'package:rota_checker/model/on_call_template.dart';
 import 'package:rota_checker/model/shift.dart';
 import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/model/on_call.dart';
+import 'package:rota_checker/shift_overlap_exception.dart';
+import 'package:rota_checker/extension_methods.dart';
 
 class Rota {
   DateTime displayMonth = DateTime(2022, 1, 7);
@@ -56,6 +56,9 @@ class Rota {
       duties.sort((a, b) {
         return a.startTime.compareTo(b.startTime);
       });
+    } else {
+      throw ShiftOverlapException(
+          newShift.template.name, date.dateFormatToString());
     }
   }
 
@@ -66,6 +69,9 @@ class Rota {
       duties.sort((a, b) {
         return a.startTime.compareTo(b.startTime);
       });
+    } else {
+      throw ShiftOverlapException(
+          newOnCall.template.name, date.dateFormatToString());
     }
   }
 
@@ -79,15 +85,12 @@ class Rota {
     for (WorkDuty existingDuty in existingDuties) {
       if (existingDuty.startTime.compareTo(newDuty.startTime) <= 0 &&
           newDuty.startTime.compareTo(existingDuty.endTime) < 0) {
-        print('overlap');
         return false;
       } else if (existingDuty.endTime.compareTo(newDuty.endTime) >= 0 &&
           newDuty.endTime.compareTo(existingDuty.startTime) > 0) {
-        print('overlap');
         return false;
       } else if (existingDuty.startTime.compareTo(newDuty.startTime) >= 0 &&
           newDuty.endTime.compareTo(existingDuty.endTime) >= 0) {
-        print('overlap');
         return false;
       }
     }

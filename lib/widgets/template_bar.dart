@@ -16,6 +16,23 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
   FontWeight fontWeight = FontWeight.normal;
   Duration animationDuration = Duration(milliseconds: 600);
 
+  void animateText() {
+    //Enlarge and decrease the size of the text informing the user what to do
+    setState(() {
+      fontWeight = FontWeight.bold;
+      fontColour = Colors.red;
+      fontSize = 14.5;
+    });
+    //Return text style to normal following completion of the animation
+    Future.delayed(animationDuration, () {
+      setState(() {
+        fontSize = 14.0;
+        fontColour = kText;
+        fontWeight = FontWeight.normal;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,23 +76,35 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
                   onPress: ref.watch(dataProvider).selectedTemplate != null &&
                           ref.watch(dataProvider).selectedDates.isNotEmpty
                       ? () {
-                          ref.read(dataProvider.notifier).addTemplateToDates();
+                          List<String> errors = ref
+                              .read(dataProvider.notifier)
+                              .addTemplateToDates();
+                          if (errors.isNotEmpty) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('There was a problem'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: errors
+                                          .map((item) => Text(item))
+                                          .toList(),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                          }
                         }
                       : () {
-                          //Enlarge and decrease the size of the text informing the user what to do
-                          setState(() {
-                            fontWeight = FontWeight.bold;
-                            fontColour = Colors.red;
-                            fontSize = 14.5;
-                          });
-                          //Return text style to normal following completion of the animation
-                          Future.delayed(animationDuration, () {
-                            setState(() {
-                              fontSize = 14.0;
-                              fontColour = kText;
-                              fontWeight = FontWeight.normal;
-                            });
-                          });
+                          animateText();
                         },
                   isActive: ref.watch(dataProvider).selectedTemplate != null &&
                           ref.watch(dataProvider).selectedDates.isNotEmpty

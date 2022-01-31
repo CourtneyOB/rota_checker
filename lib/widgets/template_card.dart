@@ -97,7 +97,7 @@ class TemplateCard extends StatelessWidget {
                     text: 'Start time: ',
                     children: [
                       TextSpan(
-                          text: startTime.dateFormatToString(),
+                          text: startTime.timeFormatToString(),
                           style: TextStyle(color: kSecondaryText)),
                     ],
                   ),
@@ -108,7 +108,7 @@ class TemplateCard extends StatelessWidget {
                     children: [
                       TextSpan(
                           text:
-                              '${endTime.dateFormatToString()} ${startTime.isSameDate(endTime) ? '' : '(+1)'}',
+                              '${endTime.timeFormatToString()} ${startTime.isSameDate(endTime) ? '' : '(+1)'}',
                           style: TextStyle(color: kSecondaryText)),
                     ],
                   ),
