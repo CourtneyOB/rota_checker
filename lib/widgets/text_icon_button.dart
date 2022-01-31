@@ -28,6 +28,7 @@ class TextIconButton extends StatelessWidget {
             elevation: 5.0,
             borderRadius: BorderRadius.circular(5.0),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -51,6 +52,7 @@ class TextIconButton extends StatelessWidget {
                   ),
                 ),
                 Container(
+                  width: 24.0,
                   child: Icon(
                     icon,
                     color: isActive ? colour : kLightGrey,

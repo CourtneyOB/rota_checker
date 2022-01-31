@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/model/on_call_template.dart';
 import 'package:rota_checker/model/shift_template.dart';
+import 'package:rota_checker/widgets/add_template_card.dart';
 import 'package:rota_checker/widgets/template_card.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/custom_scroll_behaviour.dart';
@@ -50,8 +51,11 @@ class TemplateList extends ConsumerWidget {
             child: ListView.builder(
                 controller: controller,
                 scrollDirection: Axis.horizontal,
-                itemCount: templates.length,
+                itemCount: templates.length + 1,
                 itemBuilder: (BuildContext context, index) {
+                  if (index == templates.length) {
+                    return AddTemplateCard();
+                  }
                   return templates[index];
                 }),
           ),

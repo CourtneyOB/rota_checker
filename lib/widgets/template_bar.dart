@@ -93,7 +93,10 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
                                     ),
                                     actions: [
                                       TextButton(
-                                        child: Text('OK'),
+                                        child: Text(
+                                          'OK',
+                                          style: TextStyle(color: kPrimary),
+                                        ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
