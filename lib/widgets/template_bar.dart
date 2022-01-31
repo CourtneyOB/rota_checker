@@ -86,6 +86,8 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
                                   return AlertDialog(
                                     title: Text('There was a problem'),
                                     content: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: errors
                                           .map((item) => Text(item))
