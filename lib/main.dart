@@ -30,7 +30,11 @@ class MyApp extends StatelessWidget {
           textSelectionTheme: TextSelectionThemeData(cursorColor: kDarkPrimary),
           inputDecorationTheme: InputDecorationTheme(
             errorStyle: TextStyle(color: Colors.red[700], fontSize: 12.0),
-          )),
+          ),
+          colorScheme: ThemeData.light().colorScheme.copyWith(
+                primary: kDarkPrimary,
+                secondary: kPrimary,
+              )),
     );
   }
 }

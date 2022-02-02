@@ -37,6 +37,7 @@ dependencies:
   flutter_riverpod: ^1.0.3
   auto_size_text: ^3.0.0
   week_of_year: ^2.0.0
+  mask_text_input_formatter: ^2.1.0
 
 dev_dependencies:
   flutter_test:

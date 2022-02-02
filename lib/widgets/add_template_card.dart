@@ -14,10 +14,7 @@ class AddTemplateCard extends StatelessWidget {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Add template'),
-                  content: TemplateForm(),
-                );
+                return TemplateForm();
               });
         },
         child: Card(
