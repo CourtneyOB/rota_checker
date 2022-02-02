@@ -481,7 +481,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                 icon: Icons.close,
                 colour: kDarkPrimary,
                 onPress: () {
-                  Navigator.of(context).pop;
+                  Navigator.pop(context);
                 },
                 isActive: true),
             TextIconButton(
