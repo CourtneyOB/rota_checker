@@ -94,6 +94,23 @@ class Rota {
     return duties.whereType<OnCall>().toList();
   }
 
+  void resetTemplate(Template template) {
+    List<WorkDuty> dutiesUsingTemplate =
+        duties.where((item) => item.template == template).toList();
+    for (WorkDuty duty in dutiesUsingTemplate) {
+      duties.remove(duty);
+      if (duty is Shift) {
+        try {
+          addShift(duty.startTime, template as ShiftTemplate);
+        } catch (e) {}
+      } else {
+        try {
+          addOnCall(duty.startTime, template as OnCallTemplate);
+        } catch (e) {}
+      }
+    }
+  }
+
   void nextColour() {
     currentColour++;
     if (currentColour >= kTemplateColors.length) {

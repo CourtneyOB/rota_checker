@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/model/rota.dart';
 import 'package:rota_checker/model/shift_template.dart';
@@ -63,6 +61,7 @@ class DataProvider extends StateNotifier<Rota> {
       template.endTime =
           template.startTime.add(Duration(minutes: (length * 60).toInt()));
     }
+    state.resetTemplate(template);
     state = state.clone();
   }
 

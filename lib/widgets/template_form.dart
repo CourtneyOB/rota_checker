@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/main.dart';
@@ -75,7 +76,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
   late FocusNode focusNodeEndTime;
   late FocusNode focusNodeExpectedHours;
 
-  void submitForm() {
+  void submitForm() async {
     if (formKey.currentState!.validate()) {
       if (!widget.isEdit) {
         //submit data
@@ -86,6 +87,54 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
             widget.dutyType == WorkDutyType.oncall ? true : false,
             widget.expectedHours);
       } else {
+        if (ref
+                .read(dataProvider)
+                .duties
+                .firstWhereOrNull((item) => item.template == widget.template) !=
+            null) {
+          //template has been used already
+          bool confirm = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Are you sure?'),
+                  content: Container(
+                    width: screenWidth(context) * 0.4,
+                    child: Text(
+                        'If you edit this template, instances already added to the calendar will also be edited. If this overlaps with existing shifts it will be deleted from the calendar. Do you wish to edit this template?'),
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextIconButton(
+                              text: 'Cancel',
+                              icon: Icons.close,
+                              colour: kDarkPrimary,
+                              onPress: () {
+                                Navigator.of(context).pop(false);
+                              },
+                              isActive: true),
+                          TextIconButton(
+                              text: 'Confirm',
+                              icon: Icons.check,
+                              colour: kDarkPrimary,
+                              onPress: () {
+                                Navigator.of(context).pop(true);
+                              },
+                              isActive: true),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              });
+          if (!confirm) {
+            return;
+          }
+        }
         //edit data
         ref.read(dataProvider.notifier).editTemplate(
             widget.template!,
@@ -419,21 +468,31 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                 ),
                 style: TextStyle(color: kText),
               ),
-            SizedBox(
-              height: 16.0,
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: TextIconButton(
-                  text: widget.isEdit ? 'Edit' : 'Add',
-                  icon: Icons.add,
-                  colour: kDarkPrimary,
-                  onPress: submitForm,
-                  isActive: true),
-            ),
           ],
         ),
       ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            TextIconButton(
+                text: 'Cancel',
+                icon: Icons.close,
+                colour: kDarkPrimary,
+                onPress: () {
+                  Navigator.of(context).pop;
+                },
+                isActive: true),
+            TextIconButton(
+                text: widget.isEdit ? 'Edit' : 'Add',
+                icon: Icons.add,
+                colour: kDarkPrimary,
+                onPress: submitForm,
+                isActive: true),
+          ]),
+        ),
+      ],
     );
   }
 }
