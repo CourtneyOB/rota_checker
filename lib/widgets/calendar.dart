@@ -33,7 +33,6 @@ class Calendar extends ConsumerWidget {
                     ? Colors.white
                     : kSecondaryText,
                 maxFontSize: 12.0,
-                canEdit: false,
               ))
           .toList();
     }

@@ -17,6 +17,7 @@ class TemplateCard extends StatelessWidget {
 
   final Function() onPress;
   final Function() editTemplate;
+  final Function() deleteTemplate;
 
   final bool isSelected;
 
@@ -32,7 +33,8 @@ class TemplateCard extends StatelessWidget {
       required this.isEveningFinish,
       required this.isSelected,
       required this.onPress,
-      required this.editTemplate});
+      required this.editTemplate,
+      required this.deleteTemplate});
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +54,37 @@ class TemplateCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TemplateTitle(
-                  colour: colour,
-                  name: name,
-                  canEdit: true,
-                  editTemplate: editTemplate,
+                Row(
+                  children: [
+                    Expanded(
+                      child: TemplateTitle(
+                        colour: colour,
+                        name: name,
+                      ),
+                    ),
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: editTemplate,
+                        child: Icon(
+                          Icons.edit,
+                          size: 16.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: deleteTemplate,
+                        child: Icon(
+                          Icons.close,
+                          size: 16.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 2.0,

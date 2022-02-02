@@ -94,9 +94,12 @@ class Rota {
     return duties.whereType<OnCall>().toList();
   }
 
+  List<WorkDuty> getDutiesByTemplate(Template template) {
+    return duties.where((item) => item.template == template).toList();
+  }
+
   void resetTemplate(Template template) {
-    List<WorkDuty> dutiesUsingTemplate =
-        duties.where((item) => item.template == template).toList();
+    List<WorkDuty> dutiesUsingTemplate = getDutiesByTemplate(template);
     for (WorkDuty duty in dutiesUsingTemplate) {
       duties.remove(duty);
       if (duty is Shift) {

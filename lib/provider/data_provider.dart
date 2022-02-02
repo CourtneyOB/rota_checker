@@ -65,6 +65,15 @@ class DataProvider extends StateNotifier<Rota> {
     state = state.clone();
   }
 
+  void deleteTemplate(Template template) {
+    List<WorkDuty> duties = state.getDutiesByTemplate(template);
+    for (WorkDuty duty in duties) {
+      state.duties.remove(duty);
+    }
+    state.templateLibrary.remove(template);
+    state = state.clone();
+  }
+
   void selectTemplate(int index) {
     if (state.selectedTemplate == state.templateLibrary[index]) {
       state.selectedTemplate = null;
