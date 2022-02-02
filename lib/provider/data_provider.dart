@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/model/rota.dart';
 import 'package:rota_checker/model/shift_template.dart';
@@ -6,6 +8,7 @@ import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/model/on_call_template.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:rota_checker/model/template.dart';
 
 class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
@@ -39,6 +42,27 @@ class DataProvider extends StateNotifier<Rota> {
           expectedHours!));
     }
     state.nextColour();
+    state = state.clone();
+  }
+
+  void editTemplate(Template template, String name, TimeOfDay startTime,
+      double length, bool isOnCall, double? expectedHours) {
+    if (isOnCall) {
+      template.name = name;
+      template.startTime =
+          DateTime(2022, 1, 1, startTime.hour, startTime.minute);
+      template.length = length;
+      template.endTime =
+          template.startTime.add(Duration(minutes: (length * 60).toInt()));
+      (template as OnCallTemplate).expectedHours = expectedHours!;
+    } else {
+      template.name = name;
+      template.startTime =
+          DateTime(2022, 1, 1, startTime.hour, startTime.minute);
+      template.length = length;
+      template.endTime =
+          template.startTime.add(Duration(minutes: (length * 60).toInt()));
+    }
     state = state.clone();
   }
 

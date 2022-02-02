@@ -8,6 +8,7 @@ import 'package:rota_checker/widgets/template_card.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/custom_scroll_behaviour.dart';
 import 'package:rota_checker/constants.dart';
+import 'package:rota_checker/widgets/template_form.dart';
 
 class TemplateList extends ConsumerWidget {
   final ScrollController controller = ScrollController();
@@ -34,6 +35,13 @@ class TemplateList extends ConsumerWidget {
                 ref
                     .read(dataProvider.notifier)
                     .selectTemplate(templateLibrary.indexOf(item));
+              },
+              editTemplate: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return TemplateForm.fromTemplate(template: item);
+                    });
               },
             ))
         .toList();

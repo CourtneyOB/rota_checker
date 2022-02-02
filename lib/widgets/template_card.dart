@@ -16,6 +16,7 @@ class TemplateCard extends StatelessWidget {
   final bool isEveningFinish;
 
   final Function() onPress;
+  final Function() editTemplate;
 
   final bool isSelected;
 
@@ -30,7 +31,8 @@ class TemplateCard extends StatelessWidget {
       required this.isLong,
       required this.isEveningFinish,
       required this.isSelected,
-      required this.onPress});
+      required this.onPress,
+      required this.editTemplate});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,8 @@ class TemplateCard extends StatelessWidget {
                 TemplateTitle(
                   colour: colour,
                   name: name,
+                  canEdit: true,
+                  editTemplate: editTemplate,
                 ),
                 SizedBox(
                   height: 2.0,

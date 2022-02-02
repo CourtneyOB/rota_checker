@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/model/shift_template.dart';
@@ -21,13 +22,11 @@ class Rota {
   int currentColour = 3;
   Template? selectedTemplate;
   List<DateTime> selectedDates = [];
-  List<WorkDuty> duties = [
-    Shift(
-      DateTime(2022, 1, 5, 9, 0, 0),
-      ShiftTemplate('Normal Working Day', DateTime(2022, 1, 1, 9, 00), 8.5,
-          kTemplateColors[0]),
-    )
-  ];
+  List<WorkDuty> duties = [];
+
+  Rota() {
+    addShift(DateTime(2022, 1, 5), templateLibrary[0] as ShiftTemplate);
+  }
 
   Rota clone() {
     return Rota()

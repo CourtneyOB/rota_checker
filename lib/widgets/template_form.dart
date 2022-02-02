@@ -6,7 +6,8 @@ import 'package:rota_checker/widgets/text_icon_button.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rota_checker/widgets/template_title.dart';
+import 'package:rota_checker/model/template.dart';
+import 'package:rota_checker/model/on_call_template.dart';
 
 enum WorkDutyType {
   shift,
@@ -14,22 +15,33 @@ enum WorkDutyType {
 }
 
 class TemplateForm extends ConsumerStatefulWidget {
-  const TemplateForm({Key? key}) : super(key: key);
+  TemplateForm({this.isEdit = false});
+  TemplateForm.fromTemplate({required this.template, this.isEdit = true}) {
+    if (template is OnCallTemplate) {
+      dutyType = WorkDutyType.oncall;
+      expectedHours = (template as OnCallTemplate).expectedHours;
+    } else {
+      dutyType = WorkDutyType.shift;
+    }
+    templateName = template!.name;
+    selectedStartTime = TimeOfDay(
+        hour: template!.startTime.hour, minute: template!.startTime.minute);
+    selectedEndTime = TimeOfDay(
+        hour: template!.endTime.hour, minute: template!.endTime.minute);
+    length = template!.length;
+    textEditingControllerStartTime.text =
+        selectedStartTime!.timeFormatToString();
+    textEditingControllerEndTime.text = selectedEndTime!.timeFormatToString();
+    checkDayCount();
+  }
 
-  @override
-  _TemplateFormState createState() => _TemplateFormState();
-}
-
-class _TemplateFormState extends ConsumerState<TemplateForm> {
-  final formKey = GlobalKey<FormState>();
-  late FocusNode focusNodeName;
-  late FocusNode focusNodeStartTime;
-  late FocusNode focusNodeEndTime;
-  late FocusNode focusNodeExpectedHours;
   final TextEditingController textEditingControllerStartTime =
       TextEditingController();
   final TextEditingController textEditingControllerEndTime =
       TextEditingController();
+
+  bool isEdit;
+  Template? template;
 
   WorkDutyType? dutyType;
   String? templateName;
@@ -52,15 +64,37 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
     }
   }
 
+  @override
+  _TemplateFormState createState() => _TemplateFormState();
+}
+
+class _TemplateFormState extends ConsumerState<TemplateForm> {
+  final formKey = GlobalKey<FormState>();
+  late FocusNode focusNodeName;
+  late FocusNode focusNodeStartTime;
+  late FocusNode focusNodeEndTime;
+  late FocusNode focusNodeExpectedHours;
+
   void submitForm() {
     if (formKey.currentState!.validate()) {
-      //submit data
-      ref.read(dataProvider.notifier).addTemplate(
-          templateName!,
-          selectedStartTime!,
-          length!,
-          dutyType == WorkDutyType.oncall ? true : false,
-          expectedHours);
+      if (!widget.isEdit) {
+        //submit data
+        ref.read(dataProvider.notifier).addTemplate(
+            widget.templateName!,
+            widget.selectedStartTime!,
+            widget.length!,
+            widget.dutyType == WorkDutyType.oncall ? true : false,
+            widget.expectedHours);
+      } else {
+        //edit data
+        ref.read(dataProvider.notifier).editTemplate(
+            widget.template!,
+            widget.templateName!,
+            widget.selectedStartTime!,
+            widget.length!,
+            widget.dutyType == WorkDutyType.oncall ? true : false,
+            widget.expectedHours);
+      }
       Navigator.of(context).pop();
     }
   }
@@ -98,7 +132,9 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
           SizedBox(
             width: 5.0,
           ),
-          Text(templateName == null ? 'New Template' : templateName!),
+          Text(widget.templateName == null
+              ? 'New Template'
+              : widget.templateName!),
         ],
       ),
       content: Form(
@@ -125,11 +161,10 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                             visualDensity:
                                 VisualDensity(horizontal: -4, vertical: -4),
                             value: WorkDutyType.shift,
-                            groupValue: dutyType,
+                            groupValue: widget.dutyType,
                             onChanged: (WorkDutyType? value) {
                               setState(() {
-                                dutyType = value;
-                                state.setValue(true);
+                                widget.dutyType = value;
                               });
                             },
                           ),
@@ -146,11 +181,10 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
                               value: WorkDutyType.oncall,
-                              groupValue: dutyType,
+                              groupValue: widget.dutyType,
                               onChanged: (WorkDutyType? value) {
                                 setState(() {
-                                  dutyType = value;
-                                  state.setValue(true);
+                                  widget.dutyType = value;
                                 });
                               }),
                           Padding(
@@ -175,13 +209,14 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                 );
               },
               validator: (value) {
-                if (value != true) {
+                if (widget.dutyType == null) {
                   return 'Please choose an option';
                 }
                 return null;
               },
             ),
             TextFormField(
+              initialValue: widget.templateName,
               focusNode: focusNodeName,
               onTap: () {
                 setState(() {
@@ -190,7 +225,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
               },
               onChanged: (value) {
                 setState(() {
-                  templateName = value;
+                  widget.templateName = value;
                 });
               },
               onFieldSubmitted: (value) {
@@ -217,7 +252,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
               height: 16.0,
             ),
             TextFormField(
-              controller: textEditingControllerStartTime,
+              controller: widget.textEditingControllerStartTime,
               inputFormatters: [
                 MaskTextInputFormatter(
                   mask: '##:##',
@@ -226,22 +261,22 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
               ],
               focusNode: focusNodeStartTime,
               onTap: () async {
-                selectedStartTime = await showTimePicker(
+                widget.selectedStartTime = await showTimePicker(
                     context: context, initialTime: TimeOfDay.now());
                 setState(() {
-                  if (selectedStartTime != null) {
-                    textEditingControllerStartTime.text =
-                        selectedStartTime!.timeFormatToString();
-                    checkDayCount();
+                  if (widget.selectedStartTime != null) {
+                    widget.textEditingControllerStartTime.text =
+                        widget.selectedStartTime!.timeFormatToString();
+                    widget.checkDayCount();
                   }
                   FocusScope.of(context).requestFocus(focusNodeStartTime);
                 });
               },
               onChanged: (value) {
                 try {
-                  selectedStartTime = value.parseToTimeOfDay();
+                  widget.selectedStartTime = value.parseToTimeOfDay();
                 } catch (e) {}
-                checkDayCount();
+                widget.checkDayCount();
               },
               onFieldSubmitted: (value) {
                 submitForm();
@@ -273,7 +308,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
               height: 16.0,
             ),
             TextFormField(
-              controller: textEditingControllerEndTime,
+              controller: widget.textEditingControllerEndTime,
               inputFormatters: [
                 MaskTextInputFormatter(
                   mask: '##:## ####',
@@ -282,21 +317,21 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
               ],
               focusNode: focusNodeEndTime,
               onTap: () async {
-                selectedEndTime = await showTimePicker(
+                widget.selectedEndTime = await showTimePicker(
                     context: context, initialTime: TimeOfDay.now());
                 setState(() {
-                  if (selectedEndTime != null) {
-                    textEditingControllerEndTime.text =
-                        selectedEndTime!.timeFormatToString();
-                    checkDayCount();
+                  if (widget.selectedEndTime != null) {
+                    widget.textEditingControllerEndTime.text =
+                        widget.selectedEndTime!.timeFormatToString();
+                    widget.checkDayCount();
                   }
                   FocusScope.of(context).requestFocus(focusNodeEndTime);
                 });
               },
               onChanged: (value) {
                 try {
-                  selectedEndTime = value.parseToTimeOfDay();
-                  checkDayCount();
+                  widget.selectedEndTime = value.parseToTimeOfDay();
+                  widget.checkDayCount();
                 } catch (e) {}
               },
               onFieldSubmitted: (value) {
@@ -325,12 +360,15 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
               ),
               style: TextStyle(color: kText),
             ),
-            if (dutyType == WorkDutyType.oncall)
+            if (widget.dutyType == WorkDutyType.oncall)
               SizedBox(
                 height: 16.0,
               ),
-            if (dutyType == WorkDutyType.oncall)
+            if (widget.dutyType == WorkDutyType.oncall)
               TextFormField(
+                initialValue: widget.expectedHours != null
+                    ? widget.expectedHours.toString()
+                    : null,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
                   TextInputFormatter.withFunction((oldValue, newValue) {
@@ -349,7 +387,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                   });
                 },
                 onChanged: (value) {
-                  expectedHours = double.parse(value);
+                  widget.expectedHours = double.parse(value);
                 },
                 onFieldSubmitted: (value) {
                   submitForm();
@@ -361,8 +399,8 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                   if (double.parse(value) <= 0) {
                     return 'Number must be more than 0';
                   }
-                  if (length != null) {
-                    if (double.parse(value) > length!) {
+                  if (widget.length != null) {
+                    if (double.parse(value) > widget.length!) {
                       return 'Cannot be longer than shift length';
                     }
                   }
@@ -387,7 +425,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
             Align(
               alignment: Alignment.bottomRight,
               child: TextIconButton(
-                  text: 'Add',
+                  text: widget.isEdit ? 'Edit' : 'Add',
                   icon: Icons.add,
                   colour: kDarkPrimary,
                   onPress: submitForm,

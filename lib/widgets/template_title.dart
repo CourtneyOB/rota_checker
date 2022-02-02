@@ -7,14 +7,18 @@ class TemplateTitle extends StatelessWidget {
     Key? key,
     required this.colour,
     required this.name,
+    required this.canEdit,
     this.textColour = kText,
     this.maxFontSize = 14.0,
+    this.editTemplate = null,
   }) : super(key: key);
 
   final Color colour;
   final String name;
+  final bool canEdit;
   final Color textColour;
   final double maxFontSize;
+  final Function()? editTemplate;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,18 @@ class TemplateTitle extends StatelessWidget {
             ),
           ),
         ),
+        if (canEdit)
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: editTemplate,
+              child: Icon(
+                Icons.edit,
+                size: 16.0,
+                color: Colors.grey,
+              ),
+            ),
+          ),
       ],
     );
   }
