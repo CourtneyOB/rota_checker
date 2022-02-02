@@ -1,25 +1,26 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rota_checker/constants.dart';
+import 'package:rota_checker/main.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:rota_checker/extension_methods.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rota_checker/widgets/template_title.dart';
 
 enum WorkDutyType {
   shift,
   oncall,
 }
 
-class TemplateForm extends StatefulWidget {
+class TemplateForm extends ConsumerStatefulWidget {
   const TemplateForm({Key? key}) : super(key: key);
 
   @override
   _TemplateFormState createState() => _TemplateFormState();
 }
 
-class _TemplateFormState extends State<TemplateForm> {
+class _TemplateFormState extends ConsumerState<TemplateForm> {
   final formKey = GlobalKey<FormState>();
   late FocusNode focusNodeName;
   late FocusNode focusNodeStartTime;
@@ -54,7 +55,12 @@ class _TemplateFormState extends State<TemplateForm> {
   void submitForm() {
     if (formKey.currentState!.validate()) {
       //submit data
-      formKey.currentState!.save();
+      ref.read(dataProvider.notifier).addTemplate(
+          templateName!,
+          selectedStartTime!,
+          length!,
+          dutyType == WorkDutyType.oncall ? true : false,
+          expectedHours);
       Navigator.of(context).pop();
     }
   }
@@ -80,7 +86,21 @@ class _TemplateFormState extends State<TemplateForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(templateName == null ? 'New Template' : templateName!),
+      title: Row(
+        children: [
+          Container(
+            height: 12.0,
+            width: 8.0,
+            decoration: BoxDecoration(
+                color: kTemplateColors[ref.watch(dataProvider).currentColour],
+                borderRadius: BorderRadius.all(Radius.circular(1.0))),
+          ),
+          SizedBox(
+            width: 5.0,
+          ),
+          Text(templateName == null ? 'New Template' : templateName!),
+        ],
+      ),
       content: Form(
         key: formKey,
         child: Column(
@@ -169,7 +189,9 @@ class _TemplateFormState extends State<TemplateForm> {
                 });
               },
               onChanged: (value) {
-                templateName = value;
+                setState(() {
+                  templateName = value;
+                });
               },
               onFieldSubmitted: (value) {
                 submitForm();

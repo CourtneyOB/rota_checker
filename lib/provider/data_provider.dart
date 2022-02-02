@@ -4,8 +4,8 @@ import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/model/on_call_template.dart';
-import 'package:rota_checker/model/shift.dart';
-import 'package:rota_checker/model/on_call.dart';
+import 'package:rota_checker/constants.dart';
+import 'package:flutter/material.dart';
 
 class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
@@ -19,6 +19,26 @@ class DataProvider extends StateNotifier<Rota> {
   void subtractMonth() {
     state.displayMonth = DateTime(state.displayMonth.year,
         state.displayMonth.month - 1, state.displayMonth.day);
+    state = state.clone();
+  }
+
+  void addTemplate(String name, TimeOfDay startTime, double length,
+      bool isOnCall, double? expectedHours) {
+    if (!isOnCall) {
+      state.templateLibrary.add(ShiftTemplate(
+          name,
+          DateTime(2022, 1, 1, startTime.hour, startTime.minute),
+          length,
+          kTemplateColors[state.currentColour]));
+    } else {
+      state.templateLibrary.add(OnCallTemplate(
+          name,
+          DateTime(2022, 1, 1, startTime.hour, startTime.minute),
+          length,
+          kTemplateColors[state.currentColour],
+          expectedHours!));
+    }
+    state.nextColour();
     state = state.clone();
   }
 
