@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/screens/homepage.dart';
+import 'package:rota_checker/screens/resultspage.dart';
 import 'package:rota_checker/provider/data_provider.dart';
 import 'package:rota_checker/model/rota.dart';
 
@@ -20,13 +21,21 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      routes: {
+        '/': (context) => HomePage(),
+        '/results': (context) => ResultsPage(),
+      },
+      initialRoute: '/',
       theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(color: kDarkPrimary),
+            titleTextStyle: TextStyle(color: kDarkPrimary, fontSize: 18.0),
+          ),
           textSelectionTheme: TextSelectionThemeData(cursorColor: kDarkPrimary),
           inputDecorationTheme: InputDecorationTheme(
             errorStyle: TextStyle(color: Colors.red[700], fontSize: 12.0),

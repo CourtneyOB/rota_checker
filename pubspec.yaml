@@ -38,6 +38,7 @@ dependencies:
   auto_size_text: ^3.0.0
   week_of_year: ^2.0.0
   mask_text_input_formatter: ^2.1.0
+  tuple: ^2.0.0
 
 dev_dependencies:
   flutter_test:

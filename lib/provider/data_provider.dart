@@ -7,9 +7,15 @@ import 'package:rota_checker/model/on_call_template.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:rota_checker/model/template.dart';
+import 'package:tuple/tuple.dart';
+import 'package:rota_checker/model/compliance.dart';
 
 class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
+
+  Tuple2<bool, String> checkCompliance() {
+    return Compliance(state).max48HourWeek();
+  }
 
   void addMonth() {
     state.displayMonth = DateTime(state.displayMonth.year,
