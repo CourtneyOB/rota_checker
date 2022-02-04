@@ -16,15 +16,15 @@ class Compliance {
   Compliance(this.rota)
       : rotaLength = rota.duties.last.endTime
             .difference(rota.duties[0].startTime)
-            .inDays;
+            .inDays,
+        shiftsInRota = rota.getAllShifts(),
+        onCallInRota = rota.getAllOnCalls();
 
   void CheckAll() {
     if (rotaLength > 182) {
       //TODO catch this exception
       throw Exception('Rota cannot be longer than 26 weeks');
     }
-    shiftsInRota = rota.getAllShifts();
-    onCallInRota = rota.getAllOnCalls();
   }
 
   Tuple2<bool, String> max48HourWeek() {
@@ -168,7 +168,20 @@ class Compliance {
       }
     }
     result += 'Max hours per 168 hour period is ${maxHours}';
-    return Tuple2(pass, result);
+    return Tuple2<bool, String>(pass, result);
+  }
+
+  Tuple2<bool, String> max13HourShift() {
+    String result = '';
+    bool pass = true;
+    for (Shift shift in shiftsInRota) {
+      if (shift.length > 13) {
+        result +=
+            'Shift on ${shift.startTime.dateFormatToString()} has more than 13 hours';
+        pass = false;
+      }
+    }
+    return Tuple2<bool, String>(pass, result);
   }
 
   DateTime weekStart(DateTime date) =>

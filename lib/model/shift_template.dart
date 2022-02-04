@@ -6,6 +6,8 @@ class ShiftTemplate extends Template {
   bool isLong = false;
   bool isEveningFinish = false;
 
+  //TODO fix bug that labels start 05:42 - 21:42 as a night shift
+
   ShiftTemplate(String name, DateTime startTime, double length, Color colour)
       : super(name, startTime, length, colour) {
     isNight = isNightShift();
