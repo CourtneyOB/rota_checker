@@ -9,14 +9,17 @@ import 'package:week_of_year/week_of_year.dart';
 
 class Compliance {
   final Rota rota;
+  final int rotaLength;
   List<Shift> shiftsInRota = [];
   List<OnCall> onCallInRota = [];
 
-  Compliance(this.rota);
+  Compliance(this.rota)
+      : rotaLength = rota.duties.last.endTime
+            .difference(rota.duties[0].startTime)
+            .inDays;
 
   void CheckAll() {
-    if (rota.duties[0].startTime.difference(rota.duties.last.startTime).inDays >
-        182) {
+    if (rotaLength > 182) {
       //TODO catch this exception
       throw Exception('Rota cannot be longer than 26 weeks');
     }
@@ -88,6 +91,84 @@ class Compliance {
       //fail
       return Tuple2(false, result);
     }
+  }
+
+  Tuple2<bool, String> max72HoursPer168() {
+    bool pass = true;
+    String result = '';
+    double maxHours = 0;
+    //Get midnight on the first day to be checked
+    DateTime setMidnight = DateTime(rota.duties[0].startTime.year,
+        rota.duties[0].startTime.month, rota.duties[0].startTime.day);
+
+    for (int i = 0; i < rotaLength; i++) {
+      //Select the next date to be cycled through and add 7 days
+      DateTime startDateTime = setMidnight.add(Duration(days: i));
+      DateTime endDateTime = startDateTime.add(Duration(days: 7));
+
+      //If there are less than 7 days remaining, then there is no need to check further
+      if (rota.duties.last.endTime
+              .add(Duration(days: 1))
+              .compareTo(endDateTime) <
+          0) {
+        break;
+      }
+
+      double thisWeeklyHours = 0;
+
+      //Selects all the shifts/on calls with start or end time within window
+      List<WorkDuty> thisWeekDuties = rota.duties
+          .where((item) =>
+              startDateTime.compareTo(item.startTime) <= 0 &&
+                  endDateTime.compareTo(item.startTime) > 0 ||
+              startDateTime.compareTo(item.endTime) < 0 &&
+                  endDateTime.compareTo(item.endTime) >= 0)
+          .toList();
+
+      for (WorkDuty duty in thisWeekDuties) {
+        //check whether it is fully in the time period
+        if (startDateTime.compareTo(duty.startTime) <= 0 &&
+            endDateTime.compareTo(duty.endTime) >= 0) {
+          thisWeeklyHours +=
+              duty is Shift ? duty.length : (duty as OnCall).expectedHours;
+        } else if (startDateTime.compareTo(duty.startTime) > 0 &&
+            endDateTime.compareTo(duty.endTime) >= 0) {
+          //starts before start but finishes after
+          Duration partialDuty = duty.endTime.difference(startDateTime);
+          if (duty is Shift) {
+            thisWeeklyHours += partialDuty.inHours;
+          } else {
+            //find the proportion of the on call within the specified time period
+            double proportion = partialDuty.inHours / duty.length;
+            //apply that proportion to the expected work hours
+            double partialHours = (duty as OnCall).expectedHours * proportion;
+            thisWeeklyHours += partialHours;
+          }
+        } else if (startDateTime.compareTo(duty.startTime) <= 0 &&
+            endDateTime.compareTo(duty.endTime) < 0) {
+          //starts before end but finishes after
+          Duration partialDuty = endDateTime.difference(duty.startTime);
+          if (duty is Shift) {
+            thisWeeklyHours += partialDuty.inHours;
+          } else {
+            //find the proportion of the on call within the specified time period
+            double proportion = partialDuty.inHours / duty.length;
+            //apply that proportion to the expected work hours
+            double partialHours = (duty as OnCall).expectedHours * proportion;
+            thisWeeklyHours += partialHours;
+          }
+        }
+      }
+
+      if (thisWeeklyHours > 72) {
+        pass = false;
+      }
+      if (thisWeeklyHours > maxHours) {
+        maxHours = thisWeeklyHours;
+      }
+    }
+    result += 'Max hours per 168 hour period is ${maxHours}';
+    return Tuple2(pass, result);
   }
 
   DateTime weekStart(DateTime date) =>

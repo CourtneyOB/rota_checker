@@ -12,6 +12,7 @@ class ResultsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Tuple2<bool, String> max48HourWeek =
         ref.read(dataProvider.notifier).checkCompliance();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -28,14 +29,16 @@ class ResultsPage extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 40.0, vertical: 36.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ResultsRow(
-                        title: 'Max average 48 hour week',
-                        result: max48HourWeek.item1,
-                        explanation: max48HourWeek.item2)
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ResultsRow(
+                          title: 'Max average 48 hour week',
+                          result: max48HourWeek.item1,
+                          explanation: max48HourWeek.item2)
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -13,6 +13,13 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/results');
+              },
+              child: Text('Get results')),
+        ],
       ),
       body: Container(
         color: kBackground,
