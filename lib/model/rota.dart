@@ -105,17 +105,19 @@ class Rota {
     return duties.where((item) => item.template == template).toList();
   }
 
-  void resetTemplate(Template template) {
-    List<WorkDuty> dutiesUsingTemplate = getDutiesByTemplate(template);
+  void resetTemplate(Template oldTemplate, Template newTemplate) {
+    List<WorkDuty> dutiesUsingTemplate = getDutiesByTemplate(oldTemplate);
+    int index = templateLibrary.indexOf(oldTemplate);
+    templateLibrary[index] = newTemplate;
     for (WorkDuty duty in dutiesUsingTemplate) {
       duties.remove(duty);
       if (duty is Shift) {
         try {
-          addShift(duty.startTime, template as ShiftTemplate);
+          addShift(duty.startTime, newTemplate as ShiftTemplate);
         } catch (e) {}
       } else {
         try {
-          addOnCall(duty.startTime, template as OnCallTemplate);
+          addOnCall(duty.startTime, newTemplate as OnCallTemplate);
         } catch (e) {}
       }
     }

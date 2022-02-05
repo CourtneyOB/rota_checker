@@ -52,22 +52,21 @@ class DataProvider extends StateNotifier<Rota> {
   void editTemplate(Template template, String name, TimeOfDay startTime,
       double length, bool isOnCall, double? expectedHours) {
     if (isOnCall) {
-      template.name = name;
-      template.startTime =
-          DateTime(2022, 1, 1, startTime.hour, startTime.minute);
-      template.length = length;
-      template.endTime =
-          template.startTime.add(Duration(minutes: (length * 60).toInt()));
-      (template as OnCallTemplate).expectedHours = expectedHours!;
+      Template newTemplate = OnCallTemplate(
+          name,
+          DateTime(2022, 1, 1, startTime.hour, startTime.minute),
+          length,
+          template.colour,
+          expectedHours!);
+      state.resetTemplate(template, newTemplate);
     } else {
-      template.name = name;
-      template.startTime =
-          DateTime(2022, 1, 1, startTime.hour, startTime.minute);
-      template.length = length;
-      template.endTime =
-          template.startTime.add(Duration(minutes: (length * 60).toInt()));
+      Template newTemplate = ShiftTemplate(
+          name,
+          DateTime(2022, 1, 1, startTime.hour, startTime.minute),
+          length,
+          template.colour);
+      state.resetTemplate(template, newTemplate);
     }
-    state.resetTemplate(template);
     state = state.clone();
   }
 

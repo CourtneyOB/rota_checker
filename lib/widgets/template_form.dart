@@ -175,7 +175,9 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
             height: 12.0,
             width: 8.0,
             decoration: BoxDecoration(
-                color: kTemplateColors[ref.watch(dataProvider).currentColour],
+                color: widget.isEdit
+                    ? widget.template!.colour
+                    : kTemplateColors[ref.watch(dataProvider).currentColour],
                 borderRadius: BorderRadius.all(Radius.circular(1.0))),
           ),
           SizedBox(

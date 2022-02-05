@@ -6,11 +6,36 @@ class ShiftTemplate extends Template {
   bool isLong = false;
   bool isEveningFinish = false;
 
-  //TODO fix bug that labels start 05:42 - 21:42 as a night shift
-
   ShiftTemplate(String name, DateTime startTime, double length, Color colour)
       : super(name, startTime, length, colour) {
-    isNight = isNightShift();
+    allocateTags();
+  }
+
+  void allocateTags() {
+    DateTime sameDay6AM =
+        DateTime(startTime.year, startTime.month, startTime.day, 6, 0, 0);
+    DateTime sameDay11PM =
+        DateTime(startTime.year, startTime.month, startTime.day, 23, 0, 0);
+    DateTime nextDay6AM =
+        DateTime(startTime.year, startTime.month, startTime.day + 1, 6, 0, 0);
+
+    if (startTime.compareTo(sameDay11PM) <= 0 &&
+        startTime.compareTo(sameDay6AM) >= 0) {
+      if (endTime.difference(sameDay11PM).inMinutes >= 180) {
+        isNight = true;
+      }
+    } else if (startTime.compareTo(sameDay11PM) > 0 &&
+        startTime.compareTo(nextDay6AM) < 0) {
+      print('2');
+      if (endTime.compareTo(nextDay6AM) >= 0) {
+        if (nextDay6AM.difference(startTime).inMinutes >= 180) {
+          isNight = true;
+        }
+      } else if (endTime.difference(startTime).inMinutes >= 180) {
+        isNight = true;
+      }
+    }
+
     if (!isNight) {
       if (endTime.hour >= 23 || endTime.hour < 2) {
         isEveningFinish = true;
@@ -21,61 +46,5 @@ class ShiftTemplate extends Template {
         isLong = true;
       }
     }
-  }
-  bool isNightShift() {
-    if (startTime.hour >= 23) {
-      DateTime nextDay = startTime.add(Duration(days: 1));
-      DateTime nextDay6AM =
-          DateTime(nextDay.year, nextDay.month, nextDay.day, 6, 0);
-
-      if (nextDay6AM.compareTo(endTime) <= 0) {
-        Duration duration = nextDay6AM.difference(startTime);
-        if (duration.inHours >= 3) {
-          return true;
-        }
-      } else {
-        Duration duration = endTime.difference(startTime);
-        if (duration.inHours >= 3) {
-          return true;
-        }
-      }
-    } else if (startTime.hour < 6) {
-      DateTime sameDay6AM =
-          DateTime(startTime.year, startTime.month, startTime.day, 6, 0);
-      if (sameDay6AM.compareTo(endTime) <= 0) {
-        Duration duration = sameDay6AM.difference(startTime);
-        if (duration.inHours >= 3) {
-          return true;
-        } else {
-          Duration duration = endTime.difference(startTime);
-          if (duration.inHours >= 3) {
-            return true;
-          }
-        }
-      }
-    } else if (endTime.hour < 6) {
-      DateTime previousDay = endTime.subtract(Duration(days: 1));
-      DateTime previousDay11PM =
-          DateTime(previousDay.year, previousDay.month, previousDay.day, 23, 0);
-
-      if (previousDay11PM.compareTo(startTime) >= 0) {
-        Duration duration = endTime.difference(previousDay11PM);
-        if (duration.inHours >= 3) {
-          return true;
-        }
-      } else {
-        Duration duration = endTime.difference(startTime);
-        if (duration.inHours >= 3) {
-          return true;
-        }
-      }
-    } else {
-      if (DateTime(startTime.year, startTime.month, startTime.day)
-              .add(Duration(days: 1)) ==
-          DateTime(endTime.year, endTime.month, endTime.day)) {
-        return true;
-      }
-    }
-    return false;
   }
 }

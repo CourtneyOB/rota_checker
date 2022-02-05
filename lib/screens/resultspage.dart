@@ -34,7 +34,7 @@ class ResultsPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ResultsRow(
-                          title: 'Max average 48 hour week',
+                          title: 'Some test',
                           result: max48HourWeek.item1,
                           explanation: max48HourWeek.item2)
                     ],
