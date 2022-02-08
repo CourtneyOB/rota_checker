@@ -18,6 +18,8 @@ class Rota {
         'Long Day', DateTime(2022, 1, 1, 9, 00), 13.0, kTemplateColors[1]),
     OnCallTemplate('24 Hour On Call', DateTime(2022, 1, 1, 9, 30), 24.0,
         kTemplateColors[2], 4.0),
+    ShiftTemplate(
+        'Long Evening', DateTime(2022, 1, 1, 12, 00), 13.0, kTemplateColors[3]),
   ];
   int currentColour = 3;
   Template? selectedTemplate;
@@ -25,14 +27,14 @@ class Rota {
   List<WorkDuty> duties = [];
 
   Rota() {
-    addShift(DateTime(2021, 12, 28), templateLibrary[0] as ShiftTemplate);
-    addShift(DateTime(2022, 1, 1), templateLibrary[0] as ShiftTemplate);
-    addShift(DateTime(2022, 1, 3), templateLibrary[0] as ShiftTemplate);
-    addShift(DateTime(2022, 1, 4), templateLibrary[0] as ShiftTemplate);
-    addShift(DateTime(2022, 1, 5), templateLibrary[0] as ShiftTemplate);
-    addShift(DateTime(2022, 1, 12), templateLibrary[0] as ShiftTemplate);
-    addShift(DateTime(2022, 1, 21), templateLibrary[0] as ShiftTemplate);
-    addShift(DateTime(2022, 2, 3), templateLibrary[0] as ShiftTemplate);
+    addShift(DateTime(2021, 12, 28), templateLibrary[1] as ShiftTemplate);
+    addShift(DateTime(2022, 1, 1), templateLibrary[1] as ShiftTemplate);
+    addShift(DateTime(2022, 1, 3), templateLibrary[1] as ShiftTemplate);
+    addShift(DateTime(2022, 1, 4), templateLibrary[1] as ShiftTemplate);
+    // addShift(DateTime(2022, 1, 5), templateLibrary[0] as ShiftTemplate);
+    // addShift(DateTime(2022, 1, 12), templateLibrary[0] as ShiftTemplate);
+    // addShift(DateTime(2022, 1, 21), templateLibrary[0] as ShiftTemplate);
+    // addShift(DateTime(2022, 2, 3), templateLibrary[0] as ShiftTemplate);
   }
 
   Rota clone() {

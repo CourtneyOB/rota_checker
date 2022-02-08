@@ -10,7 +10,7 @@ class ResultsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Tuple2<bool, String> max48HourWeek =
+    Tuple2<bool, String> someTest =
         ref.read(dataProvider.notifier).checkCompliance();
 
     return Scaffold(
@@ -35,8 +35,8 @@ class ResultsPage extends ConsumerWidget {
                     children: [
                       ResultsRow(
                           title: 'Some test',
-                          result: max48HourWeek.item1,
-                          explanation: max48HourWeek.item2)
+                          result: someTest.item1,
+                          explanation: someTest.item2)
                     ],
                   ),
                 ),

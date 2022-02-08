@@ -1,6 +1,7 @@
 import 'package:rota_checker/model/rota.dart';
 import 'package:rota_checker/model/on_call.dart';
 import 'package:rota_checker/model/shift.dart';
+import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:tuple/tuple.dart';
@@ -182,6 +183,144 @@ class Compliance {
       }
     }
     return Tuple2<bool, String>(pass, result);
+  }
+
+  Tuple2<bool, String> max4LongShifts() {
+    String result = '';
+    bool pass = true;
+    //Cycle through all shifts
+    for (int i = 0; i < shiftsInRota.length - 1; i++) {
+      //If a long shift is found
+      if ((shiftsInRota[i].template as ShiftTemplate).isLong) {
+        //If there are 4 more shifts after
+        if (shiftsInRota.length >= i + 5) {
+          List<Shift> setOfFive = shiftsInRota.getRange(i, i + 5).toList();
+          print(setOfFive.length);
+          //Check if consecutive
+
+          DateTime day1 = new DateTime(setOfFive[0].startTime.year,
+              setOfFive[0].startTime.month, setOfFive[0].startTime.day);
+          DateTime day4 = new DateTime(setOfFive[3].startTime.year,
+              setOfFive[3].startTime.month, setOfFive[3].startTime.day);
+          DateTime day5 = new DateTime(setOfFive[4].startTime.year,
+              setOfFive[4].startTime.month, setOfFive[4].startTime.day);
+
+          if (day1.add(Duration(days: 3)).compareTo(day4) >= 0) {
+            //5 in a row returns fail test
+            if (day1.add(Duration(days: 4)).compareTo(day5) >= 0) {
+              if ((shiftsInRota[i + 1].template as ShiftTemplate).isLong &&
+                  (shiftsInRota[i + 2].template as ShiftTemplate).isLong &&
+                  (shiftsInRota[i + 3].template as ShiftTemplate).isLong &&
+                  (shiftsInRota[i + 4].template as ShiftTemplate).isLong) {
+                pass = false;
+                result +=
+                    'More than 4 long days consecutively from ${shiftsInRota[i].startTime.dateFormatToString()}\n';
+              }
+            }
+            //4 in a row will check whether breaks are adhered to
+            if ((shiftsInRota[i + 1].template as ShiftTemplate).isLong &&
+                (shiftsInRota[i + 2].template as ShiftTemplate).isLong &&
+                (shiftsInRota[i + 3].template as ShiftTemplate).isLong) {
+              //Check if break will be after 4th or 5th shift
+              bool noEvenings = !(shiftsInRota[i].template as ShiftTemplate)
+                      .isEveningFinish &&
+                  !(shiftsInRota[i + 1].template as ShiftTemplate)
+                      .isEveningFinish &&
+                  !(shiftsInRota[i + 2].template as ShiftTemplate)
+                      .isEveningFinish &&
+                  !(shiftsInRota[i + 3].template as ShiftTemplate)
+                      .isEveningFinish;
+              bool noNights = !(shiftsInRota[i].template as ShiftTemplate)
+                      .isNight &&
+                  !(shiftsInRota[i + 1].template as ShiftTemplate).isNight &&
+                  !(shiftsInRota[i + 2].template as ShiftTemplate).isNight &&
+                  !(shiftsInRota[i + 3].template as ShiftTemplate).isNight;
+              if (noEvenings && noNights) {
+                if (shiftsInRota.length >= i + 6) {
+                  //can work another as none are evening or night shifts
+                  List<Shift> setOfSix =
+                      shiftsInRota.getRange(i, i + 6).toList();
+
+                  //Check if 5th is consecutive
+                  DateTime day1b = new DateTime(setOfSix[0].startTime.year,
+                      setOfSix[0].startTime.month, setOfSix[0].startTime.day);
+                  DateTime day5b = new DateTime(setOfSix[4].startTime.year,
+                      setOfSix[4].startTime.month, setOfSix[4].startTime.day);
+
+                  if (day1b.add(Duration(days: 4)).compareTo(day5b) >= 0) {
+                    bool breaks = checkBreakRule(setOfSix);
+                    if (!breaks) {
+                      result +=
+                          'Break not given after shift on ${shiftsInRota[i + 4].startTime.dateFormatToString()}\n';
+                      pass = false;
+                    }
+                  }
+                }
+              } else {
+                //there is evening or night shift, check break rule
+                bool breaks = checkBreakRule(setOfFive);
+                if (!breaks) {
+                  result +=
+                      'Break not given after shift on ${shiftsInRota[i + 3].startTime.dateFormatToString()}\n';
+                  pass = false;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
+  bool checkBreakRule(List<Shift> shifts) {
+    int breakCode = 0;
+    List<Shift> setOfFour = shifts.getRange(0, 4).toList();
+
+    // 0 = 48hours after 5th shift
+    // 1 = 48hours after 4th shift
+    // 2 = 46hours after 4th shift
+
+    for (Shift shift in setOfFour) {
+      if ((shift.template as ShiftTemplate).isNight) {
+        breakCode = 2;
+        break;
+      }
+      if ((shift.template as ShiftTemplate).isEveningFinish) {
+        breakCode = 1;
+        break;
+      }
+    }
+
+    if (breakCode == 0) {
+      Duration gap = shifts[5].startTime.difference(shifts[4].endTime);
+      if (gap.inHours >= 48) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    if (breakCode == 1) {
+      Duration gap = shifts[4].startTime.difference(shifts[3].endTime);
+      if (gap.inHours >= 48) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    if (breakCode == 2) {
+      Duration gap = shifts[4].startTime.difference(shifts[3].endTime);
+      if (gap.inHours >= 46) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   DateTime weekStart(DateTime date) =>
