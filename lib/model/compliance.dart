@@ -323,6 +323,48 @@ class Compliance {
     }
   }
 
+  Tuple2<bool, String> max7ConsecutiveDays() {
+    String result = '';
+    bool pass = true;
+
+    for (int i = 0; i < shiftsInRota.length - 1; i++) {
+      //If there are 7 more shifts after
+      if (shiftsInRota.length >= i + 8) {
+        List<Shift> setOfEight = shiftsInRota.getRange(i, i + 8).toList();
+
+        //Check if consecutive
+
+        DateTime day1 = new DateTime(setOfEight[0].startTime.year,
+            setOfEight[0].startTime.month, setOfEight[0].startTime.day);
+        DateTime day7 = new DateTime(setOfEight[6].startTime.year,
+            setOfEight[6].startTime.month, setOfEight[6].startTime.day);
+        DateTime day8 = new DateTime(setOfEight[7].startTime.year,
+            setOfEight[7].startTime.month, setOfEight[7].startTime.day);
+
+        if (day1.add(Duration(days: 7)).compareTo(day8) >= 0) {
+          pass = false;
+          result +=
+              'More than 7 consecutive shifts starting ${shiftsInRota[i].startTime.dateFormatToString()}\n';
+        } else if (day1.add(Duration(days: 6)).compareTo(day7) >= 0) {
+          Duration gap = shiftsInRota[i + 7]
+              .startTime
+              .difference(shiftsInRota[i + 6].endTime);
+          if (gap.inHours < 48) {
+            pass = false;
+            result +=
+                'Less than 48 hours break after ${shiftsInRota[i + 6].endTime.dateFormatToString()}\n';
+          }
+        }
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+    //TODO implement below exception to rule
+    //There is an exception for low intensity on-call –
+    //where an on-call duty on a Saturday and Sunday contains less than 3 hours of work and no more than 3 episodes of work per day, up to 12 consecutive shifts
+    //can be worked (provided that no other rule is breached).
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }

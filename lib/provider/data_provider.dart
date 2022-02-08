@@ -14,7 +14,9 @@ class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
 
   Tuple2<bool, String> checkCompliance() {
-    return Compliance(state).max4LongShifts();
+    return Compliance(state).max7ConsecutiveDays();
+
+    //TODO do something if no shifts have been entered yet
   }
 
   void addMonth() {
