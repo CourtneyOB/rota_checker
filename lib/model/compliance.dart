@@ -405,6 +405,65 @@ class Compliance {
     return Tuple2<bool, String>(pass, result);
   }
 
+  Tuple2<bool, String> weekendFrequency() {
+    String result = '';
+    bool pass = true;
+
+    List<int> weekendWork = [];
+
+    //TODO function that adds to weekend work
+
+    void calculateWeekendsWorked(List<WorkDuty> duties) {
+      for (int i = duties[0].weekNumber; i <= duties.last.weekNumber; i++) {
+        List<WorkDuty> thisWeekDuties =
+            duties.where((item) => item.weekNumber == i).toList();
+        if (thisWeekDuties.any((item) => item.isWeekend)) {
+          weekendWork.add(1);
+        } else {
+          weekendWork.add(0);
+        }
+      }
+    }
+
+    if (weekStart(rota.duties[0].startTime).year ==
+        weekStart(rota.duties.last.startTime).year) {
+      //all weeks are in the same year
+      calculateWeekendsWorked(rota.duties);
+    } else {
+      //weeks span across 2 years, so need to cycle through these seperately
+      List<WorkDuty> lastYearDuties = [rota.duties[0]];
+      List<WorkDuty> thisYearDuties = [];
+      int currentWeekNumber = rota.duties[0].weekNumber;
+      bool changeYear = false;
+      for (int i = 1; i < rota.duties.length; i++) {
+        if (!changeYear) {
+          int previousWeekNumber = currentWeekNumber;
+          currentWeekNumber = rota.duties[i].weekNumber;
+          if (currentWeekNumber >= previousWeekNumber) {
+            lastYearDuties.add(rota.duties[i]);
+          } else {
+            changeYear = true;
+          }
+        }
+        if (changeYear) {
+          thisYearDuties.add(rota.duties[i]);
+        }
+      }
+
+      calculateWeekendsWorked(lastYearDuties);
+      calculateWeekendsWorked(thisYearDuties);
+    }
+
+    if (weekendWork.average > 0.5) {
+      pass = false;
+    }
+
+    result +=
+        'Weekend frequency 1 in ${double.parse((1 / weekendWork.average).toStringAsFixed(2))}';
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }
