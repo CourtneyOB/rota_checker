@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/screens/homepage.dart';
 import 'package:rota_checker/screens/resultspage.dart';
+import 'package:rota_checker/screens/about_page.dart';
 import 'package:rota_checker/provider/data_provider.dart';
 import 'package:rota_checker/model/rota.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomePage(),
         '/results': (context) => ResultsPage(),
+        '/about': (context) => AboutPage(),
       },
       initialRoute: '/',
       theme: ThemeData(

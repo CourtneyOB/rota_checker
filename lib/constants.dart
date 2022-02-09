@@ -18,7 +18,10 @@ const List<Color> kTemplateColors = [
   Colors.yellow
 ];
 
-const double kCalendarCardElevation = 10.0;
+const TextStyle kMainHeader = TextStyle(fontSize: 32.0, color: kDarkPrimary);
+const TextStyle kSubHeader = TextStyle(fontSize: 18.0, color: kContrast);
+
+const double kCalendarCardElevation = 5.0;
 const double kCalendarCardPrimaryTextSize = 16.0;
 const double kCalendarCardMiniPrimaryTextSize = 10.0;
 const double kCalendarCardSecondaryTextSize = 14.0;

@@ -42,15 +42,28 @@ class ResultsPage extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 40.0, vertical: 36.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: errorText != null
-                        ? [Text(errorText)]
-                        : results.isEmpty
-                            ? [Text('No shifts entered')]
-                            : results,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Your Rota Compliance',
+                      style: kMainHeader,
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: errorText != null
+                              ? [Text(errorText)]
+                              : results.isEmpty
+                                  ? [Text('No shifts entered')]
+                                  : results,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

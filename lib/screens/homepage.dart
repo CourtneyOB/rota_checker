@@ -3,6 +3,8 @@ import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/widgets/calendar.dart';
 import 'package:rota_checker/widgets/template_bar.dart';
+import 'package:rota_checker/widgets/text_icon_button.dart';
+import 'package:rota_checker/widgets/text_only_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerWidget {
@@ -13,13 +15,37 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/results');
-              },
-              child: Text('Get results')),
-        ],
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('[Icon] Junior Doctor Rota Checker'),
+              Row(
+                children: [
+                  TextOnlyButton(
+                      text: 'About',
+                      colour: kContrast,
+                      onPress: () {
+                        Navigator.pushNamed(context, '/about');
+                      },
+                      isActive: true),
+                  SizedBox(
+                    width: 20.0,
+                  ),
+                  TextIconButton(
+                      text: 'Get results',
+                      icon: Icons.arrow_forward,
+                      colour: kDarkPrimary,
+                      onPress: () {
+                        Navigator.pushNamed(context, '/results');
+                      },
+                      isActive: true),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
       body: Container(
         color: kBackground,

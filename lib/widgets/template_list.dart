@@ -98,7 +98,7 @@ class TemplateList extends ConsumerWidget {
           color: kBackground,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
           child: ScrollConfiguration(
             behavior: CustomScrollBehavior(),
             child: ListView.builder(

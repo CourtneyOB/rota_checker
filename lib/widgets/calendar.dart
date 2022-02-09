@@ -249,8 +249,8 @@ class Calendar extends ConsumerWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: screenHeight(context) * 0.02,
-          horizontal: screenWidth(context) * 0.02),
+          vertical: screenHeight(context) * 0.03,
+          horizontal: screenWidth(context) * 0.035),
       child: Container(
         child: Column(
           children: generateRows(),
