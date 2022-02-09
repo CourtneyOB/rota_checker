@@ -539,6 +539,48 @@ class Compliance {
     return Tuple2<bool, String>(pass, result);
   }
 
+  Tuple2<bool, String> dayAfterOnCallMustNotHaveWorkLongerThan10Hours() {
+    String result = '';
+    bool pass = true;
+
+    //Cycle through all on calls
+    for (int i = 0; i < onCallInRota.length; i++) {
+      if (i < onCallInRota.length - 1) {
+        if (onCallInRota[i]
+            .startTime
+            .add(Duration(days: 1))
+            .isSameDate(onCallInRota[i + 1].startTime)) {
+          if (onCallInRota[i].startTime.weekday == 6) {
+            //ignore the rest if it is consecutive weekend on calls
+            continue;
+          }
+        }
+      }
+
+      //find if there is a shift or on call the next day
+      WorkDuty? nextDayWork = rota.duties.firstWhereOrNull((item) => item
+          .startTime
+          .isSameDate(onCallInRota[i].startTime.add(Duration(days: 1))));
+      if (nextDayWork != null) {
+        if (nextDayWork is Shift) {
+          if (nextDayWork.length > 10) {
+            result +=
+                'More than 10 hours work on day after on call on ${onCallInRota[i].startTime.dateFormatToString()}\n';
+            pass = false;
+          }
+        } else {
+          if ((nextDayWork as OnCall).expectedHours > 10) {
+            result +=
+                'More than 10 hours work on day after on call on ${onCallInRota[i].startTime.dateFormatToString()}\n';
+            pass = false;
+          }
+        }
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }
