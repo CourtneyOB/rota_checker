@@ -365,6 +365,24 @@ class Compliance {
     //can be worked (provided that no other rule is breached).
   }
 
+  Tuple2<bool, String> atLeast11HoursRest() {
+    String result = '';
+    bool pass = true;
+
+    //Cycle through all shifts up to the last
+    for (int i = 0; i < shiftsInRota.length - 1; i++) {
+      Duration gap =
+          shiftsInRota[i + 1].startTime.difference(shiftsInRota[i].endTime);
+      if (gap.inHours < 11) {
+        result +=
+            'Less than 11 hours rest between shift on ${shiftsInRota[i].startTime.dateFormatToString()} and ${shiftsInRota[i + 1].startTime.dateFormatToString()}\n';
+        pass = false;
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }
