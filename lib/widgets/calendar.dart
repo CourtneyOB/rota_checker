@@ -6,6 +6,7 @@ import 'package:rota_checker/widgets/inactive_calendar_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/widgets/template_title.dart';
+import 'package:rota_checker/widgets/text_icon_button.dart';
 
 class Calendar extends ConsumerWidget {
   Calendar(
@@ -22,17 +23,83 @@ class Calendar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<DateTime> selectedDates = ref.watch(dataProvider).selectedDates;
-    List<TemplateTitle> dutiesOnDate(DateTime date) {
+    List<Widget> dutiesOnDate(DateTime date) {
       return ref
           .read(dataProvider.notifier)
           .getDutiesOnDate(date)
-          .map((item) => TemplateTitle(
-                colour: item.template.colour,
-                name: item.template.name,
-                textColour: selectedDates.contains(date)
-                    ? Colors.white
-                    : kSecondaryText,
-                maxFontSize: 12.0,
+          .map((item) => Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: TemplateTitle(
+                      colour: item.template.colour,
+                      name: item.template.name,
+                      textColour: selectedDates.contains(date)
+                          ? Colors.white
+                          : kSecondaryText,
+                      maxFontSize: 12.0,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Are you sure?'),
+                                content: Container(
+                                  width: screenWidth(context) * 0.4,
+                                  child: Text(
+                                      'Remove ${item.template.name} from ${date.dateFormatToString()}?'),
+                                ),
+                                actions: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextIconButton(
+                                            text: 'Cancel',
+                                            icon: Icons.close,
+                                            colour: kDarkPrimary,
+                                            onPress: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            isActive: true),
+                                        TextIconButton(
+                                            text: 'Confirm',
+                                            icon: Icons.check,
+                                            colour: kDarkPrimary,
+                                            onPress: () {
+                                              ref
+                                                  .read(dataProvider.notifier)
+                                                  .removeTemplateFromDate(
+                                                      item.template, date);
+                                              Navigator.of(context).pop();
+                                            },
+                                            isActive: true),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 16.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ],
               ))
           .toList();
     }

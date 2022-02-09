@@ -7,7 +7,7 @@ class InactiveCalendarCard extends StatelessWidget {
   final String date;
   final String day;
   final bool isSelected;
-  final List<TemplateTitle> duties;
+  final List<Widget> duties;
   final Function() onPress;
 
   InactiveCalendarCard({

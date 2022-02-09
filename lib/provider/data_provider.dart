@@ -135,6 +135,13 @@ class DataProvider extends StateNotifier<Rota> {
     return errorMessages;
   }
 
+  void removeTemplateFromDate(Template template, DateTime date) {
+    WorkDuty dutyToRemove = state.duties.firstWhere(
+        (item) => item.startTime.isSameDate(date) && item.template == template);
+    state.duties.remove(dutyToRemove);
+    state = state.clone();
+  }
+
   List<WorkDuty> getDutiesOnDate(DateTime date) {
     return state.duties
         .where((item) => item.startTime.isSameDate(date))

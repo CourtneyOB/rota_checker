@@ -6,7 +6,7 @@ import 'package:rota_checker/widgets/template_title.dart';
 class CalendarCard extends StatelessWidget {
   final String date;
   final String day;
-  final List<TemplateTitle> duties;
+  final List<Widget> duties;
   final bool isSelected;
   final Function() onPress;
 

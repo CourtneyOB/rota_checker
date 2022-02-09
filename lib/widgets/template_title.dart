@@ -19,6 +19,7 @@ class TemplateTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           height: 12.0,
@@ -30,7 +31,7 @@ class TemplateTitle extends StatelessWidget {
         SizedBox(
           width: 5.0,
         ),
-        Expanded(
+        Flexible(
           child: AutoSizeText(
             name,
             maxLines: 1,
