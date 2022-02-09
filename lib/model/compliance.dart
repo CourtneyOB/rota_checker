@@ -411,8 +411,6 @@ class Compliance {
 
     List<int> weekendWork = [];
 
-    //TODO function that adds to weekend work
-
     void calculateWeekendsWorked(List<WorkDuty> duties) {
       for (int i = duties[0].weekNumber; i <= duties.last.weekNumber; i++) {
         List<WorkDuty> thisWeekDuties =
