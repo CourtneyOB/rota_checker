@@ -327,10 +327,10 @@ class Compliance {
     String result = '';
     bool pass = true;
 
-    for (int i = 0; i < shiftsInRota.length - 1; i++) {
-      //If there are 7 more shifts after
-      if (shiftsInRota.length >= i + 8) {
-        List<Shift> setOfEight = shiftsInRota.getRange(i, i + 8).toList();
+    for (int i = 0; i < rota.duties.length - 1; i++) {
+      //If there are 7 more work duties after
+      if (rota.duties.length >= i + 8) {
+        List<WorkDuty> setOfEight = rota.duties.getRange(i, i + 8).toList();
 
         //Check if consecutive
 
@@ -341,28 +341,59 @@ class Compliance {
         DateTime day8 = new DateTime(setOfEight[7].startTime.year,
             setOfEight[7].startTime.month, setOfEight[7].startTime.day);
 
-        if (day1.add(Duration(days: 7)).compareTo(day8) >= 0) {
-          pass = false;
-          result +=
-              'More than 7 consecutive shifts starting ${shiftsInRota[i].startTime.dateFormatToString()}\n';
-        } else if (day1.add(Duration(days: 6)).compareTo(day7) >= 0) {
-          Duration gap = shiftsInRota[i + 7]
-              .startTime
-              .difference(shiftsInRota[i + 6].endTime);
-          if (gap.inHours < 48) {
+        WorkDuty? saturdayDuty = setOfEight.firstWhereOrNull(
+            (item) => item.startTime.weekday == 6 && item is OnCall);
+        WorkDuty? sundayDuty = setOfEight.firstWhereOrNull(
+            (item) => item.startTime.weekday == 7 && item is OnCall);
+
+        if ((saturdayDuty == null || sundayDuty == null) ||
+            ((saturdayDuty as OnCall).expectedHours >= 3 ||
+                (saturdayDuty as OnCall).expectedHours >= 3)) {
+          if (day1.add(Duration(days: 7)).compareTo(day8) >= 0) {
             pass = false;
             result +=
-                'Less than 48 hours break after ${shiftsInRota[i + 6].endTime.dateFormatToString()}\n';
+                'More than 7 consecutive shifts starting ${rota.duties[i].startTime.dateFormatToString()}\n';
+          } else if (day1.add(Duration(days: 6)).compareTo(day7) >= 0) {
+            Duration gap = rota.duties[i + 7].startTime
+                .difference(rota.duties[i + 6].endTime);
+            if (gap.inHours < 48) {
+              pass = false;
+              result +=
+                  'Less than 48 hours break after ${rota.duties[i + 6].endTime.dateFormatToString()}\n';
+            }
+          }
+        } else {
+          if (rota.duties.length >= i + 13) {
+            List<WorkDuty> setOfThirteen =
+                rota.duties.getRange(i, i + 13).toList();
+            DateTime day12 = new DateTime(
+                setOfThirteen[11].startTime.year,
+                setOfThirteen[11].startTime.month,
+                setOfThirteen[11].startTime.day);
+            DateTime day13 = new DateTime(
+                setOfThirteen[12].startTime.year,
+                setOfThirteen[12].startTime.month,
+                setOfThirteen[12].startTime.day);
+
+            if (day1.add(Duration(days: 12)).compareTo(day13) >= 0) {
+              pass = false;
+              result +=
+                  'More than 12 consecutive shifts starting ${rota.duties[i].startTime.dateFormatToString()} (Low intensity on call over Saturday/Sunday)\n';
+            } else if (day1.add(Duration(days: 11)).compareTo(day12) >= 0) {
+              Duration gap = rota.duties[i + 12].startTime
+                  .difference(rota.duties[i + 11].endTime);
+              if (gap.inHours < 48) {
+                pass = false;
+                result +=
+                    'Less than 48 hours break after ${rota.duties[i + 11].endTime.dateFormatToString()}\n';
+              }
+            }
           }
         }
       }
     }
 
     return Tuple2<bool, String>(pass, result);
-    //TODO implement below exception to rule
-    //There is an exception for low intensity on-call –
-    //where an on-call duty on a Saturday and Sunday contains less than 3 hours of work and no more than 3 episodes of work per day, up to 12 consecutive shifts
-    //can be worked (provided that no other rule is breached).
   }
 
   Tuple2<bool, String> atLeast11HoursRest() {
