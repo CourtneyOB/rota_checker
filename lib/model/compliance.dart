@@ -499,6 +499,46 @@ class Compliance {
     return Tuple2<bool, String>(pass, result);
   }
 
+  Tuple2<bool, String> noMoreThan3OnCallsIn7Days() {
+    String result = '';
+    bool pass = true;
+
+    for (int i = 0; i < rotaLength; i++) {
+      //Get midnight on the first day to be checked
+      DateTime setMidnight = DateTime(rota.duties[0].startTime.year,
+          rota.duties[0].startTime.month, rota.duties[0].startTime.day);
+
+      //Select the next date to be cycled through and add 7 days
+      DateTime startDateTime = setMidnight.add(Duration(days: i));
+      DateTime endDateTime = startDateTime.add(Duration(days: 7));
+
+      //If there are less than 7 days remaining, then there is no need to check further
+      if (rota.duties.last.endTime
+              .add(Duration(days: 1))
+              .compareTo(endDateTime) <
+          0) {
+        break;
+      }
+
+      //Selects all the on calls with start or end time within window
+      List<OnCall> thisWeekOnCalls = onCallInRota
+          .where((item) =>
+              startDateTime.compareTo(item.startTime) <= 0 &&
+                  endDateTime.compareTo(item.startTime) > 0 ||
+              startDateTime.compareTo(item.endTime) < 0 &&
+                  endDateTime.compareTo(item.endTime) >= 0)
+          .toList();
+
+      if (thisWeekOnCalls.length > 3) {
+        result +=
+            '${thisWeekOnCalls.length} on calls in 7 day period (midnight ${startDateTime.dateFormatToString()} to midnight ${endDateTime.dateFormatToString()})\n';
+        pass = false;
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }
