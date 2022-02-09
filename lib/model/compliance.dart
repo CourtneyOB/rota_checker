@@ -383,6 +383,28 @@ class Compliance {
     return Tuple2<bool, String>(pass, result);
   }
 
+  Tuple2<bool, String> nightRestBreaks() {
+    String result = '';
+    bool pass = true;
+
+    for (int i = 0; i < shiftsInRota.length - 1; i++) {
+      if ((shiftsInRota[i].template as ShiftTemplate).isNight) {
+        //Check the next one is not also a night shift
+        if (!(shiftsInRota[i + 1].template as ShiftTemplate).isNight) {
+          Duration gap =
+              shiftsInRota[i + 1].startTime.difference(shiftsInRota[i].endTime);
+          if (gap.inHours < 46) {
+            result +=
+                'Less than 46 hours rest after shift on ${shiftsInRota[i].startTime.dateFormatToString()}\n';
+            pass = false;
+          }
+        }
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }

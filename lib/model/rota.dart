@@ -20,6 +20,8 @@ class Rota {
         kTemplateColors[2], 4.0),
     ShiftTemplate(
         'Long Evening', DateTime(2022, 1, 1, 12, 00), 13.0, kTemplateColors[3]),
+    ShiftTemplate(
+        'Night', DateTime(2022, 1, 1, 21, 00), 12.0, kTemplateColors[4]),
   ];
   int currentColour = 3;
   Template? selectedTemplate;
