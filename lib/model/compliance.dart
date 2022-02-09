@@ -462,6 +462,21 @@ class Compliance {
     return Tuple2<bool, String>(pass, result);
   }
 
+  Tuple2<bool, String> max24HourOnCall() {
+    String result = '';
+    bool pass = true;
+
+    for (OnCall onCall in onCallInRota) {
+      if (onCall.length > 24) {
+        result +=
+            'On call on ${onCall.startTime.dateFormatToString()} is longer than 24 hours\n';
+        pass = false;
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }
