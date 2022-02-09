@@ -477,6 +477,28 @@ class Compliance {
     return Tuple2<bool, String>(pass, result);
   }
 
+  Tuple2<bool, String> noConsecutiveOnCalls() {
+    String result = '';
+    bool pass = true;
+
+    //Cycle through all on calls
+    for (int i = 0; i < onCallInRota.length - 1; i++) {
+      if (onCallInRota[i]
+          .startTime
+          .add(Duration(days: 1))
+          .isSameDate(onCallInRota[i + 1].startTime)) {
+        if (onCallInRota[i].startTime.weekday != 6) {
+          //this would mean it is not a saturday and sunday
+          result +=
+              'Consecutive on calls on ${onCallInRota[i].startTime.dateFormatToString()} and ${onCallInRota[i + 1].startTime.dateFormatToString()} (not Saturday & Sunday)\n';
+          pass = false;
+        }
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }

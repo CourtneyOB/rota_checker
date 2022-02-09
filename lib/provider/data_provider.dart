@@ -14,7 +14,7 @@ class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
 
   Tuple2<bool, String> checkCompliance() {
-    return Compliance(state).max24HourOnCall();
+    return Compliance(state).noConsecutiveOnCalls();
 
     //TODO do something if no shifts have been entered yet
   }
