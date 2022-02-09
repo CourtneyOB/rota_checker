@@ -1,3 +1,4 @@
+import 'package:rota_checker/empty_rota_exception.dart';
 import 'package:rota_checker/model/rota.dart';
 import 'package:rota_checker/model/on_call.dart';
 import 'package:rota_checker/model/shift.dart';
@@ -6,7 +7,7 @@ import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:tuple/tuple.dart';
 import 'package:collection/collection.dart';
-import 'package:week_of_year/week_of_year.dart';
+import 'package:rota_checker/rota_length_exception.dart';
 
 class Compliance {
   final Rota rota;
@@ -21,16 +22,36 @@ class Compliance {
         shiftsInRota = rota.getAllShifts(),
         onCallInRota = rota.getAllOnCalls();
 
-  void CheckAll() {
+  List<Tuple3<bool, String, String>> checkAll() {
     if (rotaLength > 182) {
-      //TODO catch this exception
-      throw Exception('Rota cannot be longer than 26 weeks');
+      throw RotaLengthException();
     }
+    if (rota.duties.isEmpty) {
+      throw EmptyRotaException();
+    }
+    List<Tuple3<bool, String, String>> responses = [];
+
+    responses.add(max48HourWeek());
+    responses.add(max72HoursPer168());
+    responses.add(max13HourShift());
+    responses.add(max4LongShifts());
+    responses.add(max7ConsecutiveDays());
+    responses.add(atLeast11HoursRest());
+    responses.add(nightRestBreaks());
+    responses.add(weekendFrequency());
+    responses.add(max24HourOnCall());
+    responses.add(noConsecutiveOnCalls());
+    responses.add(noMoreThan3OnCallsIn7Days());
+    responses.add(dayAfterOnCallMustNotHaveWorkLongerThan10Hours());
+    responses.add(eightHoursRestPer24HourOnCall());
+
+    return responses;
   }
 
-  Tuple2<bool, String> max48HourWeek() {
+  Tuple3<bool, String, String> max48HourWeek() {
     List<double> allWeeklyHours = [];
     String result = '';
+    String name = 'Max 48 hours work per week';
 
     void calculateWeeklyHours(List<WorkDuty> duties) {
       for (int i = duties[0].weekNumber; i <= duties.last.weekNumber; i++) {
@@ -46,9 +67,6 @@ class Compliance {
             thisWeeklyHours += (duty as OnCall).expectedHours;
           }
         }
-
-        result +=
-            'Hours in Week $i, (${duties[0].startTime.year}): $thisWeeklyHours\n';
         allWeeklyHours.add(thisWeeklyHours);
       }
     }
@@ -83,20 +101,21 @@ class Compliance {
     }
 
     double averageHours = allWeeklyHours.average;
-    result += '\nAverage hours per week: $averageHours';
+    result += 'Average hours per week: $averageHours';
 
     if (averageHours <= 48.0) {
       //pass
-      return Tuple2(true, result);
+      return Tuple3<bool, String, String>(true, name, result);
     } else {
       //fail
-      return Tuple2(false, result);
+      return Tuple3<bool, String, String>(false, name, result);
     }
   }
 
-  Tuple2<bool, String> max72HoursPer168() {
+  Tuple3<bool, String, String> max72HoursPer168() {
     bool pass = true;
     String result = '';
+    String name = 'Max 72 hours week per 168 hours';
     double maxHours = 0;
     //Get midnight on the first day to be checked
     DateTime setMidnight = DateTime(rota.duties[0].startTime.year,
@@ -169,12 +188,13 @@ class Compliance {
       }
     }
     result += 'Max hours per 168 hour period is ${maxHours}';
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> max13HourShift() {
+  Tuple3<bool, String, String> max13HourShift() {
     String result = '';
     bool pass = true;
+    String name = 'Max 13 hour shifts';
     for (Shift shift in shiftsInRota) {
       if (shift.length > 13) {
         result +=
@@ -182,12 +202,13 @@ class Compliance {
         pass = false;
       }
     }
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> max4LongShifts() {
+  Tuple3<bool, String, String> max4LongShifts() {
     String result = '';
     bool pass = true;
+    String name = 'Max 4 long shifts in a row';
     //Cycle through all shifts
     for (int i = 0; i < shiftsInRota.length - 1; i++) {
       //If a long shift is found
@@ -271,7 +292,7 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
   bool checkBreakRule(List<Shift> shifts) {
@@ -323,9 +344,10 @@ class Compliance {
     }
   }
 
-  Tuple2<bool, String> max7ConsecutiveDays() {
+  Tuple3<bool, String, String> max7ConsecutiveDays() {
     String result = '';
     bool pass = true;
+    String name = 'Max 7 consecutive days (with exception*)';
 
     for (int i = 0; i < rota.duties.length - 1; i++) {
       //If there are 7 more work duties after
@@ -393,12 +415,13 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> atLeast11HoursRest() {
+  Tuple3<bool, String, String> atLeast11HoursRest() {
     String result = '';
     bool pass = true;
+    String name = 'At least 11 hours rest between shifts';
 
     //Cycle through all shifts up to the last
     for (int i = 0; i < shiftsInRota.length - 1; i++) {
@@ -411,12 +434,13 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> nightRestBreaks() {
+  Tuple3<bool, String, String> nightRestBreaks() {
     String result = '';
     bool pass = true;
+    String name = 'At least 46 hours rest after night shifts';
 
     for (int i = 0; i < shiftsInRota.length - 1; i++) {
       if ((shiftsInRota[i].template as ShiftTemplate).isNight) {
@@ -433,12 +457,13 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> weekendFrequency() {
+  Tuple3<bool, String, String> weekendFrequency() {
     String result = '';
     bool pass = true;
+    String name = 'Max 1 in 2 weekend frequency';
 
     List<int> weekendWork = [];
 
@@ -490,12 +515,13 @@ class Compliance {
     result +=
         'Weekend frequency 1 in ${double.parse((1 / weekendWork.average).toStringAsFixed(2))}';
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> max24HourOnCall() {
+  Tuple3<bool, String, String> max24HourOnCall() {
     String result = '';
     bool pass = true;
+    String name = 'Max 24 hour on call';
 
     for (OnCall onCall in onCallInRota) {
       if (onCall.length > 24) {
@@ -505,12 +531,13 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> noConsecutiveOnCalls() {
+  Tuple3<bool, String, String> noConsecutiveOnCalls() {
     String result = '';
     bool pass = true;
+    String name = 'No consecutive on calls (with exception of weekends)';
 
     //Cycle through all on calls
     for (int i = 0; i < onCallInRota.length - 1; i++) {
@@ -527,12 +554,13 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> noMoreThan3OnCallsIn7Days() {
+  Tuple3<bool, String, String> noMoreThan3OnCallsIn7Days() {
     String result = '';
     bool pass = true;
+    String name = 'No more than 3 on calls in 7 days';
 
     for (int i = 0; i < rotaLength; i++) {
       //Get midnight on the first day to be checked
@@ -567,12 +595,14 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> dayAfterOnCallMustNotHaveWorkLongerThan10Hours() {
+  Tuple3<bool, String, String>
+      dayAfterOnCallMustNotHaveWorkLongerThan10Hours() {
     String result = '';
     bool pass = true;
+    String name = 'Day after on call must not have work longer than 10 hours';
 
     //Cycle through all on calls
     for (int i = 0; i < onCallInRota.length; i++) {
@@ -609,12 +639,13 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
-  Tuple2<bool, String> eightHoursRestPer24HourOnCall() {
+  Tuple3<bool, String, String> eightHoursRestPer24HourOnCall() {
     String result = '';
     bool pass = true;
+    String name = 'At least 8 hours rest during 24 hour on calls';
 
     //Cycle through all on calls
     for (int i = 0; i < onCallInRota.length; i++) {
@@ -627,7 +658,7 @@ class Compliance {
       }
     }
 
-    return Tuple2<bool, String>(pass, result);
+    return Tuple3<bool, String, String>(pass, name, result);
   }
 
   DateTime weekStart(DateTime date) =>

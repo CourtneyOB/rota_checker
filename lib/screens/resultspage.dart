@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tuple/tuple.dart';
 import 'package:rota_checker/widgets/results_row.dart';
 
 class ResultsPage extends ConsumerWidget {
@@ -10,8 +9,22 @@ class ResultsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Tuple2<bool, String> someTest =
-        ref.read(dataProvider.notifier).checkCompliance();
+    String? errorText;
+    List<ResultsRow> results = [];
+
+    try {
+      results = ref
+          .read(dataProvider.notifier)
+          .checkCompliance()
+          .map((item) => ResultsRow(
+                title: item.item2,
+                result: item.item1,
+                explanation: item.item3,
+              ))
+          .toList();
+    } catch (e) {
+      errorText = e.toString();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -32,12 +45,11 @@ class ResultsPage extends ConsumerWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ResultsRow(
-                          title: 'Some test',
-                          result: someTest.item1,
-                          explanation: someTest.item2)
-                    ],
+                    children: errorText != null
+                        ? [Text(errorText)]
+                        : results.isEmpty
+                            ? [Text('No shifts entered')]
+                            : results,
                   ),
                 ),
               ),
