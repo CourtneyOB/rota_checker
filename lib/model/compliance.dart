@@ -581,6 +581,24 @@ class Compliance {
     return Tuple2<bool, String>(pass, result);
   }
 
+  Tuple2<bool, String> eightHoursRestPer24HourOnCall() {
+    String result = '';
+    bool pass = true;
+
+    //Cycle through all on calls
+    for (int i = 0; i < onCallInRota.length; i++) {
+      if (onCallInRota[i].length == 24) {
+        if (onCallInRota[i].expectedHours > 16) {
+          result +=
+              'Less than 8 hours rest expected during on call on ${onCallInRota[i].startTime.dateFormatToString()}\n';
+          pass = false;
+        }
+      }
+    }
+
+    return Tuple2<bool, String>(pass, result);
+  }
+
   DateTime weekStart(DateTime date) =>
       DateTime(date.year, date.month, date.day - (date.weekday - 1));
 }
