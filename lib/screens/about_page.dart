@@ -64,7 +64,7 @@ class _AboutPageState extends State<AboutPage> {
                       height: 10.0,
                     ),
                     Text(
-                      'Version v${kVersionNumber.toStringAsFixed(1)}. Last updated 09 Feb 2022',
+                      'Version v${kVersionNumber.toStringAsFixed(1)}. Last updated $kLastUpdate',
                       style: TextStyle(color: kLightGrey),
                     ),
                     Expanded(

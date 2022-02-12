@@ -27,7 +27,8 @@ class ResultsRow extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20.0),
-                    child: Row(
+                    child: Wrap(
+                      direction: Axis.horizontal,
                       children: [
                         Text(
                           title,

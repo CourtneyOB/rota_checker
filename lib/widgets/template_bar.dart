@@ -20,7 +20,7 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
     //Enlarge and decrease the size of the text informing the user what to do
     setState(() {
       fontWeight = FontWeight.bold;
-      fontColour = Colors.red;
+      fontColour = kContrast;
       fontSize = 14.5;
     });
     //Return text style to normal following completion of the animation

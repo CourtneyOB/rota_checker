@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/widgets/template_title.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
-import 'package:rota_checker/widgets/text_only_button.dart';
 
 class Calendar extends ConsumerWidget {
   Calendar(
@@ -54,7 +53,7 @@ class Calendar extends ConsumerWidget {
                               return AlertDialog(
                                 title: Text('Are you sure?'),
                                 content: Container(
-                                  width: screenWidth(context) * 0.4,
+                                  width: screenWidth(context) * 0.2,
                                   child: Text(
                                       'Remove ${item.template.name} from ${date.dateFormatToString()}?'),
                                 ),
@@ -69,7 +68,7 @@ class Calendar extends ConsumerWidget {
                                         TextIconButton(
                                             text: 'Cancel',
                                             icon: Icons.close,
-                                            colour: kDarkPrimary,
+                                            colour: kContrast,
                                             onPress: () {
                                               Navigator.of(context).pop();
                                             },
@@ -200,7 +199,7 @@ class Calendar extends ConsumerWidget {
                         style: TextStyle(
                             color: kDarkPrimary,
                             fontSize: 22.0,
-                            fontWeight: FontWeight.w900),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                     SizedBox(
@@ -223,20 +222,82 @@ class Calendar extends ConsumerWidget {
                       onPressed: forwardAction,
                     ),
                     Expanded(
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: TextIconButton(
-                          text: 'Clear Calendar',
-                          icon: Icons.clear,
-                          colour: kPrimary,
-                          onPress: () {
-                            ref.read(dataProvider.notifier).clearCalendar();
-                          },
-                          isActive: ref.watch(dataProvider).duties.isEmpty
-                              ? false
-                              : true,
-                          isWide: true,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextIconButton(
+                            text: 'Clear Calendar',
+                            icon: Icons.clear,
+                            colour: kPrimary,
+                            onPress: ref.watch(dataProvider).duties.isEmpty
+                                ? () {}
+                                : () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text('Are you sure?'),
+                                            content: Container(
+                                              width: screenWidth(context) * 0.2,
+                                              child: Text(
+                                                  'Remove all shifts from the calendar?'),
+                                            ),
+                                            actions: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    TextIconButton(
+                                                        text: 'Cancel',
+                                                        icon: Icons.close,
+                                                        colour: kContrast,
+                                                        onPress: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        isActive: true),
+                                                    TextIconButton(
+                                                        text: 'Confirm',
+                                                        icon: Icons.check,
+                                                        colour: kDarkPrimary,
+                                                        onPress: () {
+                                                          ref
+                                                              .read(dataProvider
+                                                                  .notifier)
+                                                              .clearCalendar();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        isActive: true),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
+                            isActive: ref.watch(dataProvider).duties.isEmpty
+                                ? false
+                                : true,
+                            isWide: true,
+                          ),
+                          SizedBox(
+                            width: 15.0,
+                          ),
+                          TextIconButton(
+                              text: 'Get results',
+                              icon: Icons.arrow_forward,
+                              colour: kDarkPrimary,
+                              onPress: () {
+                                Navigator.pushNamed(context, '/results');
+                              },
+                              isActive: true),
+                        ],
                       ),
                     ),
                   ],
@@ -267,7 +328,7 @@ class Calendar extends ConsumerWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: screenHeight(context) * 0.03,
+          vertical: screenHeight(context) * 0.02,
           horizontal: screenWidth(context) * 0.035),
       child: Container(
         child: Column(

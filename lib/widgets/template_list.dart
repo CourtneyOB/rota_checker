@@ -51,7 +51,7 @@ class TemplateList extends ConsumerWidget {
                       return AlertDialog(
                         title: Text('Are you sure?'),
                         content: Container(
-                          width: screenWidth(context) * 0.4,
+                          width: screenWidth(context) * 0.2,
                           child: Text(
                               'Deleting this template will also delete all instances of it on the calendar. Are you sure you wish to delete it?'),
                         ),
@@ -65,7 +65,7 @@ class TemplateList extends ConsumerWidget {
                                 TextIconButton(
                                     text: 'Cancel',
                                     icon: Icons.close,
-                                    colour: kDarkPrimary,
+                                    colour: kContrast,
                                     onPress: () {
                                       Navigator.of(context).pop();
                                     },

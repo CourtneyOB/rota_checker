@@ -57,47 +57,31 @@ class HomePageState extends ConsumerState<HomePage> {
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: SizedBox(
-                      width: 40.0,
-                      height: 40.0,
-                      child: Image(
-                        filterQuality: FilterQuality.medium,
-                        image: AssetImage(kLogo),
-                      ),
-                    ),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: SizedBox(
+                  width: 40.0,
+                  height: 40.0,
+                  child: Image(
+                    filterQuality: FilterQuality.medium,
+                    image: AssetImage(kLogo),
                   ),
-                  Text('Junior Doctor Rota Checker'),
-                ],
+                ),
               ),
-              Row(
-                children: [
-                  TextOnlyButton(
-                      text: 'About',
-                      colour: kContrast,
-                      onPress: () {
-                        Navigator.pushNamed(context, '/about');
-                      },
-                      isActive: true),
-                  SizedBox(
-                    width: 20.0,
-                  ),
-                  TextIconButton(
-                      text: 'Get results',
-                      icon: Icons.arrow_forward,
-                      colour: kDarkPrimary,
-                      onPress: () {
-                        Navigator.pushNamed(context, '/results');
-                      },
-                      isActive: true),
-                ],
-              )
+              Text('Junior Doctor Rota Checker'),
+              SizedBox(
+                width: 20.0,
+              ),
+              TextOnlyButton(
+                  text: 'About',
+                  colour: kContrast,
+                  onPress: () {
+                    Navigator.pushNamed(context, '/about');
+                  },
+                  isActive: true),
             ],
           ),
         ),
