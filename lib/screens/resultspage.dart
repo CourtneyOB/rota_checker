@@ -57,10 +57,21 @@ class ResultsPage extends ConsumerWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           children: errorText != null
-                              ? [Text(errorText)]
-                              : results.isEmpty
-                                  ? [Text('No shifts entered')]
-                                  : results,
+                              ? [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.error_outline,
+                                        color: kContrast,
+                                      ),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Text(errorText),
+                                    ],
+                                  )
+                                ]
+                              : results,
                         ),
                       ),
                     ),
