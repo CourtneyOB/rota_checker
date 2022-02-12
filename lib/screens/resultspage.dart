@@ -30,7 +30,7 @@ class ResultsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Results'),
+        title: Text('Your Rota Results'),
       ),
       body: Container(
         color: kBackground,
