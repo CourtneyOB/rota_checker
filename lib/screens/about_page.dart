@@ -43,15 +43,28 @@ class _AboutPageState extends State<AboutPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '[Icon] Junior Doctor Rota Checker',
-                      style: kMainHeader,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 50.0,
+                          width: 50.0,
+                          child: Image(
+                            filterQuality: FilterQuality.medium,
+                            image: AssetImage(kLogo),
+                          ),
+                        ),
+                        Text(
+                          'Junior Doctor Rota Checker',
+                          style: kMainHeader,
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10.0,
                     ),
                     Text(
-                      'Last updated 09 Feb 2022',
+                      'Version v${kVersionNumber.toStringAsFixed(1)}. Last updated 09 Feb 2022',
                       style: TextStyle(color: kLightGrey),
                     ),
                     Expanded(

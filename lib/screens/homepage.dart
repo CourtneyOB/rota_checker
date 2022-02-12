@@ -28,7 +28,7 @@ class HomePageState extends ConsumerState<HomePage> {
             return AlertDialog(
               title: Text('Welcome'),
               content: Text(
-                  'Welcome to Junior Doctor Rota Checker v$kVersionNumber. For help or information about using this tool, click "About".'),
+                  'Welcome to Junior Doctor Rota Checker v${kVersionNumber.toStringAsFixed(1)}. For help or information about using this tool, click "About".'),
               actions: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -52,13 +52,30 @@ class HomePageState extends ConsumerState<HomePage> {
     showDialogIfFirstTime();
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
         backgroundColor: Colors.white,
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('[Icon] Junior Doctor Rota Checker'),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: SizedBox(
+                      width: 40.0,
+                      height: 40.0,
+                      child: Image(
+                        filterQuality: FilterQuality.medium,
+                        image: AssetImage(kLogo),
+                      ),
+                    ),
+                  ),
+                  Text('Junior Doctor Rota Checker'),
+                ],
+              ),
               Row(
                 children: [
                   TextOnlyButton(

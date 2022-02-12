@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const String kLogo = 'lib/assets/rota_checker_logo.png';
+
 const Color kBackground = Color(0xFFE6EBE9);
 const Color kLightGrey = Color(0xFFC8CCCB);
 const Color kDarkPrimary = Color(0xFF007787);
