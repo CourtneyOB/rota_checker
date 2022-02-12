@@ -369,8 +369,8 @@ class Compliance {
             (item) => item.startTime.weekday == 7 && item is OnCall);
 
         if ((saturdayDuty == null || sundayDuty == null) ||
-            ((saturdayDuty as OnCall).expectedHours >= 3 ||
-                (saturdayDuty as OnCall).expectedHours >= 3)) {
+            ((saturdayDuty as OnCall).expectedHours > 3 ||
+                (saturdayDuty as OnCall).expectedHours > 3)) {
           if (day1.add(Duration(days: 7)).compareTo(day8) >= 0) {
             pass = false;
             result +=
