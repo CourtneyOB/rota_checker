@@ -6,7 +6,6 @@ import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/model/compliance_test.dart';
-import 'package:tuple/tuple.dart';
 import 'package:collection/collection.dart';
 import 'package:rota_checker/rota_length_exception.dart';
 
@@ -356,7 +355,7 @@ class Compliance {
   ComplianceTest max7ConsecutiveDays() {
     String result = '';
     bool pass = true;
-    String name = 'Max 7 consecutive days (with exception)';
+    String name = 'Max 7 consecutive days (with weekend on call exception)';
     String about =
         'A maximum of seven shifts of any length can be rostered or worked on seven consecutive days. Where seven shifts of any length are rostered or worked\non seven consecutive days, there must be a minimum 48-hours’ rest rostered immediately following the conclusion of the seventh shift. Where the work\nschedule of a doctor rostered for on-call duty on a Saturday and Sunday contains 3 hours or fewer of work on each day, and no more than 3 episodes of\nwork on each day, then such duty is defined as ‘low intensity’. In such a ‘low intensity’ working pattern a maximum of 12 days can be rostered or worked\nconsecutively.';
 

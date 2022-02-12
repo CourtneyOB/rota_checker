@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/widgets/template_title.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
+import 'package:rota_checker/widgets/text_only_button.dart';
 
 class Calendar extends ConsumerWidget {
   Calendar(
@@ -220,6 +221,23 @@ class Calendar extends ConsumerWidget {
                       ),
                       splashRadius: 15.0,
                       onPressed: forwardAction,
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: TextIconButton(
+                          text: 'Clear Calendar',
+                          icon: Icons.clear,
+                          colour: kPrimary,
+                          onPress: () {
+                            ref.read(dataProvider.notifier).clearCalendar();
+                          },
+                          isActive: ref.watch(dataProvider).duties.isEmpty
+                              ? false
+                              : true,
+                          isWide: true,
+                        ),
+                      ),
                     ),
                   ],
                 ),

@@ -9,7 +9,6 @@ import 'package:rota_checker/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/rota_length_exception.dart';
-import 'package:tuple/tuple.dart';
 import 'package:rota_checker/model/compliance_test.dart';
 import 'package:rota_checker/model/compliance.dart';
 
@@ -140,6 +139,12 @@ class DataProvider extends StateNotifier<Rota> {
     WorkDuty dutyToRemove = state.duties.firstWhere(
         (item) => item.startTime.isSameDate(date) && item.template == template);
     state.duties.remove(dutyToRemove);
+    state = state.clone();
+  }
+
+  void clearCalendar() {
+    state.duties.clear();
+    state.selectedDates.clear();
     state = state.clone();
   }
 

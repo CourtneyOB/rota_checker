@@ -117,15 +117,15 @@ class _AboutPageState extends State<AboutPage> {
                             ),
                             NumberedBullet(
                                 text:
-                                    '30 minute break for 5 hours work, a second 30 minute break for more than 9 hours, and a third 30 minute break during a night shift at least 8 hours long'),
+                                    'Ensuring that you get appropriate breaks e.g. 30 minute break for 5 hours work, a second at more than 9 hours etc. It also cannot account for ensuring adequate consecutive rest periods during low intensity on call'),
                             NumberedBullet(
                                 text:
-                                    'If you have agreed to increase the limit of consecutive shifts with your employer'),
+                                    'If you have made any local agreements with your employer to adjust the restrictions on your working hours'),
                             NumberedBullet(
                                 text:
                                     'Ensuring that no trainee is rostered on-call for the same period being worked as a shift by another trainee on that rota'),
                             Text(
-                              'Make sure you review your rota to ensure it is compliant with these above points.',
+                              'Make sure you review your rota to ensure it is compliant with these above points and exception report if there are any discrepancies with your actual working hours.',
                             ),
                             SizedBox(
                               height: 10.0,

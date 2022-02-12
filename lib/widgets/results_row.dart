@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
-import 'package:rota_checker/main.dart';
 
 class ResultsRow extends StatelessWidget {
   ResultsRow(

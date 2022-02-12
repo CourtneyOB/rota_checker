@@ -7,12 +7,14 @@ class TextOnlyButton extends StatelessWidget {
   final Color colour;
   final Function() onPress;
   final bool isActive;
+  final bool isWide;
 
   TextOnlyButton(
       {required this.text,
       required this.colour,
       required this.onPress,
-      required this.isActive});
+      required this.isActive,
+      this.isWide = false});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class TextOnlyButton extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   color: isActive ? colour : kLightGrey),
               height: 24.0,
-              width: 80.0,
+              width: isWide ? 110.0 : 80.0,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
