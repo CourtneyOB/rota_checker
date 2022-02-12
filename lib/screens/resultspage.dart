@@ -17,9 +17,10 @@ class ResultsPage extends ConsumerWidget {
           .read(dataProvider.notifier)
           .checkCompliance()
           .map((item) => ResultsRow(
-                title: item.item2,
-                result: item.item1,
-                explanation: item.item3,
+                title: item.name,
+                result: item.result,
+                explanation: item.text,
+                about: item.about,
               ))
           .toList();
     } catch (e) {

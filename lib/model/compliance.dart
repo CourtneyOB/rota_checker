@@ -5,6 +5,7 @@ import 'package:rota_checker/model/shift.dart';
 import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/extension_methods.dart';
+import 'package:rota_checker/model/compliance_test.dart';
 import 'package:tuple/tuple.dart';
 import 'package:collection/collection.dart';
 import 'package:rota_checker/rota_length_exception.dart';
@@ -22,14 +23,14 @@ class Compliance {
         shiftsInRota = rota.getAllShifts(),
         onCallInRota = rota.getAllOnCalls();
 
-  List<Tuple3<bool, String, String>> checkAll() {
+  List<ComplianceTest> checkAll() {
+    List<ComplianceTest> responses = [];
     if (rotaLength > 182) {
       throw RotaLengthException();
     }
     if (rota.duties.isEmpty) {
       throw EmptyRotaException();
     }
-    List<Tuple3<bool, String, String>> responses = [];
 
     responses.add(max48HourWeek());
     responses.add(max72HoursPer168());
@@ -48,10 +49,12 @@ class Compliance {
     return responses;
   }
 
-  Tuple3<bool, String, String> max48HourWeek() {
+  ComplianceTest max48HourWeek() {
     List<double> allWeeklyHours = [];
     String result = '';
     String name = 'Max 48 hours work per week';
+    String about =
+        'No doctor should be rostered for more than an average of 48 hours of actual work per week.';
 
     void calculateWeeklyHours(List<WorkDuty> duties) {
       for (int i = duties[0].weekNumber; i <= duties.last.weekNumber; i++) {
@@ -105,17 +108,19 @@ class Compliance {
 
     if (averageHours <= 48.0) {
       //pass
-      return Tuple3<bool, String, String>(true, name, result);
+      return ComplianceTest(name, true, result, about);
     } else {
       //fail
-      return Tuple3<bool, String, String>(false, name, result);
+      return ComplianceTest(name, false, result, about);
     }
   }
 
-  Tuple3<bool, String, String> max72HoursPer168() {
+  ComplianceTest max72HoursPer168() {
     bool pass = true;
     String result = '';
     String name = 'Max 72 hours week per 168 hours';
+    String about =
+        'No more than 72 hours’ actual work should be rostered for or undertaken by any doctor, working on any working pattern, in any period of 168 consecutive hours.';
     double maxHours = 0;
     //Get midnight on the first day to be checked
     DateTime setMidnight = DateTime(rota.duties[0].startTime.year,
@@ -188,13 +193,15 @@ class Compliance {
       }
     }
     result += 'Max hours per 168 hour period is ${maxHours}';
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> max13HourShift() {
+  ComplianceTest max13HourShift() {
     String result = '';
     bool pass = true;
     String name = 'Max 13 hour shifts';
+    String about =
+        'No shift (other than an on-call period) shall be rostered to exceed 13 hours in duration.';
     for (Shift shift in shiftsInRota) {
       if (shift.length > 13) {
         result +=
@@ -202,13 +209,15 @@ class Compliance {
         pass = false;
       }
     }
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> max4LongShifts() {
+  ComplianceTest max4LongShifts() {
     String result = '';
     bool pass = true;
     String name = 'Max 4 long shifts in a row';
+    String about =
+        'No more than four long shifts (where a long shift is defined as being a shift rostered to last longer than 10 hours) shall be rostered or worked on\nconsecutive days. Where four long shifts are rostered on consecutive days, there must be a minimum 48-hour rest period rostered immediately\nfollowing the conclusion of the fourth long shift. Where shifts (excluding non-resident on-call shifts) have at least 3 hours of work that falls into\nthe period between 23:00 and 06:00 and are rostered singularly, or consecutively, then there must be a minimum 46-hour rest period rostered\nimmediately following the conclusion of the shift(s).';
     //Cycle through all shifts
     for (int i = 0; i < shiftsInRota.length - 1; i++) {
       //If a long shift is found
@@ -292,7 +301,7 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
   bool checkBreakRule(List<Shift> shifts) {
@@ -344,10 +353,12 @@ class Compliance {
     }
   }
 
-  Tuple3<bool, String, String> max7ConsecutiveDays() {
+  ComplianceTest max7ConsecutiveDays() {
     String result = '';
     bool pass = true;
-    String name = 'Max 7 consecutive days (with exception*)';
+    String name = 'Max 7 consecutive days (with exception)';
+    String about =
+        'A maximum of seven shifts of any length can be rostered or worked on seven consecutive days. Where seven shifts of any length are rostered or worked\non seven consecutive days, there must be a minimum 48-hours’ rest rostered immediately following the conclusion of the seventh shift. Where the work\nschedule of a doctor rostered for on-call duty on a Saturday and Sunday contains 3 hours or fewer of work on each day, and no more than 3 episodes of\nwork on each day, then such duty is defined as ‘low intensity’. In such a ‘low intensity’ working pattern a maximum of 12 days can be rostered or worked\nconsecutively.';
 
     for (int i = 0; i < rota.duties.length - 1; i++) {
       //If there are 7 more work duties after
@@ -415,13 +426,15 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> atLeast11HoursRest() {
+  ComplianceTest atLeast11HoursRest() {
     String result = '';
     bool pass = true;
     String name = 'At least 11 hours rest between shifts';
+    String about =
+        'Unless other rest rules apply, there should normally be at least 11 hours’ continuous rest between rostered shifts, other than on-call duty periods.';
 
     //Cycle through all shifts up to the last
     for (int i = 0; i < shiftsInRota.length - 1; i++) {
@@ -434,13 +447,15 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> nightRestBreaks() {
+  ComplianceTest nightRestBreaks() {
     String result = '';
     bool pass = true;
     String name = 'At least 46 hours rest after night shifts';
+    String about =
+        'Where shifts (excluding non-resident on-call shifts) have at least 3 hours of work that falls into the period between 23:00 and 06:00 and\nare rostered singularly, or consecutively, then there must be a minimum 46-hour rest period rostered immediately following the\nconclusion of the shift(s).';
 
     for (int i = 0; i < shiftsInRota.length - 1; i++) {
       if ((shiftsInRota[i].template as ShiftTemplate).isNight) {
@@ -457,13 +472,15 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> weekendFrequency() {
+  ComplianceTest weekendFrequency() {
     String result = '';
     bool pass = true;
     String name = 'Max 1 in 2 weekend frequency';
+    String about =
+        'No doctor shall be rostered for work at the weekend (defined for this purpose as any shifts or on-call duty periods where\nany work takes place between 00.01 Saturday and 23.59 Sunday) at a frequency of greater than 1 week in 2.';
 
     List<int> weekendWork = [];
 
@@ -515,13 +532,15 @@ class Compliance {
     result +=
         'Weekend frequency 1 in ${double.parse((1 / weekendWork.average).toStringAsFixed(2))}';
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> max24HourOnCall() {
+  ComplianceTest max24HourOnCall() {
     String result = '';
     bool pass = true;
     String name = 'Max 24 hour on call';
+    String about =
+        'The maximum length of an individual on-call duty period is 24 hours.';
 
     for (OnCall onCall in onCallInRota) {
       if (onCall.length > 24) {
@@ -531,13 +550,15 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> noConsecutiveOnCalls() {
+  ComplianceTest noConsecutiveOnCalls() {
     String result = '';
     bool pass = true;
     String name = 'No consecutive on calls (with exception of weekends)';
+    String about =
+        'On-call periods cannot be worked consecutively, other than at the weekend when two consecutive on-call periods (beginning on Saturday\nand Sunday respectively) are permitted.';
 
     //Cycle through all on calls
     for (int i = 0; i < onCallInRota.length - 1; i++) {
@@ -554,13 +575,15 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> noMoreThan3OnCallsIn7Days() {
+  ComplianceTest noMoreThan3OnCallsIn7Days() {
     String result = '';
     bool pass = true;
     String name = 'No more than 3 on calls in 7 days';
+    String about =
+        'There must be no more than three on-call periods in any period of seven consecutive days.';
 
     for (int i = 0; i < rotaLength; i++) {
       //Get midnight on the first day to be checked
@@ -595,14 +618,15 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String>
-      dayAfterOnCallMustNotHaveWorkLongerThan10Hours() {
+  ComplianceTest dayAfterOnCallMustNotHaveWorkLongerThan10Hours() {
     String result = '';
     bool pass = true;
     String name = 'Day after on call must not have work longer than 10 hours';
+    String about =
+        'The day following an on-call period (or following the last on-call period, where more than one 24-hour period is rostered\nconsecutively) must not be rostered to last longer than 10 hours.';
 
     //Cycle through all on calls
     for (int i = 0; i < onCallInRota.length; i++) {
@@ -639,13 +663,15 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
-  Tuple3<bool, String, String> eightHoursRestPer24HourOnCall() {
+  ComplianceTest eightHoursRestPer24HourOnCall() {
     String result = '';
     bool pass = true;
     String name = 'At least 8 hours rest during 24 hour on calls';
+    String about =
+        'Whilst on-call, a doctor should expect to get eight hours rest per 24-hour period, of which at least five should be continuous rest between 22:00 and 07:00.';
 
     //Cycle through all on calls
     for (int i = 0; i < onCallInRota.length; i++) {
@@ -658,7 +684,7 @@ class Compliance {
       }
     }
 
-    return Tuple3<bool, String, String>(pass, name, result);
+    return ComplianceTest(name, pass, result, about);
   }
 
   DateTime weekStart(DateTime date) =>

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
+import 'package:rota_checker/main.dart';
 
 class ResultsRow extends StatelessWidget {
   ResultsRow(
-      {required this.title, required this.result, required this.explanation});
+      {required this.title,
+      required this.result,
+      required this.explanation,
+      required this.about});
 
   final String title;
   final bool result;
   final String explanation;
+  final String about;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +28,32 @@ class ResultsRow extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20.0),
-                    child: Text(
-                      title,
-                      style: TextStyle(fontSize: 16.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                        SizedBox(
+                          width: 6.0,
+                        ),
+                        Tooltip(
+                          textStyle: TextStyle(fontSize: 12.0),
+                          padding: EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: kLightGrey),
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0))),
+                          preferBelow: false,
+                          message: about,
+                          child: Icon(
+                            Icons.info_outline,
+                            size: 16.0,
+                            color: kContrast,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   flex: 4,

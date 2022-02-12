@@ -10,13 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/rota_length_exception.dart';
 import 'package:tuple/tuple.dart';
+import 'package:rota_checker/model/compliance_test.dart';
 import 'package:rota_checker/model/compliance.dart';
 
 class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
 
-  List<Tuple3<bool, String, String>> checkCompliance() {
-    List<Tuple3<bool, String, String>> results = [];
+  List<ComplianceTest> checkCompliance() {
+    List<ComplianceTest> results = [];
 
     try {
       results = Compliance(state).checkAll();
