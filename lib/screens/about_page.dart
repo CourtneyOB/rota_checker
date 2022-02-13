@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rota_checker/widgets/numbered_bullet.dart';
@@ -14,6 +15,8 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   final formKey = GlobalKey<FormState>();
+  final _firestore = FirebaseFirestore.instance;
+  final TextEditingController _controller = TextEditingController();
   bool canSubmit = false;
   String feedbackText = '';
 
@@ -159,6 +162,7 @@ class _AboutPageState extends State<AboutPage> {
                                       child: Container(
                                         height: 205,
                                         child: TextField(
+                                          controller: _controller,
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               hintText:
@@ -185,7 +189,18 @@ class _AboutPageState extends State<AboutPage> {
                                           icon: Icons.check,
                                           colour: kContrast,
                                           onPress: () {
-                                            //TODO Submit feedback
+                                            _firestore
+                                                .collection('feedback')
+                                                .add({'text': feedbackText});
+
+                                            final snackBar = SnackBar(
+                                                content: Text(
+                                                    'Thanks for your feedback!'));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+
+                                            feedbackText = '';
+                                            _controller.text = '';
                                           },
                                           isActive: canSubmit ? true : false),
                                     ),

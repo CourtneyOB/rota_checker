@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/empty_rota_exception.dart';
 import 'package:rota_checker/model/rota.dart';
-import 'package:rota_checker/model/shift.dart';
 import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/extension_methods.dart';

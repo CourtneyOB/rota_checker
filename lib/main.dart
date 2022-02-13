@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/screens/homepage.dart';
@@ -13,14 +15,16 @@ double screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
 final dataProvider =
     StateNotifierProvider<DataProvider, Rota>((ref) => DataProvider(Rota()));
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    ProviderScope(child: const MyApp()),
+    ProviderScope(child: MyApp()),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
