@@ -21,22 +21,8 @@ class TemplateList extends ConsumerWidget {
 
     List<TemplateCard> templates = templateLibrary
         .map((item) => TemplateCard(
-              name: item.name,
-              colour: item.colour,
-              startTime: item.startTime,
-              endTime: item.endTime,
-              isOnCall: item is OnCallTemplate ? true : false,
-              expectedHours: item is OnCallTemplate ? item.expectedHours : null,
-              isNight: item is ShiftTemplate ? item.isNight : false,
-              isLong: item is ShiftTemplate ? item.isLong : false,
-              isEveningFinish:
-                  item is ShiftTemplate ? item.isEveningFinish : false,
+              template: item,
               isSelected: item == selectedTemplate ? true : false,
-              onPress: () {
-                ref
-                    .read(dataProvider.notifier)
-                    .selectTemplate(templateLibrary.indexOf(item));
-              },
               editTemplate: () {
                 showDialog(
                     context: context,

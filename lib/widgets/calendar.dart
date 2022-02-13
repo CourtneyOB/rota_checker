@@ -126,14 +126,10 @@ class Calendar extends ConsumerWidget {
 
         cards.add(Expanded(
           child: CalendarCard(
-            date: date.day.toString(),
-            day: date.dayOfWeekToString(),
             duties: dutiesOnDate(date),
-            onPress: () {
-              ref.read(dataProvider.notifier).selectDate(date);
-            },
             isSelected: selectedDates.contains(date) ? true : false,
             isActiveMonth: false,
+            date: date,
           ),
         ));
       }
@@ -144,14 +140,10 @@ class Calendar extends ConsumerWidget {
         DateTime date = DateTime(focusDate.year, focusDate.month, i);
         cards.add(Expanded(
           child: CalendarCard(
-            onPress: () {
-              ref.read(dataProvider.notifier).selectDate(date);
-            },
-            date: i.toString(),
-            day: date.dayOfWeekToString(),
             duties: dutiesOnDate(date),
             isSelected: selectedDates.contains(date) ? true : false,
             isActiveMonth: true,
+            date: date,
           ),
         ));
       }
@@ -165,14 +157,10 @@ class Calendar extends ConsumerWidget {
         cards.add(
           Expanded(
             child: CalendarCard(
-              date: date.day.toString(),
-              day: date.dayOfWeekToString(),
               duties: dutiesOnDate(date),
-              onPress: () {
-                ref.read(dataProvider.notifier).selectDate(date);
-              },
               isSelected: selectedDates.contains(date) ? true : false,
               isActiveMonth: false,
+              date: date,
             ),
           ),
         );

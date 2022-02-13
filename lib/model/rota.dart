@@ -22,10 +22,6 @@ class Rota {
   List<DateTime> selectedDates = [];
   List<WorkDuty> duties = [];
 
-  Rota() {
-    addShift(DateTime(2021, 12, 28), templateLibrary[0] as ShiftTemplate);
-  }
-
   Rota clone() {
     return Rota()
       ..displayMonth = this.displayMonth

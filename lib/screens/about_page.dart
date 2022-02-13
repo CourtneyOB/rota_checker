@@ -13,15 +13,9 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  TextEditingController textEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   bool canSubmit = false;
-
-  @override
-  void dispose() {
-    textEditingController.dispose();
-    super.dispose();
-  }
+  String feedbackText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +107,7 @@ class _AboutPageState extends State<AboutPage> {
                             NumberedBullet(
                                 number: 2,
                                 text:
-                                    'Select the template, and then select the dates on which you are working that shift pattern. Hit "Apply" to add these to the calendar.'),
+                                    'Either click and drag template onto desired date, or for multiple dates, select the template and then select the dates on which you are working that shift pattern. Hit "Apply" to add these to the calendar.'),
                             NumberedBullet(
                                 number: 3,
                                 text:
@@ -165,7 +159,6 @@ class _AboutPageState extends State<AboutPage> {
                                       child: Container(
                                         height: 205,
                                         child: TextField(
-                                          controller: textEditingController,
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               hintText:
@@ -179,6 +172,7 @@ class _AboutPageState extends State<AboutPage> {
                                               } else {
                                                 canSubmit = false;
                                               }
+                                              feedbackText = value;
                                             });
                                           },
                                         ),
@@ -191,7 +185,7 @@ class _AboutPageState extends State<AboutPage> {
                                           icon: Icons.check,
                                           colour: kContrast,
                                           onPress: () {
-                                            //TODO function to submit feedback
+                                            //TODO Submit feedback
                                           },
                                           isActive: canSubmit ? true : false),
                                     ),

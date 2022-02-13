@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/empty_rota_exception.dart';
 import 'package:rota_checker/model/rota.dart';
+import 'package:rota_checker/model/shift.dart';
 import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/extension_methods.dart';
@@ -111,12 +112,14 @@ class DataProvider extends StateNotifier<Rota> {
     state = state.clone();
   }
 
-  List<String> addTemplateToDates() {
+  List<String> addTemplateToDates({Template? template}) {
     List<String> errorMessages = [];
-    if (state.selectedTemplate is ShiftTemplate) {
+    Template templateToAdd =
+        template == null ? state.selectedTemplate! : template;
+    if (templateToAdd is ShiftTemplate) {
       for (DateTime date in state.selectedDates) {
         try {
-          state.addShift(date, state.selectedTemplate! as ShiftTemplate);
+          state.addShift(date, templateToAdd as ShiftTemplate);
         } catch (e) {
           errorMessages.add(e.toString());
         }
@@ -124,13 +127,32 @@ class DataProvider extends StateNotifier<Rota> {
     } else {
       for (DateTime date in state.selectedDates) {
         try {
-          state.addOnCall(date, state.selectedTemplate! as OnCallTemplate);
+          state.addOnCall(date, templateToAdd as OnCallTemplate);
         } catch (e) {
           errorMessages.add(e.toString());
         }
       }
     }
     state.selectedDates.clear();
+    state = state.clone();
+    return errorMessages;
+  }
+
+  List<String> addTemplateToDraggedDate(Template template, DateTime date) {
+    List<String> errorMessages = [];
+    if (template is ShiftTemplate) {
+      try {
+        state.addShift(date, template as ShiftTemplate);
+      } catch (e) {
+        errorMessages.add(e.toString());
+      }
+    } else {
+      try {
+        state.addOnCall(date, template as OnCallTemplate);
+      } catch (e) {
+        errorMessages.add(e.toString());
+      }
+    }
     state = state.clone();
     return errorMessages;
   }
