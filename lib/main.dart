@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Junior Doctor Rota Checker',
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => HomePage(),
