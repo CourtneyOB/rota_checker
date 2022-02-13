@@ -210,8 +210,9 @@ class Calendar extends ConsumerWidget {
                       onPressed: forwardAction,
                     ),
                     Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                      child: Wrap(
+                        alignment: WrapAlignment.end,
+                        spacing: 10.0,
                         children: [
                           TextIconButton(
                             text: 'Clear Calendar',
@@ -273,9 +274,6 @@ class Calendar extends ConsumerWidget {
                                 ? false
                                 : true,
                             isWide: true,
-                          ),
-                          SizedBox(
-                            width: 15.0,
                           ),
                           TextIconButton(
                               text: 'Get results',
