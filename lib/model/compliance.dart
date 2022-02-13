@@ -17,8 +17,9 @@ class Compliance {
 
   Compliance(this.rota)
       : rotaLength = rota.duties.last.endTime
-            .difference(rota.duties[0].startTime)
-            .inDays,
+                .difference(rota.duties[0].startTime)
+                .inDays +
+            1,
         shiftsInRota = rota.getAllShifts(),
         onCallInRota = rota.getAllOnCalls();
 
@@ -125,15 +126,14 @@ class Compliance {
     DateTime setMidnight = DateTime(rota.duties[0].startTime.year,
         rota.duties[0].startTime.month, rota.duties[0].startTime.day);
 
-    for (int i = 0; i < rotaLength; i++) {
+    for (int i = 0; i <= rotaLength; i++) {
       //Select the next date to be cycled through and add 7 days
       DateTime startDateTime = setMidnight.add(Duration(days: i));
       DateTime endDateTime = startDateTime.add(Duration(days: 7));
 
       //If there are less than 7 days remaining, then there is no need to check further
       if (rota.duties.last.endTime
-              .add(Duration(days: 1))
-              .compareTo(endDateTime) <
+              .compareTo(endDateTime.subtract(Duration(days: 1))) <
           0) {
         break;
       }
@@ -191,7 +191,11 @@ class Compliance {
         maxHours = thisWeeklyHours;
       }
     }
-    result += 'Max hours per 168 hour period is ${maxHours}';
+
+    if (rotaLength >= 7) {
+      result += 'Max hours per 168 hour period is ${maxHours}';
+    }
+
     return ComplianceTest(name, pass, result, about);
   }
 
@@ -528,8 +532,12 @@ class Compliance {
       pass = false;
     }
 
-    result +=
-        'Weekend frequency 1 in ${double.parse((1 / weekendWork.average).toStringAsFixed(2))}';
+    if (!weekendWork.contains(1)) {
+      result += 'No weekends worked';
+    } else {
+      result +=
+          'Weekend frequency 1 in ${double.parse((1 / weekendWork.average).toStringAsFixed(2))}';
+    }
 
     return ComplianceTest(name, pass, result, about);
   }
