@@ -10,20 +10,8 @@ import 'package:rota_checker/shift_overlap_exception.dart';
 import 'package:rota_checker/extension_methods.dart';
 
 class Rota {
-  DateTime displayMonth = DateTime(2022, 1, 7);
+  DateTime displayMonth;
   List<Template> templateLibrary = [
-    ShiftTemplate(
-        'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
-    OnCallTemplate('Example On Call', DateTime(2022, 1, 1, 9, 00), 24.0,
-        kTemplateColors[1], 4.0),
-    ShiftTemplate(
-        'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
-    OnCallTemplate('Example On Call', DateTime(2022, 1, 1, 9, 00), 24.0,
-        kTemplateColors[1], 4.0),
-    ShiftTemplate(
-        'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
-    OnCallTemplate('Example On Call', DateTime(2022, 1, 1, 9, 00), 24.0,
-        kTemplateColors[1], 4.0),
     ShiftTemplate(
         'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
     OnCallTemplate('Example On Call', DateTime(2022, 1, 1, 9, 00), 24.0,
@@ -33,6 +21,8 @@ class Rota {
   Template? selectedTemplate;
   List<DateTime> selectedDates = [];
   List<WorkDuty> duties = [];
+
+  Rota() : this.displayMonth = DateTime.now();
 
   Rota clone() {
     return Rota()
