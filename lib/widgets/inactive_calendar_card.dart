@@ -23,8 +23,14 @@ class InactiveCalendarCard extends StatelessWidget {
     return GestureDetector(
       onTap: onPress,
       child: Card(
-        color: isSelected ? kPrimary : Colors.white,
-        elevation: kCalendarCardElevation,
+        shape: isSelected
+            ? RoundedRectangleBorder(
+                side: BorderSide(color: kPrimary, width: 2.0),
+                borderRadius: BorderRadius.circular(4.0))
+            : null,
+        elevation: isSelected
+            ? kCalendarCardSelectedElevation
+            : kCalendarCardElevation,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -34,7 +40,7 @@ class InactiveCalendarCard extends StatelessWidget {
                 text: TextSpan(
                   text: '$date ',
                   style: TextStyle(
-                      color: isSelected ? Colors.white : kSecondaryText,
+                      color: kSecondaryText,
                       fontSize: screenHeight(context) > 550
                           ? kCalendarCardPrimaryTextSize
                           : kCalendarCardMiniPrimaryTextSize),
@@ -42,7 +48,7 @@ class InactiveCalendarCard extends StatelessWidget {
                     TextSpan(
                         text: day,
                         style: TextStyle(
-                            color: isSelected ? Colors.white : kSecondaryText,
+                            color: kSecondaryText,
                             fontSize: screenHeight(context) > 550
                                 ? kCalendarCardSecondaryTextSize
                                 : kCalendarCardMiniSecondaryTextSize)),

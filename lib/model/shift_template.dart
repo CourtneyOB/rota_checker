@@ -6,7 +6,8 @@ class ShiftTemplate extends Template {
   bool isLong = false;
   bool isEveningFinish = false;
 
-  ShiftTemplate(String name, DateTime startTime, double length, Color colour)
+  ShiftTemplate(
+      String name, DateTime startTime, double length, MaterialColor colour)
       : super(name, startTime, length, colour) {
     allocateTags();
   }

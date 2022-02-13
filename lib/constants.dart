@@ -12,7 +12,7 @@ const Color kContrast = Color(0xFFD45C00);
 const Color kText = Color(0xFF212121);
 const Color kSecondaryText = Color(0xFF757575);
 
-const List<Color> kTemplateColors = [
+const List<MaterialColor> kTemplateColors = [
   Colors.red,
   Colors.blue,
   Colors.green,
@@ -30,6 +30,7 @@ const double kVersionNumber = 1.0;
 const String kLastUpdate = '12 Feb 2022';
 
 const double kCalendarCardElevation = 2.0;
+const double kCalendarCardSelectedElevation = 4.0;
 const double kCalendarCardPrimaryTextSize = 16.0;
 const double kCalendarCardMiniPrimaryTextSize = 10.0;
 const double kCalendarCardSecondaryTextSize = 14.0;

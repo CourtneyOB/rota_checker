@@ -55,7 +55,6 @@ class HomePageState extends ConsumerState<HomePage> {
     showDialogIfFirstTime();
     return Scaffold(
       appBar: AppBar(
-        elevation: 1,
         backgroundColor: Colors.white,
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),

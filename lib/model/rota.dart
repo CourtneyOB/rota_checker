@@ -23,14 +23,7 @@ class Rota {
   List<WorkDuty> duties = [];
 
   Rota() {
-    // addShift(DateTime(2021, 12, 28), templateLibrary[1] as ShiftTemplate);
-    // addShift(DateTime(2022, 1, 1), templateLibrary[1] as ShiftTemplate);
-    // addShift(DateTime(2022, 1, 3), templateLibrary[1] as ShiftTemplate);
-    // addShift(DateTime(2022, 1, 4), templateLibrary[1] as ShiftTemplate);
-    // addShift(DateTime(2022, 1, 5), templateLibrary[0] as ShiftTemplate);
-    // addShift(DateTime(2022, 1, 12), templateLibrary[0] as ShiftTemplate);
-    // addShift(DateTime(2022, 1, 21), templateLibrary[0] as ShiftTemplate);
-    // addShift(DateTime(2022, 2, 3), templateLibrary[0] as ShiftTemplate);
+    addShift(DateTime(2021, 12, 28), templateLibrary[0] as ShiftTemplate);
   }
 
   Rota clone() {

@@ -22,8 +22,14 @@ class CalendarCard extends StatelessWidget {
       return GestureDetector(
         onTap: onPress,
         child: Card(
-          color: isSelected ? kPrimary : Colors.white,
-          elevation: kCalendarCardElevation,
+          shape: isSelected
+              ? RoundedRectangleBorder(
+                  side: BorderSide(color: kPrimary, width: 2.0),
+                  borderRadius: BorderRadius.circular(4.0))
+              : null,
+          elevation: isSelected
+              ? kCalendarCardSelectedElevation
+              : kCalendarCardElevation,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -33,7 +39,7 @@ class CalendarCard extends StatelessWidget {
                   text: TextSpan(
                     text: '$date ',
                     style: TextStyle(
-                        color: isSelected ? Colors.white : kText,
+                        color: kText,
                         fontWeight: FontWeight.bold,
                         fontSize: screenHeight(context) > 550
                             ? kCalendarCardPrimaryTextSize
@@ -42,7 +48,7 @@ class CalendarCard extends StatelessWidget {
                       TextSpan(
                           text: day,
                           style: TextStyle(
-                              color: isSelected ? Colors.white : kSecondaryText,
+                              color: kSecondaryText,
                               fontWeight: FontWeight.normal,
                               fontSize: screenHeight(context) > 550
                                   ? kCalendarCardSecondaryTextSize

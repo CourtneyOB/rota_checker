@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       theme: ThemeData(
           appBarTheme: AppBarTheme(
+            elevation: 1,
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: kDarkPrimary),
             titleTextStyle: TextStyle(color: kDarkPrimary, fontSize: 18.0),

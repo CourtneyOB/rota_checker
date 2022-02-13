@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/widgets/calendar_card.dart';
+import 'package:rota_checker/widgets/calendar_duty.dart';
 import 'package:rota_checker/widgets/inactive_calendar_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
@@ -29,19 +30,16 @@ class Calendar extends ConsumerWidget {
           .getDutiesOnDate(date)
           .map((item) => Row(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
-                    child: TemplateTitle(
+                    child: CalendarDuty(
                       colour: item.template.colour,
                       name: item.template.name,
-                      textColour: selectedDates.contains(date)
-                          ? Colors.white
-                          : kSecondaryText,
+                      textColour: kSecondaryText,
                       maxFontSize: 12.0,
+                      time: '${item.startTime.timeFormatToString()}',
                     ),
-                  ),
-                  SizedBox(
-                    width: 10.0,
                   ),
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
