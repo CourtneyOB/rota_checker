@@ -229,7 +229,33 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       right: 15.0, left: 8.0),
-                                  child: Text('Shift'),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 6.0),
+                                        child: Text('Shift'),
+                                      ),
+                                      Tooltip(
+                                        textStyle: TextStyle(fontSize: 12.0),
+                                        padding: EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: kLightGrey),
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0))),
+                                        preferBelow: false,
+                                        message:
+                                            'The period which the employer schedules the doctor to be at the work place performing their duties, excluding any on-call duty periods.',
+                                        child: Icon(
+                                          Icons.info_outline,
+                                          size: 16.0,
+                                          color: kContrast,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -248,7 +274,33 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       right: 15.0, left: 8.0),
-                                  child: Text('On Call Period'),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 6.0),
+                                        child: Text('On Call Period'),
+                                      ),
+                                      Tooltip(
+                                        textStyle: TextStyle(fontSize: 12.0),
+                                        padding: EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: kLightGrey),
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0))),
+                                        preferBelow: false,
+                                        message:
+                                            'A doctor is on-call when they are required by the employer to be available to return to work or to give advice by telephone but are not normally\nexpected to be working on site for the whole period. A doctor carrying an ‘on-call’ bleep whilst already present at their place of work as part\nof their scheduled duties does not meet the definition of on-call working.',
+                                        child: Icon(
+                                          Icons.info_outline,
+                                          size: 16.0,
+                                          color: kContrast,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -423,60 +475,82 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                   height: 16.0,
                 ),
               if (widget.dutyType == WorkDutyType.oncall)
-                TextFormField(
-                  initialValue: widget.expectedHours != null
-                      ? widget.expectedHours.toString()
-                      : null,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                    TextInputFormatter.withFunction((oldValue, newValue) {
-                      try {
-                        final text = newValue.text;
-                        if (text.isNotEmpty) double.parse(text);
-                        return newValue;
-                      } catch (e) {}
-                      return oldValue;
-                    }),
-                  ],
-                  focusNode: focusNodeExpectedHours,
-                  onTap: () {
-                    setState(() {
-                      FocusScope.of(context)
-                          .requestFocus(focusNodeExpectedHours);
-                    });
-                  },
-                  onChanged: (value) {
-                    widget.expectedHours = double.parse(value);
-                  },
-                  onFieldSubmitted: (value) {
-                    submitForm();
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter number of expected work hours';
-                    }
-                    if (double.parse(value) <= 0) {
-                      return 'Number must be more than 0';
-                    }
-                    if (widget.length != null) {
-                      if (double.parse(value) > widget.length!) {
-                        return 'Cannot be longer than shift length';
-                      }
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Expected work hours',
-                    hintText: 'e.g. 4',
-                    labelStyle: TextStyle(
-                        color: focusNodeExpectedHours.hasFocus
-                            ? kDarkPrimary
-                            : null),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: kDarkPrimary),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        initialValue: widget.expectedHours != null
+                            ? widget.expectedHours.toString()
+                            : null,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                          TextInputFormatter.withFunction((oldValue, newValue) {
+                            try {
+                              final text = newValue.text;
+                              if (text.isNotEmpty) double.parse(text);
+                              return newValue;
+                            } catch (e) {}
+                            return oldValue;
+                          }),
+                        ],
+                        focusNode: focusNodeExpectedHours,
+                        onTap: () {
+                          setState(() {
+                            FocusScope.of(context)
+                                .requestFocus(focusNodeExpectedHours);
+                          });
+                        },
+                        onChanged: (value) {
+                          widget.expectedHours = double.parse(value);
+                        },
+                        onFieldSubmitted: (value) {
+                          submitForm();
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter number of expected work hours';
+                          }
+                          if (double.parse(value) <= 0) {
+                            return 'Number must be more than 0';
+                          }
+                          if (widget.length != null) {
+                            if (double.parse(value) > widget.length!) {
+                              return 'Cannot be longer than shift length';
+                            }
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Expected work hours',
+                          hintText: 'e.g. 4',
+                          labelStyle: TextStyle(
+                              color: focusNodeExpectedHours.hasFocus
+                                  ? kDarkPrimary
+                                  : null),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: kDarkPrimary),
+                          ),
+                        ),
+                        style: TextStyle(color: kText),
+                      ),
                     ),
-                  ),
-                  style: TextStyle(color: kText),
+                    Tooltip(
+                      textStyle: TextStyle(fontSize: 12.0),
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: kLightGrey),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                      preferBelow: false,
+                      message:
+                          'The employer must provide a prospective estimate of the average amount of work that will occur during an on-call shift. Such work includes any\nactual clinical or non-clinical work undertaken either on or off site, including telephone calls, actively awaiting urgent results or updates, and\ntravel time arising from any such calls. On your work schedule, this may be displayed seperately as "Resident Hours" and "Estimated Call Out".',
+                      child: Icon(
+                        Icons.info_outline,
+                        size: 16.0,
+                        color: kContrast,
+                      ),
+                    ),
+                  ],
                 ),
             ],
           ),
