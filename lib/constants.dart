@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 const String kLogo = 'lib/assets/rota_checker_logo.png';
+const String kNHSEmployersURL =
+    'https://www.nhsemployers.org/publications/doctors-and-dentists-training-terms-and-conditions-england-2016';
 
 const Color kBackground = Color(0xFFE6EBE9);
 const Color kLightGrey = Color(0xFFC8CCCB);

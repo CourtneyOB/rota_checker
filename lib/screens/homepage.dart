@@ -27,8 +27,11 @@ class HomePageState extends ConsumerState<HomePage> {
           builder: (context) {
             return AlertDialog(
               title: Text('Welcome'),
-              content: Text(
-                  'Welcome to Junior Doctor Rota Checker v${kVersionNumber.toStringAsFixed(1)}. For help or information about using this tool, click "About".'),
+              content: Container(
+                width: screenWidth(context) * 0.2,
+                child: Text(
+                    'Welcome to Junior Doctor Rota Checker v${kVersionNumber.toStringAsFixed(1)}. For help or information about using this tool, click "About".'),
+              ),
               actions: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),

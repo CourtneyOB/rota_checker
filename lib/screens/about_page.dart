@@ -85,8 +85,7 @@ class _AboutPageState extends State<AboutPage> {
                                   style: TextStyle(color: Colors.blue),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                      await launch(
-                                          'https://www.nhsemployers.org/publications/doctors-and-dentists-training-terms-and-conditions-england-2016');
+                                      await launch(kNHSEmployersURL);
                                     }),
                               TextSpan(
                                   text:
