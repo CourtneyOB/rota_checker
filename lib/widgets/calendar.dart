@@ -3,10 +3,9 @@ import 'package:rota_checker/main.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/widgets/calendar_card.dart';
 import 'package:rota_checker/widgets/calendar_duty.dart';
-import 'package:rota_checker/widgets/inactive_calendar_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
-import 'package:rota_checker/widgets/template_title.dart';
+import 'package:rota_checker/widgets/calendar_day.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
 
 class Calendar extends ConsumerWidget {
@@ -126,7 +125,7 @@ class Calendar extends ConsumerWidget {
             DateTime(focusDate.year, focusDate.month, 0).day - i);
 
         cards.add(Expanded(
-          child: InactiveCalendarCard(
+          child: CalendarCard(
             date: date.day.toString(),
             day: date.dayOfWeekToString(),
             duties: dutiesOnDate(date),
@@ -134,6 +133,7 @@ class Calendar extends ConsumerWidget {
               ref.read(dataProvider.notifier).selectDate(date);
             },
             isSelected: selectedDates.contains(date) ? true : false,
+            isActiveMonth: false,
           ),
         ));
       }
@@ -151,6 +151,7 @@ class Calendar extends ConsumerWidget {
             day: date.dayOfWeekToString(),
             duties: dutiesOnDate(date),
             isSelected: selectedDates.contains(date) ? true : false,
+            isActiveMonth: true,
           ),
         ));
       }
@@ -163,7 +164,7 @@ class Calendar extends ConsumerWidget {
         //Add blank spaces if doesn't end on a Sunday
         cards.add(
           Expanded(
-            child: InactiveCalendarCard(
+            child: CalendarCard(
               date: date.day.toString(),
               day: date.dayOfWeekToString(),
               duties: dutiesOnDate(date),
@@ -171,6 +172,7 @@ class Calendar extends ConsumerWidget {
                 ref.read(dataProvider.notifier).selectDate(date);
               },
               isSelected: selectedDates.contains(date) ? true : false,
+              isActiveMonth: false,
             ),
           ),
         );
@@ -303,6 +305,18 @@ class Calendar extends ConsumerWidget {
               ),
             ),
           )
+        ],
+      ));
+
+      rowList.add(Row(
+        children: [
+          CalendarDay(day: 'Mon'),
+          CalendarDay(day: 'Tues'),
+          CalendarDay(day: 'Weds'),
+          CalendarDay(day: 'Thurs'),
+          CalendarDay(day: 'Fri'),
+          CalendarDay(day: 'Sat'),
+          CalendarDay(day: 'Sun'),
         ],
       ));
 

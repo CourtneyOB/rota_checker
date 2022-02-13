@@ -5,6 +5,5 @@ class ShiftOverlapException implements Exception {
   ShiftOverlapException(this.newShift, this.date);
 
   @override
-  String toString() =>
-      '\u2022 $newShift cannot overlap with existing shift on $date';
+  String toString() => '$newShift cannot overlap with existing shift on $date';
 }
