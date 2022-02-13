@@ -24,6 +24,7 @@ const List<Color> kTemplateColors = [
 
 const TextStyle kMainHeader = TextStyle(fontSize: 32.0, color: kDarkPrimary);
 const TextStyle kSubHeader = TextStyle(fontSize: 18.0, color: kContrast);
+const TextStyle kStandardText = TextStyle(fontSize: 14.0, color: kText);
 
 const double kVersionNumber = 1.0;
 const String kLastUpdate = '12 Feb 2022';

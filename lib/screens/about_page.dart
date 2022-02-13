@@ -78,6 +78,7 @@ class _AboutPageState extends State<AboutPage> {
                             RichText(
                                 text: TextSpan(children: [
                               TextSpan(
+                                  style: kStandardText,
                                   text:
                                       'This tool is free to use and share. It is designed to check if your junior doctor rota is compliant with all the requirements of the 2016 contract (available from the '),
                               TextSpan(
@@ -88,6 +89,7 @@ class _AboutPageState extends State<AboutPage> {
                                       await launch(kNHSEmployersURL);
                                     }),
                               TextSpan(
+                                  style: kStandardText,
                                   text:
                                       '). If you have any feedback about this tool, please submit a feedback form at the bottom of this page.'),
                             ])),
@@ -123,6 +125,7 @@ class _AboutPageState extends State<AboutPage> {
                             ),
                             Text(
                               'Some aspects of the 2016 TCS cannot be checked for compliance using this tool:',
+                              style: kStandardText,
                             ),
                             SizedBox(
                               height: 10.0,
@@ -138,6 +141,7 @@ class _AboutPageState extends State<AboutPage> {
                                     'Ensuring that no trainee is rostered on-call for the same period being worked as a shift by another trainee on that rota'),
                             Text(
                               'Make sure you review your rota to ensure it is compliant with these above points and exception report if there are any discrepancies with your actual working hours.',
+                              style: kStandardText,
                             ),
                             SizedBox(
                               height: 10.0,

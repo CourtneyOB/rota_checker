@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rota_checker/constants.dart';
 
 class NumberedBullet extends StatelessWidget {
   NumberedBullet({this.number, required this.text});
@@ -13,9 +14,15 @@ class NumberedBullet extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('${number == null ? '-' : '$number.'} '),
+          Text(
+            '${number == null ? '-' : '$number.'} ',
+            style: kStandardText,
+          ),
           Flexible(
-            child: Text(text),
+            child: Text(
+              text,
+              style: kStandardText,
+            ),
           ),
         ],
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:rota_checker/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/widgets/results_row.dart';
@@ -50,6 +52,21 @@ class ResultsPage extends ConsumerWidget {
                       'Your Rota Compliance',
                       style: kMainHeader,
                     ),
+                    RichText(
+                        text: TextSpan(children: [
+                      TextSpan(
+                        text:
+                            'For more information about these rota rules, visit the ',
+                        style: TextStyle(color: kLightGrey),
+                      ),
+                      TextSpan(
+                          text: 'NHS Employers website',
+                          style: TextStyle(color: Colors.blue),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              await launch(kNHSEmployersURL);
+                            }),
+                    ])),
                     SizedBox(
                       height: 10.0,
                     ),
