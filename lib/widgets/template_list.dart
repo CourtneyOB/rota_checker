@@ -1,12 +1,12 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/main.dart';
-import 'package:rota_checker/model/on_call_template.dart';
-import 'package:rota_checker/model/shift_template.dart';
 import 'package:rota_checker/widgets/add_template_card.dart';
 import 'package:rota_checker/widgets/template_card.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/custom_scroll_behaviour.dart';
+import 'dart:math';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/widgets/template_form.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
@@ -87,16 +87,29 @@ class TemplateList extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
           child: ScrollConfiguration(
             behavior: CustomScrollBehavior(),
-            child: ListView.builder(
-                controller: controller,
-                scrollDirection: Axis.horizontal,
-                itemCount: templates.length + 1,
-                itemBuilder: (BuildContext context, index) {
-                  if (index == templates.length) {
-                    return AddTemplateCard();
+            child: Listener(
+              onPointerSignal: (ps) {
+                if (ps is PointerScrollEvent) {
+                  final newOffset = controller.offset + ps.scrollDelta.dy;
+                  if (ps.scrollDelta.dy.isNegative) {
+                    controller.jumpTo(max(0, newOffset));
+                  } else {
+                    controller.jumpTo(
+                        min(controller.position.maxScrollExtent, newOffset));
                   }
-                  return templates[index];
-                }),
+                }
+              },
+              child: ListView.builder(
+                  controller: controller,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: templates.length + 1,
+                  itemBuilder: (BuildContext context, index) {
+                    if (index == templates.length) {
+                      return AddTemplateCard();
+                    }
+                    return templates[index];
+                  }),
+            ),
           ),
         ),
       ),

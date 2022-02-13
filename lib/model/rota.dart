@@ -16,6 +16,18 @@ class Rota {
         'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
     OnCallTemplate('Example On Call', DateTime(2022, 1, 1, 9, 00), 24.0,
         kTemplateColors[1], 4.0),
+    ShiftTemplate(
+        'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
+    OnCallTemplate('Example On Call', DateTime(2022, 1, 1, 9, 00), 24.0,
+        kTemplateColors[1], 4.0),
+    ShiftTemplate(
+        'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
+    OnCallTemplate('Example On Call', DateTime(2022, 1, 1, 9, 00), 24.0,
+        kTemplateColors[1], 4.0),
+    ShiftTemplate(
+        'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
+    OnCallTemplate('Example On Call', DateTime(2022, 1, 1, 9, 00), 24.0,
+        kTemplateColors[1], 4.0),
   ];
   int currentColour = 3;
   Template? selectedTemplate;
