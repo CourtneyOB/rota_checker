@@ -5,6 +5,7 @@ import 'package:rota_checker/widgets/text_icon_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rota_checker/widgets/numbered_bullet.dart';
 import 'package:rota_checker/main.dart';
+import 'package:rota_checker/widgets/shift_tags_row.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -108,6 +109,7 @@ class _AboutPageState extends State<AboutPage> {
                               text:
                                   'Add a shift or on call template to the templates list at the bottom of the page. Input its start time, end time and expected work hours (if applicable). The tool will automatically calculate which rota rules are relevant to the shift type (e.g. night shifts, long days and evening finishes.',
                             ),
+                            ShiftTagsRow(),
                             NumberedBullet(
                                 number: 2,
                                 text:
