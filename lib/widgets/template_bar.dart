@@ -84,7 +84,16 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('There was a problem'),
+                                    title: Row(children: [
+                                      Icon(
+                                        Icons.error_outline,
+                                        color: kContrast,
+                                      ),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Text('There was a problem')
+                                    ]),
                                     content: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
