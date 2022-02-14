@@ -10,39 +10,49 @@ class ShiftTagsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
-      child: Row(
+      child: Wrap(
+        runSpacing: 5.0,
+        spacing: 10.0,
         children: [
-          SizedBox(width: 14.0),
-          CircleAvatarLetter(
-            text: 'N',
-            colour: Colors.red,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatarLetter(
+                text: 'N',
+                colour: Colors.red,
+              ),
+              SizedBox(
+                width: 4.0,
+              ),
+              Text('Night shift'),
+            ],
           ),
-          SizedBox(
-            width: 4.0,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatarLetter(
+                text: 'L',
+                colour: Colors.green,
+              ),
+              SizedBox(
+                width: 4.0,
+              ),
+              Text('Long shift (> 10 hours)'),
+            ],
           ),
-          Text('Night shift'),
-          SizedBox(
-            width: 10.0,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatarLetter(
+                text: 'E',
+                colour: Colors.blue,
+              ),
+              SizedBox(
+                width: 4.0,
+              ),
+              Text('Evening finish (finish between 23:00 - 02:00)'),
+            ],
           ),
-          CircleAvatarLetter(
-            text: 'L',
-            colour: Colors.green,
-          ),
-          SizedBox(
-            width: 4.0,
-          ),
-          Text('Long shift (> 10 hours)'),
-          SizedBox(
-            width: 10.0,
-          ),
-          CircleAvatarLetter(
-            text: 'E',
-            colour: Colors.blue,
-          ),
-          SizedBox(
-            width: 4.0,
-          ),
-          Text('Evening finish (finish between 23:00 - 02:00)'),
         ],
       ),
     );

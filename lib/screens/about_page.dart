@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
@@ -52,9 +53,11 @@ class _AboutPageState extends State<AboutPage> {
                             image: AssetImage(kLogo),
                           ),
                         ),
-                        Text(
-                          'Junior Doctor Rota Checker',
-                          style: kMainHeader,
+                        Expanded(
+                          child: AutoSizeText(
+                            'Junior Doctor Rota Checker',
+                            style: kMainHeader,
+                          ),
                         ),
                       ],
                     ),
@@ -189,18 +192,20 @@ class _AboutPageState extends State<AboutPage> {
                                           icon: Icons.check,
                                           colour: kContrast,
                                           onPress: () {
-                                            _firestore
-                                                .collection('feedback')
-                                                .add({'text': feedbackText});
+                                            if (canSubmit) {
+                                              _firestore
+                                                  .collection('feedback')
+                                                  .add({'text': feedbackText});
 
-                                            final snackBar = SnackBar(
-                                                content: Text(
-                                                    'Thanks for your feedback!'));
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(snackBar);
+                                              final snackBar = SnackBar(
+                                                  content: Text(
+                                                      'Thanks for your feedback!'));
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
 
-                                            feedbackText = '';
-                                            _controller.text = '';
+                                              feedbackText = '';
+                                              _controller.text = '';
+                                            }
                                           },
                                           isActive: canSubmit ? true : false),
                                     ),
