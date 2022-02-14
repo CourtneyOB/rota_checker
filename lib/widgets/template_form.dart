@@ -210,101 +210,97 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                       SizedBox(
                         height: 10.0,
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                      Wrap(children: [
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                Radio(
-                                  visualDensity: VisualDensity(
-                                      horizontal: -4, vertical: -4),
-                                  value: WorkDutyType.shift,
-                                  groupValue: widget.dutyType,
-                                  onChanged: (WorkDutyType? value) {
-                                    setState(() {
-                                      widget.dutyType = value;
-                                    });
-                                  },
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15.0, left: 8.0),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 6.0),
-                                        child: Text('Shift'),
-                                      ),
-                                      Tooltip(
-                                        textStyle: TextStyle(fontSize: 12.0),
-                                        padding: EdgeInsets.all(8.0),
-                                        decoration: BoxDecoration(
-                                            border:
-                                                Border.all(color: kLightGrey),
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        preferBelow: false,
-                                        message:
-                                            'The period which the employer schedules the doctor to be at the work place performing their duties, excluding any on-call duty periods.',
-                                        child: Icon(
-                                          Icons.info_outline,
-                                          size: 16.0,
-                                          color: kContrast,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            Radio(
+                              visualDensity:
+                                  VisualDensity(horizontal: -4, vertical: -4),
+                              value: WorkDutyType.shift,
+                              groupValue: widget.dutyType,
+                              onChanged: (WorkDutyType? value) {
+                                setState(() {
+                                  widget.dutyType = value;
+                                });
+                              },
                             ),
-                            Row(
-                              children: [
-                                Radio(
-                                    visualDensity: VisualDensity(
-                                        horizontal: -4, vertical: -4),
-                                    value: WorkDutyType.oncall,
-                                    groupValue: widget.dutyType,
-                                    onChanged: (WorkDutyType? value) {
-                                      setState(() {
-                                        widget.dutyType = value;
-                                      });
-                                    }),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15.0, left: 8.0),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 6.0),
-                                        child: Text('On Call Period'),
-                                      ),
-                                      Tooltip(
-                                        textStyle: TextStyle(fontSize: 12.0),
-                                        padding: EdgeInsets.all(8.0),
-                                        decoration: BoxDecoration(
-                                            border:
-                                                Border.all(color: kLightGrey),
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        preferBelow: false,
-                                        message:
-                                            'A doctor is on-call when they are required by the employer to be available to return to work or to give advice by telephone but are not normally\nexpected to be working on site for the whole period. A doctor carrying an ‘on-call’ bleep whilst already present at their place of work as part\nof their scheduled duties does not meet the definition of on-call working.',
-                                        child: Icon(
-                                          Icons.info_outline,
-                                          size: 16.0,
-                                          color: kContrast,
-                                        ),
-                                      ),
-                                    ],
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 15.0, left: 8.0),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 6.0),
+                                    child: Text('Shift'),
                                   ),
-                                ),
-                              ],
+                                  Tooltip(
+                                    textStyle: TextStyle(fontSize: 12.0),
+                                    padding: EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: kLightGrey),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0))),
+                                    preferBelow: false,
+                                    message:
+                                        'The period which the employer schedules the doctor to be at the work place performing their duties, excluding any on-call duty periods.',
+                                    child: Icon(
+                                      Icons.info_outline,
+                                      size: 16.0,
+                                      color: kContrast,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ]),
+                          ],
+                          mainAxisSize: MainAxisSize.min,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Radio(
+                                visualDensity:
+                                    VisualDensity(horizontal: -4, vertical: -4),
+                                value: WorkDutyType.oncall,
+                                groupValue: widget.dutyType,
+                                onChanged: (WorkDutyType? value) {
+                                  setState(() {
+                                    widget.dutyType = value;
+                                  });
+                                }),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 15.0, left: 8.0),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 6.0),
+                                    child: Text('On Call Period'),
+                                  ),
+                                  Tooltip(
+                                    textStyle: TextStyle(fontSize: 12.0),
+                                    padding: EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: kLightGrey),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0))),
+                                    preferBelow: false,
+                                    message:
+                                        'A doctor is on-call when they are required by the employer to be available to return to work or to give advice by telephone but are not normally\nexpected to be working on site for the whole period. A doctor carrying an ‘on-call’ bleep whilst already present at their place of work as part\nof their scheduled duties does not meet the definition of on-call working.',
+                                    child: Icon(
+                                      Icons.info_outline,
+                                      size: 16.0,
+                                      color: kContrast,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]),
                       if (state.hasError)
                         SizedBox(
                           height: 10.0,

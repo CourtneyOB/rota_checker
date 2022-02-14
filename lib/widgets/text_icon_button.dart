@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rota_checker/constants.dart';
+import 'package:rota_checker/main.dart';
 
 class TextIconButton extends StatelessWidget {
   final String text;
@@ -48,7 +49,8 @@ class TextIconButton extends StatelessWidget {
                       child: Text(
                         text,
                         style: TextStyle(
-                            color: isActive ? Colors.white : kSecondaryText),
+                          color: isActive ? Colors.white : kSecondaryText,
+                        ),
                       ),
                     ),
                   ),
@@ -58,6 +60,7 @@ class TextIconButton extends StatelessWidget {
                   child: Icon(
                     icon,
                     color: isActive ? colour : kLightGrey,
+                    size: 22.0,
                   ),
                 ),
               ],

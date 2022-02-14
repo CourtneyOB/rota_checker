@@ -14,36 +14,33 @@ class MobileHoldingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: SizedBox(
-                  width: 40.0,
-                  height: 40.0,
-                  child: Image(
-                    filterQuality: FilterQuality.medium,
-                    image: AssetImage(kLogo),
-                  ),
-                ),
-              ),
-              Text('Junior Doctor Rota Checker'),
-              SizedBox(
-                width: 20.0,
-              ),
-              TextOnlyButton(
-                  text: 'About',
-                  colour: kContrast,
-                  onPress: () {
-                    Navigator.pushNamed(context, '/about');
-                  },
-                  isActive: true),
-            ],
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: SizedBox(
+            width: 28.0,
+            height: 28.0,
+            child: Image(
+              filterQuality: FilterQuality.medium,
+              image: AssetImage(kLogo),
+            ),
           ),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Junior Doctor Rota Checker'),
+            SizedBox(
+              width: 20.0,
+            ),
+            TextOnlyButton(
+                text: 'About',
+                colour: kContrast,
+                onPress: () {
+                  Navigator.pushNamed(context, '/about');
+                },
+                isActive: true),
+          ],
         ),
       ),
       body: Container(
@@ -93,36 +90,33 @@ class HomeMobileLayout extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: SizedBox(
-                  width: 40.0,
-                  height: 40.0,
-                  child: Image(
-                    filterQuality: FilterQuality.medium,
-                    image: AssetImage(kLogo),
-                  ),
-                ),
-              ),
-              Text('Junior Doctor Rota Checker'),
-              SizedBox(
-                width: 20.0,
-              ),
-              TextOnlyButton(
-                  text: 'About',
-                  colour: kContrast,
-                  onPress: () {
-                    Navigator.pushNamed(context, '/about');
-                  },
-                  isActive: true),
-            ],
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: SizedBox(
+            width: 28.0,
+            height: 28.0,
+            child: Image(
+              filterQuality: FilterQuality.medium,
+              image: AssetImage(kLogo),
+            ),
           ),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Junior Doctor Rota Checker'),
+            SizedBox(
+              width: 20.0,
+            ),
+            TextOnlyButton(
+                text: 'About',
+                colour: kContrast,
+                onPress: () {
+                  Navigator.pushNamed(context, '/about');
+                },
+                isActive: true),
+          ],
         ),
       ),
       body: Container(

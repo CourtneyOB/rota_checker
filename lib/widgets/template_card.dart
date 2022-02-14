@@ -141,7 +141,7 @@ class TemplateCard extends ConsumerWidget {
                   ],
                 ),
               ),
-              if (template is OnCallTemplate)
+              if (template is OnCallTemplate && !isMini)
                 RichText(
                   text: TextSpan(
                     text: 'Expected Hours: ',

@@ -22,9 +22,7 @@ class Rota {
   List<DateTime> selectedDates = [];
   List<WorkDuty> duties = [];
 
-  Rota() : this.displayDate = DateTime.now() {
-    addShift(DateTime(2022, 2, 14), templateLibrary[0] as ShiftTemplate);
-  }
+  Rota() : this.displayDate = DateTime.now();
 
   Rota clone() {
     return Rota()
