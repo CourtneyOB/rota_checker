@@ -115,7 +115,7 @@ class _AboutPageState extends State<AboutPage> {
                             NumberedBullet(
                                 number: 2,
                                 text:
-                                    'Either click and drag template onto desired date, or for multiple dates, select the template and then select the dates on which you are working that shift pattern. Hit "Apply" to add these to the calendar.'),
+                                    'Either click and drag template onto desired date (web only), or select the template and then select the dates on which you are working that shift pattern. Hit "Apply" to add these to the calendar.'),
                             NumberedBullet(
                                 number: 3,
                                 text:

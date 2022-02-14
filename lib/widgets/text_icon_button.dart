@@ -56,13 +56,16 @@ class TextIconButton extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: 24.0,
-                  child: Icon(
-                    icon,
-                    color: isActive ? colour : kLightGrey,
-                    size: 22.0,
-                  ),
-                ),
+                    width: 24.0,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Icon(
+                          icon,
+                          color: isActive ? colour : kLightGrey,
+                          size: constraints.maxWidth,
+                        );
+                      },
+                    )),
               ],
             ),
           ),

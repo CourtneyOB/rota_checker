@@ -129,75 +129,83 @@ class CalendarCard extends ConsumerWidget {
       }
     }
 
-    return DragTarget<Template>(
-      onWillAccept: (data) {
-        return true;
-      },
-      onAccept: (data) {
-        List<String> errors = [];
-        if (ref.read(dataProvider).selectedDates.isEmpty) {
-          errors = ref
-              .read(dataProvider.notifier)
-              .addTemplateToDraggedDate(data, date);
-        } else {
-          errors = ref
-              .read(dataProvider.notifier)
-              .addTemplateToDates(template: data);
-        }
-        if (errors.isNotEmpty) {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Row(children: [
-                    Icon(
-                      Icons.error_outline,
-                      color: kContrast,
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    Text('There was a problem')
-                  ]),
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: errors.map((item) => Text(item)).toList(),
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text(
-                        'OK',
-                        style: TextStyle(color: kPrimary),
+    Widget _buildCard() {
+      return GestureDetector(
+        onTap: () {
+          ref.read(dataProvider.notifier).selectDate(date);
+        },
+        child: Card(
+          shape: isSelected
+              ? RoundedRectangleBorder(
+                  side: BorderSide(color: kPrimary, width: 2.0),
+                  borderRadius: BorderRadius.circular(4.0))
+              : null,
+          elevation: isSelected
+              ? kCalendarCardSelectedElevation
+              : kCalendarCardElevation,
+          child: Padding(
+              padding: const EdgeInsets.all(8.0), child: _buildContents()),
+        ),
+      );
+    }
+
+    if (horizontalView) {
+      return _buildCard();
+    } else {
+      return DragTarget<Template>(
+        onWillAccept: (data) {
+          return true;
+        },
+        onAccept: (data) {
+          List<String> errors = [];
+          if (ref.read(dataProvider).selectedDates.isEmpty) {
+            errors = ref
+                .read(dataProvider.notifier)
+                .addTemplateToDraggedDate(data, date);
+          } else {
+            errors = ref
+                .read(dataProvider.notifier)
+                .addTemplateToDates(template: data);
+          }
+          if (errors.isNotEmpty) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Row(children: [
+                      Icon(
+                        Icons.error_outline,
+                        color: kContrast,
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                );
-              });
-        }
-      },
-      builder: (context, candidateData, rejectedData) {
-        return GestureDetector(
-          onTap: () {
-            ref.read(dataProvider.notifier).selectDate(date);
-          },
-          child: Card(
-            shape: isSelected
-                ? RoundedRectangleBorder(
-                    side: BorderSide(color: kPrimary, width: 2.0),
-                    borderRadius: BorderRadius.circular(4.0))
-                : null,
-            elevation: isSelected
-                ? kCalendarCardSelectedElevation
-                : kCalendarCardElevation,
-            child: Padding(
-                padding: const EdgeInsets.all(8.0), child: _buildContents()),
-          ),
-        );
-      },
-    );
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text('There was a problem')
+                    ]),
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: errors.map((item) => Text(item)).toList(),
+                    ),
+                    actions: [
+                      TextButton(
+                        child: Text(
+                          'OK',
+                          style: TextStyle(color: kPrimary),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  );
+                });
+          }
+        },
+        builder: (context, candidateData, rejectedData) {
+          return _buildCard();
+        },
+      );
+    }
   }
 }

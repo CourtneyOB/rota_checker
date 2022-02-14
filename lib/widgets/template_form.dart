@@ -191,364 +191,373 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
           ],
         ),
       ),
-      content: Form(
-        key: formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FormField(
-                builder: (FormFieldState<bool> state) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Template Type',
-                        style: TextStyle(color: Theme.of(context).hintColor),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Wrap(children: [
-                        Row(
-                          children: [
-                            Radio(
-                              visualDensity:
-                                  VisualDensity(horizontal: -4, vertical: -4),
-                              value: WorkDutyType.shift,
-                              groupValue: widget.dutyType,
-                              onChanged: (WorkDutyType? value) {
-                                setState(() {
-                                  widget.dutyType = value;
-                                });
-                              },
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 15.0, left: 8.0),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 6.0),
-                                    child: Text('Shift'),
-                                  ),
-                                  Tooltip(
-                                    textStyle: TextStyle(fontSize: 12.0),
-                                    padding: EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: kLightGrey),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0))),
-                                    preferBelow: false,
-                                    message:
-                                        'The period which the employer schedules the doctor to be at the work place performing their duties, excluding any on-call duty periods.',
-                                    child: Icon(
-                                      Icons.info_outline,
-                                      size: 16.0,
-                                      color: kContrast,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                          mainAxisSize: MainAxisSize.min,
+      content: SingleChildScrollView(
+        child: Form(
+          key: formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FormField(
+                  builder: (FormFieldState<bool> state) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Template Type',
+                          style: TextStyle(color: Theme.of(context).hintColor),
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Wrap(children: [
+                          Row(
+                            children: [
+                              Radio(
                                 visualDensity:
                                     VisualDensity(horizontal: -4, vertical: -4),
-                                value: WorkDutyType.oncall,
+                                value: WorkDutyType.shift,
                                 groupValue: widget.dutyType,
                                 onChanged: (WorkDutyType? value) {
                                   setState(() {
                                     widget.dutyType = value;
                                   });
-                                }),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 15.0, left: 8.0),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 6.0),
-                                    child: Text('On Call Period'),
-                                  ),
-                                  Tooltip(
-                                    textStyle: TextStyle(fontSize: 12.0),
-                                    padding: EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: kLightGrey),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0))),
-                                    preferBelow: false,
-                                    message:
-                                        'A doctor is on-call when they are required by the employer to be available to return to work or to give advice by telephone but are not normally\nexpected to be working on site for the whole period. A doctor carrying an ‘on-call’ bleep whilst already present at their place of work as part\nof their scheduled duties does not meet the definition of on-call working.',
-                                    child: Icon(
-                                      Icons.info_outline,
-                                      size: 16.0,
-                                      color: kContrast,
-                                    ),
-                                  ),
-                                ],
+                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ]),
-                      if (state.hasError)
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                      if (state.hasError)
-                        Text(
-                          state.errorText!,
-                          style:
-                              Theme.of(context).inputDecorationTheme.errorStyle,
-                        )
-                    ],
-                  );
-                },
-                validator: (value) {
-                  if (widget.dutyType == null) {
-                    return 'Please choose an option';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                initialValue: widget.templateName,
-                focusNode: focusNodeName,
-                onTap: () {
-                  setState(() {
-                    FocusScope.of(context).requestFocus(focusNodeName);
-                  });
-                },
-                onChanged: (value) {
-                  setState(() {
-                    widget.templateName = value;
-                  });
-                },
-                onFieldSubmitted: (value) {
-                  submitForm();
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter a name';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  hintText: 'e.g. normal working day',
-                  labelText: 'Title',
-                  labelStyle: TextStyle(
-                      color: focusNodeName.hasFocus ? kDarkPrimary : null),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kDarkPrimary),
-                  ),
-                ),
-                style: TextStyle(color: kText),
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-              TextFormField(
-                controller: widget.textEditingControllerStartTime,
-                inputFormatters: [
-                  MaskTextInputFormatter(
-                    mask: '##:##',
-                    filter: {"#": RegExp(r'[0-9]')},
-                  )
-                ],
-                focusNode: focusNodeStartTime,
-                onTap: () async {
-                  widget.selectedStartTime = await showTimePicker(
-                      context: context, initialTime: TimeOfDay.now());
-                  setState(() {
-                    if (widget.selectedStartTime != null) {
-                      widget.textEditingControllerStartTime.text =
-                          widget.selectedStartTime!.timeFormatToString();
-                      widget.checkDayCount();
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 15.0, left: 8.0),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 6.0),
+                                      child: Text('Shift'),
+                                    ),
+                                    Tooltip(
+                                      textStyle: TextStyle(fontSize: 12.0),
+                                      padding: EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: kLightGrey),
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0))),
+                                      preferBelow: false,
+                                      message:
+                                          'The period which the employer schedules the doctor to be at the work place performing their duties, excluding any on-call duty periods.',
+                                      child: Icon(
+                                        Icons.info_outline,
+                                        size: 16.0,
+                                        color: kContrast,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                            mainAxisSize: MainAxisSize.min,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Radio(
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  value: WorkDutyType.oncall,
+                                  groupValue: widget.dutyType,
+                                  onChanged: (WorkDutyType? value) {
+                                    setState(() {
+                                      widget.dutyType = value;
+                                    });
+                                  }),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 15.0, left: 8.0),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 6.0),
+                                      child: Text('On Call Period'),
+                                    ),
+                                    Tooltip(
+                                      textStyle: TextStyle(fontSize: 12.0),
+                                      padding: EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: kLightGrey),
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0))),
+                                      preferBelow: false,
+                                      message:
+                                          'A doctor is on-call when they are required by the employer to be available to return to work or to give advice by telephone but are not normally\nexpected to be working on site for the whole period. A doctor carrying an ‘on-call’ bleep whilst already present at their place of work as part\nof their scheduled duties does not meet the definition of on-call working.',
+                                      child: Icon(
+                                        Icons.info_outline,
+                                        size: 16.0,
+                                        color: kContrast,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ]),
+                        if (state.hasError)
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                        if (state.hasError)
+                          Text(
+                            state.errorText!,
+                            style: Theme.of(context)
+                                .inputDecorationTheme
+                                .errorStyle,
+                          )
+                      ],
+                    );
+                  },
+                  validator: (value) {
+                    if (widget.dutyType == null) {
+                      return 'Please choose an option';
                     }
-                    FocusScope.of(context).requestFocus(focusNodeStartTime);
-                  });
-                },
-                onChanged: (value) {
-                  try {
-                    widget.selectedStartTime = value.parseToTimeOfDay();
-                  } catch (e) {}
-                  widget.checkDayCount();
-                },
-                onFieldSubmitted: (value) {
-                  submitForm();
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter a time';
-                  }
-                  if (int.parse(value.split(':')[0]) > 23) {
-                    return 'Not a valid time';
-                  }
-                  if (int.parse(value.split(':')[1]) > 59) {
-                    return 'Not a valid time';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Start time',
-                  hintText: '09:00',
-                  labelStyle: TextStyle(
-                      color: focusNodeStartTime.hasFocus ? kDarkPrimary : null),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kDarkPrimary),
-                  ),
+                    return null;
+                  },
                 ),
-                style: TextStyle(color: kText),
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-              TextFormField(
-                controller: widget.textEditingControllerEndTime,
-                inputFormatters: [
-                  MaskTextInputFormatter(
-                    mask: '##:## ####',
-                    filter: {"#": RegExp(r'[0-9]')},
-                  )
-                ],
-                focusNode: focusNodeEndTime,
-                onTap: () async {
-                  widget.selectedEndTime = await showTimePicker(
-                      context: context, initialTime: TimeOfDay.now());
-                  setState(() {
-                    if (widget.selectedEndTime != null) {
-                      widget.textEditingControllerEndTime.text =
-                          widget.selectedEndTime!.timeFormatToString();
-                      widget.checkDayCount();
+                TextFormField(
+                  initialValue: widget.templateName,
+                  focusNode: focusNodeName,
+                  onTap: () {
+                    setState(() {
+                      FocusScope.of(context).requestFocus(focusNodeName);
+                    });
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      widget.templateName = value;
+                    });
+                  },
+                  onFieldSubmitted: (value) {
+                    submitForm();
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter a name';
                     }
-                    FocusScope.of(context).requestFocus(focusNodeEndTime);
-                  });
-                },
-                onChanged: (value) {
-                  try {
-                    widget.selectedEndTime = value.parseToTimeOfDay();
-                    widget.checkDayCount();
-                  } catch (e) {}
-                },
-                onFieldSubmitted: (value) {
-                  submitForm();
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter a time';
-                  }
-                  if (int.parse(value.split(':')[0]) > 23) {
-                    return 'Not a valid time';
-                  }
-                  if (int.parse(value.split(':')[1].substring(0, 2)) > 59) {
-                    return 'Not a valid time';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'End time',
-                  hintText: '17:00',
-                  labelStyle: TextStyle(
-                      color: focusNodeEndTime.hasFocus ? kDarkPrimary : null),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kDarkPrimary),
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'e.g. normal working day',
+                    labelText: 'Title',
+                    labelStyle: TextStyle(
+                        color: focusNodeName.hasFocus ? kDarkPrimary : null),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: kDarkPrimary),
+                    ),
                   ),
+                  style: TextStyle(color: kText),
                 ),
-                style: TextStyle(color: kText),
-              ),
-              if (widget.dutyType == WorkDutyType.oncall)
                 SizedBox(
                   height: 16.0,
                 ),
-              if (widget.dutyType == WorkDutyType.oncall)
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        initialValue: widget.expectedHours != null
-                            ? widget.expectedHours.toString()
-                            : null,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                          TextInputFormatter.withFunction((oldValue, newValue) {
-                            try {
-                              final text = newValue.text;
-                              if (text.isNotEmpty) double.parse(text);
-                              return newValue;
-                            } catch (e) {}
-                            return oldValue;
-                          }),
-                        ],
-                        focusNode: focusNodeExpectedHours,
-                        onTap: () {
-                          setState(() {
-                            FocusScope.of(context)
-                                .requestFocus(focusNodeExpectedHours);
-                          });
-                        },
-                        onChanged: (value) {
-                          widget.expectedHours = double.parse(value);
-                        },
-                        onFieldSubmitted: (value) {
-                          submitForm();
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter number of expected work hours';
-                          }
-                          if (double.parse(value) <= 0) {
-                            return 'Number must be more than 0';
-                          }
-                          if (widget.length != null) {
-                            if (double.parse(value) > widget.length!) {
-                              return 'Cannot be longer than shift length';
-                            }
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Expected work hours',
-                          hintText: 'e.g. 4',
-                          labelStyle: TextStyle(
-                              color: focusNodeExpectedHours.hasFocus
-                                  ? kDarkPrimary
-                                  : null),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: kDarkPrimary),
-                          ),
-                        ),
-                        style: TextStyle(color: kText),
-                      ),
-                    ),
-                    Tooltip(
-                      textStyle: TextStyle(fontSize: 12.0),
-                      padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: kLightGrey),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      preferBelow: false,
-                      message:
-                          'The employer must provide a prospective estimate of the average amount of work that will occur during an on-call shift. Such work includes any\nactual clinical or non-clinical work undertaken either on or off site, including telephone calls, actively awaiting urgent results or updates, and\ntravel time arising from any such calls. On your work schedule, this may be displayed seperately as "Resident Hours" and "Estimated Call Out".',
-                      child: Icon(
-                        Icons.info_outline,
-                        size: 16.0,
-                        color: kContrast,
-                      ),
-                    ),
+                TextFormField(
+                  controller: widget.textEditingControllerStartTime,
+                  inputFormatters: [
+                    MaskTextInputFormatter(
+                      mask: '##:##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                    )
                   ],
+                  focusNode: focusNodeStartTime,
+                  onTap: () async {
+                    widget.selectedStartTime = await showTimePicker(
+                        context: context, initialTime: TimeOfDay.now());
+                    setState(() {
+                      if (widget.selectedStartTime != null) {
+                        widget.textEditingControllerStartTime.text =
+                            widget.selectedStartTime!.timeFormatToString();
+                        widget.checkDayCount();
+                      }
+                      FocusScope.of(context).requestFocus(focusNodeStartTime);
+                    });
+                  },
+                  onChanged: (value) {
+                    try {
+                      widget.selectedStartTime = value.parseToTimeOfDay();
+                    } catch (e) {}
+                    widget.checkDayCount();
+                  },
+                  onFieldSubmitted: (value) {
+                    submitForm();
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter a time';
+                    }
+                    if (int.parse(value.split(':')[0]) > 23) {
+                      return 'Not a valid time';
+                    }
+                    if (int.parse(value.split(':')[1]) > 59) {
+                      return 'Not a valid time';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Start time',
+                    hintText: '09:00',
+                    labelStyle: TextStyle(
+                        color:
+                            focusNodeStartTime.hasFocus ? kDarkPrimary : null),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: kDarkPrimary),
+                    ),
+                  ),
+                  style: TextStyle(color: kText),
                 ),
-            ],
+                SizedBox(
+                  height: 16.0,
+                ),
+                TextFormField(
+                  controller: widget.textEditingControllerEndTime,
+                  inputFormatters: [
+                    MaskTextInputFormatter(
+                      mask: '##:## ####',
+                      filter: {"#": RegExp(r'[0-9]')},
+                    )
+                  ],
+                  focusNode: focusNodeEndTime,
+                  onTap: () async {
+                    widget.selectedEndTime = await showTimePicker(
+                        context: context, initialTime: TimeOfDay.now());
+                    setState(() {
+                      if (widget.selectedEndTime != null) {
+                        widget.textEditingControllerEndTime.text =
+                            widget.selectedEndTime!.timeFormatToString();
+                        widget.checkDayCount();
+                      }
+                      FocusScope.of(context).requestFocus(focusNodeEndTime);
+                    });
+                  },
+                  onChanged: (value) {
+                    try {
+                      widget.selectedEndTime = value.parseToTimeOfDay();
+                      widget.checkDayCount();
+                    } catch (e) {}
+                  },
+                  onFieldSubmitted: (value) {
+                    submitForm();
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter a time';
+                    }
+                    if (int.parse(value.split(':')[0]) > 23) {
+                      return 'Not a valid time';
+                    }
+                    if (int.parse(value.split(':')[1].substring(0, 2)) > 59) {
+                      return 'Not a valid time';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'End time',
+                    hintText: '17:00',
+                    labelStyle: TextStyle(
+                        color: focusNodeEndTime.hasFocus ? kDarkPrimary : null),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: kDarkPrimary),
+                    ),
+                  ),
+                  style: TextStyle(color: kText),
+                ),
+                if (widget.dutyType == WorkDutyType.oncall)
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                if (widget.dutyType == WorkDutyType.oncall)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: widget.expectedHours != null
+                              ? widget.expectedHours.toString()
+                              : null,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r"[0-9.]")),
+                            TextInputFormatter.withFunction(
+                                (oldValue, newValue) {
+                              try {
+                                final text = newValue.text;
+                                if (text.isNotEmpty) double.parse(text);
+                                return newValue;
+                              } catch (e) {}
+                              return oldValue;
+                            }),
+                          ],
+                          focusNode: focusNodeExpectedHours,
+                          onTap: () {
+                            setState(() {
+                              FocusScope.of(context)
+                                  .requestFocus(focusNodeExpectedHours);
+                            });
+                          },
+                          onChanged: (value) {
+                            widget.expectedHours = double.parse(value);
+                          },
+                          onFieldSubmitted: (value) {
+                            submitForm();
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter number of expected work hours';
+                            }
+                            if (double.parse(value) <= 0) {
+                              return 'Number must be more than 0';
+                            }
+                            if (widget.length != null) {
+                              if (double.parse(value) > widget.length!) {
+                                return 'Cannot be longer than shift length';
+                              }
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Expected work hours',
+                            hintText: 'e.g. 4',
+                            labelStyle: TextStyle(
+                                color: focusNodeExpectedHours.hasFocus
+                                    ? kDarkPrimary
+                                    : null),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: kDarkPrimary),
+                            ),
+                          ),
+                          style: TextStyle(color: kText),
+                        ),
+                      ),
+                      Tooltip(
+                        textStyle: TextStyle(fontSize: 12.0),
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: kLightGrey),
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
+                        preferBelow: false,
+                        message:
+                            'The employer must provide a prospective estimate of the average amount of work that will occur during an on-call shift. Such work includes any\nactual clinical or non-clinical work undertaken either on or off site, including telephone calls, actively awaiting urgent results or updates, and\ntravel time arising from any such calls. On your work schedule, this may be displayed seperately as "Resident Hours" and "Estimated Call Out".',
+                        child: Icon(
+                          Icons.info_outline,
+                          size: 16.0,
+                          color: kContrast,
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
