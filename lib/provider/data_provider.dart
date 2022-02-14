@@ -32,14 +32,26 @@ class DataProvider extends StateNotifier<Rota> {
   }
 
   void addMonth() {
-    state.displayMonth = DateTime(state.displayMonth.year,
-        state.displayMonth.month + 1, state.displayMonth.day);
+    state.displayDate = DateTime(state.displayDate.year,
+        state.displayDate.month + 1, state.displayDate.day);
     state = state.clone();
   }
 
   void subtractMonth() {
-    state.displayMonth = DateTime(state.displayMonth.year,
-        state.displayMonth.month - 1, state.displayMonth.day);
+    state.displayDate = DateTime(state.displayDate.year,
+        state.displayDate.month - 1, state.displayDate.day);
+    state = state.clone();
+  }
+
+  void addWeek() {
+    state.displayDate = DateTime(state.displayDate.year,
+        state.displayDate.month, state.displayDate.day + 7);
+    state = state.clone();
+  }
+
+  void subtractWeek() {
+    state.displayDate = DateTime(state.displayDate.year,
+        state.displayDate.month, state.displayDate.day - 7);
     state = state.clone();
   }
 

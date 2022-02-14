@@ -15,12 +15,14 @@ class TemplateCard extends ConsumerWidget {
   final Function() deleteTemplate;
 
   final bool isSelected;
+  final bool isMini;
 
   TemplateCard(
       {required this.isSelected,
       required this.editTemplate,
       required this.deleteTemplate,
-      required this.template});
+      required this.template,
+      this.isMini = false});
 
   Card buildCard() {
     return Card(
@@ -33,7 +35,8 @@ class TemplateCard extends ConsumerWidget {
       child: Container(
         width: kTemplateCardWidth,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(
+              horizontal: 8.0, vertical: isMini ? 4.0 : 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -76,7 +79,8 @@ class TemplateCard extends ConsumerWidget {
                 children: [
                   Text(
                     'Type: ${template is OnCallTemplate ? 'On Call' : 'Shift'}',
-                    style: TextStyle(color: kSecondaryText),
+                    style: TextStyle(
+                        color: kSecondaryText, fontSize: isMini ? 12.0 : 14.0),
                   ),
                   SizedBox(
                     width: 2.0,
@@ -108,26 +112,32 @@ class TemplateCard extends ConsumerWidget {
                 ],
               ),
               SizedBox(
-                height: 8.0,
+                height: isMini ? 2.0 : 8.0,
               ),
               RichText(
                 text: TextSpan(
                   text: 'Start time: ',
+                  style: TextStyle(fontSize: isMini ? 12.0 : 14.0),
                   children: [
                     TextSpan(
                         text: template.startTime.timeFormatToString(),
-                        style: TextStyle(color: kSecondaryText)),
+                        style: TextStyle(
+                            color: kSecondaryText,
+                            fontSize: isMini ? 12.0 : 14.0)),
                   ],
                 ),
               ),
               RichText(
                 text: TextSpan(
                   text: 'End time: ',
+                  style: TextStyle(fontSize: isMini ? 12.0 : 14.0),
                   children: [
                     TextSpan(
                         text:
                             '${template.endTime.timeFormatToString()} ${template.startTime.isSameDate(template.endTime) ? '' : '(+1)'}',
-                        style: TextStyle(color: kSecondaryText)),
+                        style: TextStyle(
+                            color: kSecondaryText,
+                            fontSize: isMini ? 12.0 : 14.0)),
                   ],
                 ),
               ),
@@ -135,12 +145,15 @@ class TemplateCard extends ConsumerWidget {
                 RichText(
                   text: TextSpan(
                     text: 'Expected Hours: ',
+                    style: TextStyle(fontSize: isMini ? 12.0 : 14.0),
                     children: [
                       TextSpan(
                           text: (template as OnCallTemplate)
                               .expectedHours
                               .toString(),
-                          style: TextStyle(color: kSecondaryText)),
+                          style: TextStyle(
+                              color: kSecondaryText,
+                              fontSize: isMini ? 12.0 : 14.0)),
                     ],
                   ),
                 ),

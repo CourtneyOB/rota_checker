@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/layout/layout_controller.dart';
-import 'package:rota_checker/layout/mobile_layout.dart';
+import 'package:rota_checker/layout/home_mobile_layout.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
-import 'package:rota_checker/layout/web_layout.dart';
+import 'package:rota_checker/layout/home_web_layout.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,8 +54,9 @@ class HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     showDialogIfFirstTime();
     return LayoutController(
-      webLayout: WebLayout(),
-      mobileLayout: MobileLayout(),
+      webLayout: HomeWebLayout(),
+      mobileLayout: HomeMobileLayout(),
+      unableToView: MobileHoldingPage(),
     );
   }
 }

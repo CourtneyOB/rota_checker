@@ -12,7 +12,9 @@ import 'package:rota_checker/widgets/template_form.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
 
 class TemplateList extends ConsumerWidget {
+  TemplateList({this.isMini = false});
   final ScrollController controller = ScrollController();
+  final bool isMini;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +25,7 @@ class TemplateList extends ConsumerWidget {
         .map((item) => TemplateCard(
               template: item,
               isSelected: item == selectedTemplate ? true : false,
+              isMini: isMini,
               editTemplate: () {
                 showDialog(
                     context: context,
@@ -84,7 +87,8 @@ class TemplateList extends ConsumerWidget {
           color: kBackground,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+          padding: EdgeInsets.symmetric(
+              vertical: isMini ? 2.0 : 8.0, horizontal: isMini ? 10.0 : 20.0),
           child: ScrollConfiguration(
             behavior: CustomScrollBehavior(),
             child: Listener(

@@ -8,8 +8,8 @@ import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/widgets/calendar_day.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
 
-class Calendar extends ConsumerWidget {
-  Calendar(
+class CalendarMonthView extends ConsumerWidget {
+  CalendarMonthView(
       {required this.focusDate,
       required this.forwardAction,
       required this.backwardAction});
@@ -36,7 +36,6 @@ class Calendar extends ConsumerWidget {
                       colour: item.template.colour,
                       name: item.template.name,
                       textColour: kSecondaryText,
-                      maxFontSize: 12.0,
                       time: '${item.startTime.timeFormatToString()}',
                     ),
                   ),
@@ -79,7 +78,10 @@ class Calendar extends ConsumerWidget {
                                                   .read(dataProvider.notifier)
                                                   .removeTemplateFromDate(
                                                       item.template, date);
-                                              Navigator.of(context).pop();
+                                              Navigator.popUntil(
+                                                  context,
+                                                  ModalRoute.withName(Navigator
+                                                      .defaultRouteName));
                                             },
                                             isActive: true),
                                       ],
@@ -210,9 +212,8 @@ class Calendar extends ConsumerWidget {
                       onPressed: forwardAction,
                     ),
                     Expanded(
-                      child: Wrap(
-                        alignment: WrapAlignment.end,
-                        spacing: 10.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextIconButton(
                             text: 'Clear Calendar',
@@ -274,6 +275,9 @@ class Calendar extends ConsumerWidget {
                                 ? false
                                 : true,
                             isWide: true,
+                          ),
+                          SizedBox(
+                            width: 10.0,
                           ),
                           TextIconButton(
                               text: 'Get results',

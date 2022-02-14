@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:rota_checker/constants.dart';
 
 class CalendarDuty extends StatelessWidget {
@@ -9,13 +8,11 @@ class CalendarDuty extends StatelessWidget {
     required this.name,
     required this.time,
     this.textColour = kText,
-    this.maxFontSize = 14.0,
   }) : super(key: key);
 
   final MaterialColor colour;
   final String name;
   final Color textColour;
-  final double maxFontSize;
   final String time;
 
   @override
@@ -23,7 +20,6 @@ class CalendarDuty extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 2.0),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             height: 16.0,
@@ -45,19 +41,17 @@ class CalendarDuty extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 5.0),
-                    child: AutoSizeText(
+                    child: Text(
                       time,
-                      style: TextStyle(color: textColour),
-                      maxFontSize: maxFontSize,
-                      maxLines: 1,
+                      style: TextStyle(fontSize: 12.0, color: textColour),
                     ),
                   ),
                   Flexible(
-                    child: AutoSizeText(
+                    child: Text(
                       name,
-                      maxLines: 1,
-                      maxFontSize: maxFontSize,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
+                        fontSize: 12.0,
                         color: textColour,
                       ),
                     ),

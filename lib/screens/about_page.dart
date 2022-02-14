@@ -32,7 +32,9 @@ class _AboutPageState extends State<AboutPage> {
         color: kBackground,
         child: Center(
           child: Container(
-            width: screenWidth(context) * 0.85,
+            width: screenWidth(context) < 1000
+                ? screenWidth(context) * 0.95
+                : screenWidth(context) * 0.85,
             height: screenHeight(context) * 0.9,
             child: Card(
               elevation: kCalendarCardElevation,

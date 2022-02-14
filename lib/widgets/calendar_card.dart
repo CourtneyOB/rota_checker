@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/main.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:rota_checker/widgets/calendar_card_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CalendarCard extends ConsumerWidget {
   final List<Widget> duties;
   final bool isSelected;
   final bool isActiveMonth;
+  final bool horizontalView;
 
   final DateTime date;
 
@@ -15,10 +18,117 @@ class CalendarCard extends ConsumerWidget {
       {required this.duties,
       required this.isSelected,
       required this.isActiveMonth,
-      required this.date});
+      required this.date,
+      this.horizontalView = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void expandDuties() {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: Container(
+                height: 100.0,
+                width: 100.0,
+                child: CalendarCardDialog(duties: this.duties, date: date),
+              ),
+            );
+          });
+    }
+
+    Widget _buildContents() {
+      if (horizontalView) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: isActiveMonth ? kText : kSecondaryText,
+                  fontWeight:
+                      isActiveMonth ? FontWeight.bold : FontWeight.normal,
+                  fontSize: screenHeight(context) > 550
+                      ? kCalendarCardPrimaryTextSize
+                      : kCalendarCardMiniPrimaryTextSize),
+            ),
+            SizedBox(
+              width: 5.0,
+            ),
+            Expanded(
+              child: LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxHeight < duties.length * 18.0) {
+                  return GestureDetector(
+                    onTap: () {
+                      expandDuties();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 2.0, top: 2.0),
+                      child: Text(
+                        '${duties.length} shifts',
+                        style: TextStyle(
+                          fontSize: 13.0,
+                          color: kSecondaryText,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Column(
+                    children: duties,
+                  );
+                }
+              }),
+            )
+          ],
+        );
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: isActiveMonth ? kText : kSecondaryText,
+                  fontWeight:
+                      isActiveMonth ? FontWeight.bold : FontWeight.normal,
+                  fontSize: screenHeight(context) > 700
+                      ? kCalendarCardPrimaryTextSize
+                      : kCalendarCardMiniPrimaryTextSize),
+            ),
+            SizedBox(
+              height: 2.0,
+            ),
+            Expanded(
+              child: LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxHeight < duties.length * 18.0) {
+                  return GestureDetector(
+                    onTap: () {
+                      expandDuties();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 2.0, top: 2.0),
+                      child: Text(
+                        '${duties.length} shifts',
+                        style: TextStyle(
+                          fontSize: 13.0,
+                          color: kSecondaryText,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Column(
+                    children: duties,
+                  );
+                }
+              }),
+            )
+          ],
+        );
+      }
+    }
+
     return DragTarget<Template>(
       onWillAccept: (data) {
         return true;
@@ -84,27 +194,7 @@ class CalendarCard extends ConsumerWidget {
                 ? kCalendarCardSelectedElevation
                 : kCalendarCardElevation,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    date.day.toString(),
-                    style: TextStyle(
-                        color: isActiveMonth ? kText : kSecondaryText,
-                        fontWeight:
-                            isActiveMonth ? FontWeight.bold : FontWeight.normal,
-                        fontSize: screenHeight(context) > 550
-                            ? kCalendarCardPrimaryTextSize
-                            : kCalendarCardMiniPrimaryTextSize),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  ...duties,
-                ],
-              ),
-            ),
+                padding: const EdgeInsets.all(8.0), child: _buildContents()),
           ),
         );
       },

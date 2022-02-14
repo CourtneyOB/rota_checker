@@ -58,17 +58,14 @@ class ResultsRow extends StatelessWidget {
                   ),
                   flex: 4,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 20.0),
-                    child: Text(
-                      result ? 'PASS' : 'FAIL',
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: result ? Colors.green : Colors.red),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 20.0),
+                  child: Text(
+                    result ? 'PASS' : 'FAIL',
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        color: result ? Colors.green : Colors.red),
                   ),
-                  flex: 1,
                 ),
                 Expanded(
                   child: Padding(

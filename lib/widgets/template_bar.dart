@@ -6,6 +6,10 @@ import 'package:rota_checker/widgets/text_icon_button.dart';
 import 'package:rota_checker/widgets/template_list.dart';
 
 class TemplateBar extends ConsumerStatefulWidget {
+  TemplateBar({this.isMini = false});
+
+  final bool isMini;
+
   @override
   TemplateBarState createState() => TemplateBarState();
 }
@@ -44,7 +48,7 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
         )),
         color: Colors.white,
       ),
-      height: kTemplateBarHeight,
+      height: widget.isMini ? kTemplateBarHeightMobile : kTemplateBarHeightWeb,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -128,7 +132,9 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
               ],
             ),
           ),
-          TemplateList(),
+          TemplateList(
+            isMini: widget.isMini,
+          ),
         ],
       ),
     );

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/widgets/text_only_button.dart';
-import 'package:rota_checker/widgets/calendar.dart';
+import 'package:rota_checker/widgets/calendar_month_view.dart';
 import 'package:rota_checker/widgets/template_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WebLayout extends ConsumerWidget {
-  const WebLayout({Key? key}) : super(key: key);
+class HomeWebLayout extends ConsumerWidget {
+  const HomeWebLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -51,8 +51,8 @@ class WebLayout extends ConsumerWidget {
         child: Column(
           children: [
             Expanded(
-              child: Calendar(
-                focusDate: ref.watch(dataProvider).displayMonth,
+              child: CalendarMonthView(
+                focusDate: ref.watch(dataProvider).displayDate,
                 forwardAction: ref.read(dataProvider.notifier).addMonth,
                 backwardAction: ref.read(dataProvider.notifier).subtractMonth,
               ),

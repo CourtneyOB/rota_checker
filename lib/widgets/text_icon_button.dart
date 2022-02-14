@@ -21,7 +21,7 @@ class TextIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: MouseRegion(
         cursor: isActive ? SystemMouseCursors.click : SystemMouseCursors.basic,
         child: GestureDetector(
