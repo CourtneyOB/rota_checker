@@ -108,6 +108,7 @@ class ResultsPage extends ConsumerWidget {
                       ),
                     ),
                     Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text('Was this information useful? '),
                         CoffeeButton(),
