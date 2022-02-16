@@ -30,7 +30,7 @@ class HomePageState extends ConsumerState<HomePage> {
               content: Container(
                 width: screenWidth(context) * 0.2,
                 child: Text(
-                    'Welcome to Junior Doctor Rota Checker v${kVersionNumber.toStringAsFixed(1)}. For help or information about using this tool, click "About".'),
+                    'Thank you for visiting Junior Doctor Rota Checker v${kVersionNumber.toStringAsFixed(1)}. This tool is designed for use by junior doctors in England in training on the 2016 contract. For help or information about using this tool, click "About".'),
               ),
               actions: [
                 Padding(
