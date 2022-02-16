@@ -15,7 +15,7 @@ class Rota {
     ShiftTemplate(
         'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
   ];
-  int currentColour = 3;
+  int currentColour = 1;
   Template? selectedTemplate;
   List<DateTime> selectedDates = [];
   List<WorkDuty> duties = [];
