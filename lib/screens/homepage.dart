@@ -56,7 +56,6 @@ class HomePageState extends ConsumerState<HomePage> {
     return LayoutController(
       webLayout: HomeWebLayout(),
       mobileLayout: HomeMobileLayout(),
-      unableToView: MobileHoldingPage(),
     );
   }
 }

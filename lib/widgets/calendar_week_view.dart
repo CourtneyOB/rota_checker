@@ -102,18 +102,16 @@ class CalendarWeekView extends ConsumerWidget {
           .toList();
     }
 
-    List<Widget> generateRows() {
-      List<Widget> rowList = [];
-      //get first day of the week during the focus date week
-      int dayOfWeek = focusDate.weekday;
-      DateTime firstDayOfWeek = dayOfWeek != 1
-          ? DateTime(
-              focusDate.year, focusDate.month, focusDate.day - (dayOfWeek - 1))
-          : focusDate;
-      DateTime lastDayOfWeek = firstDayOfWeek.add(Duration(days: 6));
+    //get first day of the week during the focus date week
+    int dayOfWeek = focusDate.weekday;
+    DateTime firstDayOfWeek = dayOfWeek != 1
+        ? DateTime(
+            focusDate.year, focusDate.month, focusDate.day - (dayOfWeek - 1))
+        : focusDate;
+    DateTime lastDayOfWeek = firstDayOfWeek.add(Duration(days: 6));
 
-      //first row displays week range
-      rowList.add(Card(
+    Card buildTopCard() {
+      return Card(
         elevation: kCalendarCardElevation,
         color: Colors.white,
         child: Padding(
@@ -223,39 +221,70 @@ class CalendarWeekView extends ConsumerWidget {
             ],
           ),
         ),
-      ));
+      );
+    }
 
-      List<Expanded> dateList = [];
+    Widget generateRows(bool scrollable) {
+      List<Widget> dateList = [];
 
       for (int i = 0; i < 7; i++) {
         DateTime date = firstDayOfWeek.add(Duration(days: i));
-        Expanded row = Expanded(
-          child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            CalendarDay(
-              day: date.dayOfWeekToString(),
-              vertical: true,
-            ),
-            Expanded(
-              child: CalendarCard(
-                duties: dutiesOnDate(date),
-                isSelected: selectedDates.contains(date) ? true : false,
-                isActiveMonth: true,
-                date: date,
-                horizontalView: true,
+        if (scrollable) {
+          Container container = Container(
+            height: 50.0,
+            child:
+                Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              CalendarDay(
+                day: date.dayOfWeekToString(),
+                vertical: true,
               ),
-            ),
-          ]),
-        );
-        dateList.add(row);
+              Expanded(
+                child: CalendarCard(
+                  duties: dutiesOnDate(date),
+                  isSelected: selectedDates.contains(date) ? true : false,
+                  isActiveMonth: true,
+                  date: date,
+                  horizontalView: true,
+                ),
+              ),
+            ]),
+          );
+          dateList.add(container);
+        } else {
+          Expanded row = Expanded(
+            child:
+                Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              CalendarDay(
+                day: date.dayOfWeekToString(),
+                vertical: true,
+              ),
+              Expanded(
+                child: CalendarCard(
+                  duties: dutiesOnDate(date),
+                  isSelected: selectedDates.contains(date) ? true : false,
+                  isActiveMonth: true,
+                  date: date,
+                  horizontalView: true,
+                ),
+              ),
+            ]),
+          );
+          dateList.add(row);
+        }
       }
 
-      rowList.add(Expanded(
-        child: Column(
-          children: dateList,
-        ),
-      ));
-
-      return rowList;
+      return Expanded(
+        child: scrollable
+            ? SingleChildScrollView(
+                child: Column(
+                  children: dateList,
+                  mainAxisSize: MainAxisSize.min,
+                ),
+              )
+            : Column(
+                children: dateList,
+              ),
+      );
     }
 
     return Padding(
@@ -263,8 +292,20 @@ class CalendarWeekView extends ConsumerWidget {
           vertical: screenHeight(context) * 0.005,
           horizontal: screenWidth(context) * 0.035),
       child: Container(
-        child: Column(
-          children: generateRows(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxHeight > 400) {
+              return Column(children: [
+                buildTopCard(),
+                generateRows(false),
+              ]);
+            } else {
+              return Column(children: [
+                buildTopCard(),
+                generateRows(true),
+              ]);
+            }
+          },
         ),
       ),
     );

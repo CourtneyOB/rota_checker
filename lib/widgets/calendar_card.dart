@@ -48,9 +48,7 @@ class CalendarCard extends ConsumerWidget {
                   color: isActiveMonth ? kText : kSecondaryText,
                   fontWeight:
                       isActiveMonth ? FontWeight.bold : FontWeight.normal,
-                  fontSize: screenHeight(context) > 550
-                      ? kCalendarCardPrimaryTextSize
-                      : kCalendarCardMiniPrimaryTextSize),
+                  fontSize: kCalendarCardPrimaryTextSize),
             ),
             SizedBox(
               width: 5.0,

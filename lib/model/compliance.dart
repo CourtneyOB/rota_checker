@@ -193,7 +193,8 @@ class Compliance {
     }
 
     if (rotaLength >= 7) {
-      result += 'Max hours per 168 hour period is ${maxHours}';
+      result +=
+          'Max hours per 168 hour period is ${maxHours.toStringAsFixed(1)}';
     }
 
     return ComplianceTest(name, pass, result, about);
@@ -208,7 +209,7 @@ class Compliance {
     for (Shift shift in shiftsInRota) {
       if (shift.length > 13) {
         result +=
-            'Shift on ${shift.startTime.dateFormatToString()} has more than 13 hours';
+            'Shift on ${shift.startTime.dateFormatToString()} has more than 13 hours\n';
         pass = false;
       }
     }
