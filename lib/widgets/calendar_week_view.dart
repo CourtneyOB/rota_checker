@@ -118,18 +118,14 @@ class CalendarWeekView extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 16.0),
           child: Row(
             children: [
-              Container(
-                //Fixed width to allow for all month texts of varying lengths
-                width: 120.0,
-                child: AutoSizeText(
-                  '${firstDayOfWeek.day}${firstDayOfWeek.month == lastDayOfWeek.month ? '' : ' ${firstDayOfWeek.monthToString().substring(0, 3)}'} - ${lastDayOfWeek.day} ${lastDayOfWeek.monthToString().substring(0, 3)} ${lastDayOfWeek.year}',
-                  style: TextStyle(
-                      color: kDarkPrimary,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                  minFontSize: 12.0,
-                  maxLines: 1,
-                ),
+              AutoSizeText(
+                '${firstDayOfWeek.day}${firstDayOfWeek.month == lastDayOfWeek.month ? '' : ' ${firstDayOfWeek.monthToString().substring(0, 3)}'} - ${lastDayOfWeek.day} ${lastDayOfWeek.monthToString().substring(0, 3)} ${lastDayOfWeek.year}',
+                style: TextStyle(
+                    color: kDarkPrimary,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+                minFontSize: 12.0,
+                maxLines: 1,
               ),
               IconButton(
                 icon: Icon(
@@ -146,77 +142,6 @@ class CalendarWeekView extends ConsumerWidget {
                 ),
                 splashRadius: 15.0,
                 onPressed: forwardAction,
-              ),
-              Expanded(
-                child: Wrap(
-                  spacing: 10.0,
-                  alignment: WrapAlignment.end,
-                  children: [
-                    TextIconButton(
-                      text: 'Clear all',
-                      icon: Icons.clear,
-                      colour: kContrast,
-                      onPress: ref.watch(dataProvider).duties.isEmpty
-                          ? () {}
-                          : () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text('Are you sure?'),
-                                      content: Container(
-                                        width: screenWidth(context) * 0.2,
-                                        child: Text(
-                                            'Remove all shifts from the calendar?'),
-                                      ),
-                                      actions: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              TextIconButton(
-                                                  text: 'Cancel',
-                                                  icon: Icons.close,
-                                                  colour: kContrast,
-                                                  onPress: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  isActive: true),
-                                              TextIconButton(
-                                                  text: 'Confirm',
-                                                  icon: Icons.check,
-                                                  colour: kDarkPrimary,
-                                                  onPress: () {
-                                                    ref
-                                                        .read(dataProvider
-                                                            .notifier)
-                                                        .clearCalendar();
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  isActive: true),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                      isActive:
-                          ref.watch(dataProvider).duties.isEmpty ? false : true,
-                    ),
-                    TextIconButton(
-                        text: 'Get results',
-                        icon: Icons.arrow_forward,
-                        colour: kDarkPrimary,
-                        onPress: () {
-                          Navigator.pushNamed(context, '/results');
-                        },
-                        isActive: true),
-                  ],
-                ),
               ),
             ],
           ),
