@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:rota_checker/widgets/coffee_button.dart';
+import 'package:rota_checker/widgets/download_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rota_checker/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/widgets/results_row.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class ResultsPage extends ConsumerWidget {
-  const ResultsPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String? errorText;
@@ -51,9 +51,21 @@ class ResultsPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Your Rota Compliance',
-                      style: kMainHeader,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: AutoSizeText(
+                              'Your Rota Compliance',
+                              style: kMainHeader,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                        if (errorText == null)
+                          DownloadButton(contents: results),
+                      ],
                     ),
                     RichText(
                         text: TextSpan(children: [
