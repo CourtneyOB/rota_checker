@@ -155,7 +155,7 @@ class CalendarWeekView extends ConsumerWidget {
                     TextIconButton(
                       text: 'Clear all',
                       icon: Icons.clear,
-                      colour: kPrimary,
+                      colour: kContrast,
                       onPress: ref.watch(dataProvider).duties.isEmpty
                           ? () {}
                           : () {

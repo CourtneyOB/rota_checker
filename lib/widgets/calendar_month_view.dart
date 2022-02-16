@@ -218,7 +218,7 @@ class CalendarMonthView extends ConsumerWidget {
                           TextIconButton(
                             text: 'Clear Calendar',
                             icon: Icons.clear,
-                            colour: kPrimary,
+                            colour: kContrast,
                             onPress: ref.watch(dataProvider).duties.isEmpty
                                 ? () {}
                                 : () {

@@ -4,6 +4,7 @@ import 'package:rota_checker/main.dart';
 import 'package:rota_checker/widgets/template_bar.dart';
 import 'package:rota_checker/widgets/calendar_week_view.dart';
 import 'package:rota_checker/widgets/text_only_button.dart';
+import 'package:rota_checker/widgets/coffee_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeMobileLayout extends ConsumerWidget {
@@ -40,6 +41,10 @@ class HomeMobileLayout extends ConsumerWidget {
                   Navigator.pushNamed(context, '/about');
                 },
                 isActive: true),
+            SizedBox(
+              width: 10,
+            ),
+            CoffeeButton(),
           ],
         ),
       ),

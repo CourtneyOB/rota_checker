@@ -47,13 +47,9 @@ class _AboutPageState extends State<AboutPage> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          height: 50.0,
-                          width: 50.0,
-                          child: Image(
-                            filterQuality: FilterQuality.medium,
-                            image: AssetImage(kLogo),
-                          ),
+                        Image(
+                          filterQuality: FilterQuality.medium,
+                          image: AssetImage(kLogo),
                         ),
                         Expanded(
                           child: AutoSizeText(

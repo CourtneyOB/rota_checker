@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:flutter/gestures.dart';
+import 'package:rota_checker/widgets/coffee_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rota_checker/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,6 +94,12 @@ class ResultsPage extends ConsumerWidget {
                               : results,
                         ),
                       ),
+                    ),
+                    Row(
+                      children: [
+                        Text('Was this information useful? '),
+                        CoffeeButton(),
+                      ],
                     ),
                   ],
                 ),

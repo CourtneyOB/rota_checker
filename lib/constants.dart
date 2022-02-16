@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const String kLogo = 'assets/rota_checker_logo.png';
+const String kLogo = 'assets/rota_checker_logo_50x50.png';
 const String kNHSEmployersURL =
     'https://www.nhsemployers.org/publications/doctors-and-dentists-training-terms-and-conditions-england-2016';
 
