@@ -107,7 +107,7 @@ class ResultsPage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    Row(
+                    Wrap(
                       children: [
                         Text('Was this information useful? '),
                         CoffeeButton(),
