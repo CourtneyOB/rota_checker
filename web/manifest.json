@@ -1,8 +1,9 @@
 {
-    "name": "Junior Doctor Rota Checker",
-    "short_name": "Rota Checker",
+    "name": "rota_checker",
     "start_url": ".",
     "display": "standalone",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
     "description": "Junior doctor rota checker as per TCS 2016",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
