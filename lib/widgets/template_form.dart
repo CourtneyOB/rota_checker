@@ -291,7 +291,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                                               Radius.circular(8.0))),
                                       preferBelow: false,
                                       message:
-                                          'A doctor is on-call when they are required by the employer to be available to return to work or to give advice by telephone but are not normally\nexpected to be working on site for the whole period. A doctor carrying an ‘on-call’ bleep whilst already present at their place of work as part\nof their scheduled duties does not meet the definition of on-call working.',
+                                          'A doctor is on-call when they are required by the employer to be available to return to work or to give advice by telephone but are not normally expected to be working on site for the whole period. A doctor carrying an ‘on-call’ bleep whilst already present at their place of work as part of their scheduled duties does not meet the definition of on-call working.',
                                       child: Icon(
                                         Icons.info_outline,
                                         size: 16.0,
@@ -547,7 +547,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                                 BorderRadius.all(Radius.circular(8.0))),
                         preferBelow: false,
                         message:
-                            'The employer must provide a prospective estimate of the average amount of work that will occur during an on-call shift. Such work includes any\nactual clinical or non-clinical work undertaken either on or off site, including telephone calls, actively awaiting urgent results or updates, and\ntravel time arising from any such calls. On your work schedule, this may be displayed seperately as "Resident Hours" and "Estimated Call Out".',
+                            'The employer must provide a prospective estimate of the average amount of work that will occur during an on-call shift. Such work includes any actual clinical or non-clinical work undertaken either on or off site, including telephone calls, actively awaiting urgent results or updates, and travel time arising from any such calls. On your work schedule, this may be displayed seperately as "Resident Hours" and "Estimated Call Out".',
                         child: Icon(
                           Icons.info_outline,
                           size: 16.0,

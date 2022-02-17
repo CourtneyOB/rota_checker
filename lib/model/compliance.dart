@@ -221,7 +221,7 @@ class Compliance {
     bool pass = true;
     String name = 'Max 4 long shifts in a row';
     String about =
-        'No more than four long shifts (where a long shift is defined as being a shift rostered to last longer than 10 hours) shall be rostered or worked on\nconsecutive days. Where four long shifts are rostered on consecutive days, there must be a minimum 48-hour rest period rostered immediately\nfollowing the conclusion of the fourth long shift. Where shifts (excluding non-resident on-call shifts) have at least 3 hours of work that falls into\nthe period between 23:00 and 06:00 and are rostered singularly, or consecutively, then there must be a minimum 46-hour rest period rostered\nimmediately following the conclusion of the shift(s).';
+        'No more than four long shifts (where a long shift is defined as being a shift rostered to last longer than 10 hours) shall be rostered or worked on consecutive days. Where four long shifts are rostered on consecutive days, there must be a minimum 48-hour rest period rostered immediately following the conclusion of the fourth long shift. Where shifts (excluding non-resident on-call shifts) have at least 3 hours of work that falls into the period between 23:00 and 06:00 and are rostered singularly, or consecutively, then there must be a minimum 46-hour rest period rostered immediately following the conclusion of the shift(s).';
     //Cycle through all shifts
     for (int i = 0; i < shiftsInRota.length - 1; i++) {
       //If a long shift is found
@@ -362,7 +362,7 @@ class Compliance {
     bool pass = true;
     String name = 'Max 7 consecutive days (with weekend on call exception)';
     String about =
-        'A maximum of seven shifts of any length can be rostered or worked on seven consecutive days. Where seven shifts of any length are rostered or worked\non seven consecutive days, there must be a minimum 48-hours’ rest rostered immediately following the conclusion of the seventh shift. Where the work\nschedule of a doctor rostered for on-call duty on a Saturday and Sunday contains 3 hours or fewer of work on each day, and no more than 3 episodes of\nwork on each day, then such duty is defined as ‘low intensity’. In such a ‘low intensity’ working pattern a maximum of 12 days can be rostered or worked\nconsecutively.';
+        'A maximum of seven shifts of any length can be rostered or worked on seven consecutive days. Where seven shifts of any length are rostered or worked on seven consecutive days, there must be a minimum 48-hours’ rest rostered immediately following the conclusion of the seventh shift. Where the work schedule of a doctor rostered for on-call duty on a Saturday and Sunday contains 3 hours or fewer of work on each day, and no more than 3 episodes of work on each day, then such duty is defined as ‘low intensity’. In such a ‘low intensity’ working pattern a maximum of 12 days can be rostered or worked consecutively.';
 
     for (int i = 0; i < rota.duties.length - 1; i++) {
       //If there are 7 more work duties after
@@ -459,7 +459,7 @@ class Compliance {
     bool pass = true;
     String name = 'At least 46 hours rest after night shifts';
     String about =
-        'Where shifts (excluding non-resident on-call shifts) have at least 3 hours of work that falls into the period between 23:00 and 06:00 and\nare rostered singularly, or consecutively, then there must be a minimum 46-hour rest period rostered immediately following the\nconclusion of the shift(s).';
+        'Where shifts (excluding non-resident on-call shifts) have at least 3 hours of work that falls into the period between 23:00 and 06:00 and are rostered singularly, or consecutively, then there must be a minimum 46-hour rest period rostered immediately following the conclusion of the shift(s).';
 
     for (int i = 0; i < shiftsInRota.length - 1; i++) {
       if ((shiftsInRota[i].template as ShiftTemplate).isNight) {
@@ -484,7 +484,7 @@ class Compliance {
     bool pass = true;
     String name = 'Max 1 in 2 weekend frequency';
     String about =
-        'No doctor shall be rostered for work at the weekend (defined for this purpose as any shifts or on-call duty periods where\nany work takes place between 00.01 Saturday and 23.59 Sunday) at a frequency of greater than 1 week in 2.';
+        'No doctor shall be rostered for work at the weekend (defined for this purpose as any shifts or on-call duty periods where any work takes place between 00.01 Saturday and 23.59 Sunday) at a frequency of greater than 1 week in 2.';
 
     List<int> weekendWork = [];
 
@@ -566,7 +566,7 @@ class Compliance {
     bool pass = true;
     String name = 'No consecutive on calls (with exception of weekends)';
     String about =
-        'On-call periods cannot be worked consecutively, other than at the weekend when two consecutive on-call periods (beginning on Saturday\nand Sunday respectively) are permitted.';
+        'On-call periods cannot be worked consecutively, other than at the weekend when two consecutive on-call periods (beginning on Saturday and Sunday respectively) are permitted.';
 
     //Cycle through all on calls
     for (int i = 0; i < onCallInRota.length - 1; i++) {
@@ -634,7 +634,7 @@ class Compliance {
     bool pass = true;
     String name = 'Day after on call must not have work longer than 10 hours';
     String about =
-        'The day following an on-call period (or following the last on-call period, where more than one 24-hour period is rostered\nconsecutively) must not be rostered to last longer than 10 hours.';
+        'The day following an on-call period (or following the last on-call period, where more than one 24-hour period is rostered consecutively) must not be rostered to last longer than 10 hours.';
 
     //Cycle through all on calls
     for (int i = 0; i < onCallInRota.length; i++) {
