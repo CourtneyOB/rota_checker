@@ -105,7 +105,7 @@ class DownloadButton extends StatelessWidget {
                 html.document.createElement('a') as html.AnchorElement
                   ..href = url
                   ..style.display = 'none'
-                  ..download = 'example.pdf';
+                  ..download = 'rota_compliance.pdf';
             html.document.body!.children.add(anchor);
 
             anchor.click();
