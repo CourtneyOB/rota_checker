@@ -1,6 +1,6 @@
 {
-    "name": "rota_checker",
-    "short_name": "rota_checker",
+    "name": "Junior Doctor Rota Checker",
+    "short_name": "Rota Checker",
     "start_url": ".",
     "display": "standalone",
     "description": "Junior doctor rota checker as per TCS 2016",
