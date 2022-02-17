@@ -51,60 +51,61 @@ class ResultsPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: AutoSizeText(
-                              'Your Rota Compliance',
-                              style: kMainHeader,
-                              maxLines: 1,
-                            ),
-                          ),
-                        ),
-                        if (errorText == null)
-                          DownloadButton(contents: results),
-                      ],
-                    ),
-                    RichText(
-                        text: TextSpan(children: [
-                      TextSpan(
-                        text:
-                            'For more information about these rota rules, visit the ',
-                        style: TextStyle(color: kLightGrey),
-                      ),
-                      TextSpan(
-                          text: 'NHS Employers website',
-                          style: TextStyle(color: Colors.blue),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              await launch(kNHSEmployersURL);
-                            }),
-                    ])),
-                    SizedBox(
-                      height: 10.0,
-                    ),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
-                          children: errorText != null
-                              ? [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.error_outline,
-                                        color: kContrast,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 12.0),
+                                      child: AutoSizeText(
+                                        'Your Rota Compliance',
+                                        style: kMainHeader,
+                                        maxLines: 1,
                                       ),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Text(errorText),
-                                    ],
-                                  )
-                                ]
-                              : results,
-                        ),
+                                    ),
+                                  ),
+                                  if (errorText == null)
+                                    DownloadButton(contents: results),
+                                ],
+                              ),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                  text:
+                                      'For more information about these rota rules, visit the ',
+                                  style: TextStyle(color: kLightGrey),
+                                ),
+                                TextSpan(
+                                    text: 'NHS Employers website',
+                                    style: TextStyle(color: Colors.blue),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        await launch(kNHSEmployersURL);
+                                      }),
+                              ])),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              if (errorText != null)
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      color: kContrast,
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(errorText),
+                                  ],
+                                ),
+                              if (errorText == null) ...results,
+                            ]),
                       ),
                     ),
                     Wrap(
