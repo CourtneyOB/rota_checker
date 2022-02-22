@@ -104,7 +104,7 @@ class Compliance {
     }
 
     double averageHours = allWeeklyHours.average;
-    result += 'Average hours per week: $averageHours';
+    result += 'Average hours per week: ${averageHours.toStringAsFixed(1)}';
 
     if (averageHours <= 48.0) {
       //pass

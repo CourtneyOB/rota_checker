@@ -372,7 +372,10 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                   focusNode: focusNodeStartTime,
                   onTap: () async {
                     widget.selectedStartTime = await showTimePicker(
-                        context: context, initialTime: TimeOfDay.now());
+                        context: context,
+                        initialTime: widget.isEdit
+                            ? widget.selectedStartTime!
+                            : TimeOfDay.now());
                     setState(() {
                       if (widget.selectedStartTime != null) {
                         widget.textEditingControllerStartTime.text =
@@ -429,7 +432,10 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                   focusNode: focusNodeEndTime,
                   onTap: () async {
                     widget.selectedEndTime = await showTimePicker(
-                        context: context, initialTime: TimeOfDay.now());
+                        context: context,
+                        initialTime: widget.isEdit
+                            ? widget.selectedEndTime!
+                            : TimeOfDay.now());
                     setState(() {
                       if (widget.selectedEndTime != null) {
                         widget.textEditingControllerEndTime.text =
@@ -547,7 +553,7 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                                 BorderRadius.all(Radius.circular(8.0))),
                         preferBelow: false,
                         message:
-                            'The employer must provide a prospective estimate of the average amount of work that will occur during an on-call shift. Such work includes any actual clinical or non-clinical work undertaken either on or off site, including telephone calls, actively awaiting urgent results or updates, and travel time arising from any such calls. On your work schedule, this may be displayed seperately as "Resident Hours" and "Estimated Call Out".',
+                            'On you work schedule, this may need to be calculated by adding together your “Resident Hours” with your “Estimated Call-out”. Resident hours themselves may have to be calculated as it is more frequent for work schedules to only display non-resident start and finish times (or just NR Start and NR Finish). The employer must provide a prospective estimate of the average amount of work that will occur during an on-call shift. Such work includes any actual clinical or non-clinical work undertaken either on or off site, including telephone calls, actively awaiting urgent results or updates, and travel time arising from any such calls.',
                         child: Icon(
                           Icons.info_outline,
                           size: 16.0,
@@ -575,8 +581,8 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
                 },
                 isActive: true),
             TextIconButton(
-                text: widget.isEdit ? 'Edit' : 'Add',
-                icon: Icons.add,
+                text: widget.isEdit ? 'Save' : 'Add',
+                icon: widget.isEdit ? Icons.check : Icons.add,
                 colour: kDarkPrimary,
                 onPress: submitForm,
                 isActive: true),
