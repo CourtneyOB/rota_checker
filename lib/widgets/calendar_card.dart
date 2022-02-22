@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/main.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:rota_checker/widgets/calendar_card_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
