@@ -9,19 +9,11 @@ import 'package:rota_checker/widgets/calendar_day.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
 
 class CalendarMonthView extends ConsumerWidget {
-  CalendarMonthView(
-      {required this.focusDate,
-      required this.forwardAction,
-      required this.backwardAction});
-
-  final DateTime focusDate;
-  final void Function() forwardAction;
-  final void Function() backwardAction;
-  final int numberOfColumns = 7;
   int numberOfRows = 0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    DateTime focusDate = ref.watch(dataProvider).displayDate;
     List<DateTime> selectedDates = ref.watch(dataProvider).selectedDates;
     List<Widget> dutiesOnDate(DateTime date) {
       return ref
@@ -201,7 +193,7 @@ class CalendarMonthView extends ConsumerWidget {
                         color: kDarkPrimary,
                       ),
                       splashRadius: 15.0,
-                      onPressed: backwardAction,
+                      onPressed: ref.read(dataProvider.notifier).subtractMonth,
                     ),
                     IconButton(
                       icon: Icon(
@@ -209,7 +201,7 @@ class CalendarMonthView extends ConsumerWidget {
                         color: kDarkPrimary,
                       ),
                       splashRadius: 15.0,
-                      onPressed: forwardAction,
+                      onPressed: ref.read(dataProvider.notifier).addMonth,
                     ),
                     Expanded(
                       child: Row(

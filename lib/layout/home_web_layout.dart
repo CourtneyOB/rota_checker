@@ -49,11 +49,7 @@ class HomeWebLayout extends ConsumerWidget {
         child: Column(
           children: [
             Expanded(
-              child: CalendarMonthView(
-                focusDate: ref.watch(dataProvider).displayDate,
-                forwardAction: ref.read(dataProvider.notifier).addMonth,
-                backwardAction: ref.read(dataProvider.notifier).subtractMonth,
-              ),
+              child: CalendarMonthView(),
             ),
             TemplateBar(),
           ],

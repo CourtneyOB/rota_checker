@@ -21,6 +21,7 @@ class HomePageState extends ConsumerState<HomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var isFirstTime = prefs.getBool('first_time');
     if (isFirstTime == null || isFirstTime) {
+      ref.read(dataProvider.notifier).addDefaultTemplate();
       prefs.setBool('first_time', false);
       showDialog(
           context: context,
@@ -47,6 +48,13 @@ class HomePageState extends ConsumerState<HomePage> {
               ],
             );
           });
+    } else {
+      //LOAD TEMPLATES
+      var templates = prefs.getString('templates');
+      if (templates != null) {
+        //convert
+        ref.read(dataProvider.notifier).loadTemplatesFromString(templates);
+      }
     }
   }
 

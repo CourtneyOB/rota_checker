@@ -10,6 +10,7 @@ import 'dart:math';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/widgets/template_form.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TemplateList extends ConsumerWidget {
   TemplateList({this.isMini = false});
@@ -63,10 +64,14 @@ class TemplateList extends ConsumerWidget {
                                     text: 'Confirm',
                                     icon: Icons.check,
                                     colour: kDarkPrimary,
-                                    onPress: () {
-                                      ref
-                                          .read(dataProvider.notifier)
-                                          .deleteTemplate(item);
+                                    onPress: () async {
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.setString(
+                                          'templates',
+                                          ref
+                                              .read(dataProvider.notifier)
+                                              .deleteTemplate(item));
                                       Navigator.of(context).pop();
                                     },
                                     isActive: true),

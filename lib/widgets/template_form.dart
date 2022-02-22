@@ -9,6 +9,7 @@ import 'package:rota_checker/extension_methods.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/model/on_call_template.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum WorkDutyType {
   shift,
@@ -77,15 +78,19 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
   late FocusNode focusNodeExpectedHours;
 
   void submitForm() async {
+    final prefs = await SharedPreferences.getInstance();
+
     if (formKey.currentState!.validate()) {
       if (!widget.isEdit) {
         //submit data
-        ref.read(dataProvider.notifier).addTemplate(
-            widget.templateName!,
-            widget.selectedStartTime!,
-            widget.length!,
-            widget.dutyType == WorkDutyType.oncall ? true : false,
-            widget.expectedHours);
+        prefs.setString(
+            'templates',
+            ref.read(dataProvider.notifier).addTemplate(
+                widget.templateName!,
+                widget.selectedStartTime!,
+                widget.length!,
+                widget.dutyType == WorkDutyType.oncall ? true : false,
+                widget.expectedHours));
       } else {
         if (ref
                 .read(dataProvider)
@@ -136,13 +141,15 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
           }
         }
         //edit data
-        ref.read(dataProvider.notifier).editTemplate(
-            widget.template!,
-            widget.templateName!,
-            widget.selectedStartTime!,
-            widget.length!,
-            widget.dutyType == WorkDutyType.oncall ? true : false,
-            widget.expectedHours);
+        prefs.setString(
+            'templates',
+            ref.read(dataProvider.notifier).editTemplate(
+                widget.template!,
+                widget.templateName!,
+                widget.selectedStartTime!,
+                widget.length!,
+                widget.dutyType == WorkDutyType.oncall ? true : false,
+                widget.expectedHours));
       }
       Navigator.of(context).pop();
     }

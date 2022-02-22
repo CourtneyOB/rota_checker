@@ -11,9 +11,12 @@ import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/rota_length_exception.dart';
 import 'package:rota_checker/model/compliance_test.dart';
 import 'package:rota_checker/model/compliance.dart';
+import 'dart:convert';
 
 class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
+
+  List<String> templateJsons = [];
 
   List<ComplianceTest> checkCompliance() {
     List<ComplianceTest> results = [];
@@ -55,27 +58,54 @@ class DataProvider extends StateNotifier<Rota> {
     state = state.clone();
   }
 
-  void addTemplate(String name, TimeOfDay startTime, double length,
+  void loadTemplatesFromString(String jsonString) {
+    List<dynamic> parsed = json.decode(jsonString) as List;
+    List<Template> templates = [];
+    for (dynamic item in parsed) {
+      Map<String, dynamic> result = json.decode(item);
+      if (result['type'] == 'shift') {
+        ShiftTemplate template = ShiftTemplate.fromJson(result);
+        templates.add(template);
+      } else {
+        OnCallTemplate template = OnCallTemplate.fromJson(result);
+        templates.add(template);
+      }
+    }
+    state.templateLibrary = templates;
+    state = state.clone();
+  }
+
+  String addTemplate(String name, TimeOfDay startTime, double length,
       bool isOnCall, double? expectedHours) {
     if (!isOnCall) {
-      state.templateLibrary.add(ShiftTemplate(
+      ShiftTemplate template = ShiftTemplate(
           name,
           DateTime(2022, 1, 1, startTime.hour, startTime.minute),
           length,
-          kTemplateColors[state.currentColour]));
+          kTemplateColors[state.currentColour]);
+      state.templateLibrary.add(template);
+      templateJsons.add(json.encode(template.toJson()));
     } else {
-      state.templateLibrary.add(OnCallTemplate(
+      OnCallTemplate template = OnCallTemplate(
           name,
           DateTime(2022, 1, 1, startTime.hour, startTime.minute),
           length,
           kTemplateColors[state.currentColour],
-          expectedHours!));
+          expectedHours!);
+      state.templateLibrary.add(template);
+      templateJsons.add(json.encode(template.toJson()));
     }
     state.nextColour();
     state = state.clone();
+    return json.encode(templateJsons);
   }
 
-  void editTemplate(Template template, String name, TimeOfDay startTime,
+  void addDefaultTemplate() {
+    addTemplate(
+        'Example Shift', TimeOfDay(hour: 9, minute: 0), 8.5, false, null);
+  }
+
+  String editTemplate(Template template, String name, TimeOfDay startTime,
       double length, bool isOnCall, double? expectedHours) {
     if (isOnCall) {
       Template newTemplate = OnCallTemplate(
@@ -85,6 +115,10 @@ class DataProvider extends StateNotifier<Rota> {
           template.colour,
           expectedHours!);
       state.resetTemplate(template, newTemplate);
+      String oldJsonString = json.encode(template.toJson());
+      String newJsonString = json.encode(newTemplate.toJson());
+      int index = templateJsons.indexOf(oldJsonString);
+      templateJsons[index] = newJsonString;
     } else {
       Template newTemplate = ShiftTemplate(
           name,
@@ -92,17 +126,24 @@ class DataProvider extends StateNotifier<Rota> {
           length,
           template.colour);
       state.resetTemplate(template, newTemplate);
+      String oldJsonString = json.encode(template.toJson());
+      String newJsonString = json.encode(newTemplate.toJson());
+      int index = templateJsons.indexOf(oldJsonString);
+      templateJsons[index] = newJsonString;
     }
     state = state.clone();
+    return json.encode(templateJsons);
   }
 
-  void deleteTemplate(Template template) {
+  String deleteTemplate(Template template) {
     List<WorkDuty> duties = state.getDutiesByTemplate(template);
     for (WorkDuty duty in duties) {
       state.duties.remove(duty);
     }
     state.templateLibrary.remove(template);
+    templateJsons.remove(json.encode(template.toJson()));
     state = state.clone();
+    return json.encode(templateJsons);
   }
 
   void selectTemplate(int index) {
@@ -187,3 +228,11 @@ class DataProvider extends StateNotifier<Rota> {
         .toList();
   }
 }
+
+// Map<String, dynamic> test = json.decode(example);
+// ShiftTemplate template = ShiftTemplate(
+//     test['name'],
+//     DateTime(2022, 1, 1, test['startHour'], test['startMinute']),
+//     test['length'],
+//     kTemplateColors[test['colour']]);
+// state.templateLibrary.add(template);

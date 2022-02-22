@@ -149,11 +149,7 @@ class HomeMobileLayout extends ConsumerWidget {
         child: Column(
           children: [
             Expanded(
-              child: CalendarWeekView(
-                focusDate: ref.watch(dataProvider).displayDate,
-                forwardAction: ref.read(dataProvider.notifier).addWeek,
-                backwardAction: ref.read(dataProvider.notifier).subtractWeek,
-              ),
+              child: CalendarWeekView(),
             ),
             TemplateBar(
               isMini: true,

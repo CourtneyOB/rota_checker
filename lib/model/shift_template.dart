@@ -1,5 +1,6 @@
 import 'package:rota_checker/model/template.dart';
 import 'package:flutter/material.dart';
+import 'package:rota_checker/constants.dart';
 
 class ShiftTemplate extends Template {
   bool isNight = false;
@@ -10,6 +11,14 @@ class ShiftTemplate extends Template {
       String name, DateTime startTime, double length, MaterialColor colour)
       : super(name, startTime, length, colour) {
     allocateTags();
+  }
+
+  factory ShiftTemplate.fromJson(Map<String, dynamic> json) {
+    return ShiftTemplate(
+        json['name'],
+        DateTime(2022, 1, 1, json['startHour'], json['startMinute']),
+        json['length'],
+        kTemplateColors[json['colour']]);
   }
 
   void allocateTags() {
@@ -48,4 +57,14 @@ class ShiftTemplate extends Template {
       }
     }
   }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'type': 'shift',
+        'startHour': startTime.hour,
+        'startMinute': startTime.minute,
+        'length': length,
+        'colour': kTemplateColors.indexOf(colour)
+      };
 }

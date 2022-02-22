@@ -11,11 +11,8 @@ import 'package:rota_checker/extension_methods.dart';
 
 class Rota {
   DateTime displayDate;
-  List<Template> templateLibrary = [
-    ShiftTemplate(
-        'Example Shift', DateTime(2022, 1, 1, 9, 00), 8.5, kTemplateColors[0]),
-  ];
-  int currentColour = 1;
+  List<Template> templateLibrary = [];
+  int currentColour = 0;
   Template? selectedTemplate;
   List<DateTime> selectedDates = [];
   List<WorkDuty> duties = [];
