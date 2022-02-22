@@ -26,8 +26,8 @@ const TextStyle kMainHeader = TextStyle(fontSize: 32.0, color: kDarkPrimary);
 const TextStyle kSubHeader = TextStyle(fontSize: 18.0, color: kContrast);
 const TextStyle kStandardText = TextStyle(fontSize: 14.0, color: kText);
 
-const double kVersionNumber = 1.1;
-const String kLastUpdate = '16 Feb 2022';
+const double kVersionNumber = 1.2;
+const String kLastUpdate = '22 Feb 2022';
 
 const double kCalendarCardElevation = 2.0;
 const double kCalendarCardSelectedElevation = 4.0;
