@@ -8,8 +8,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/widgets/calendar_day.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarWeekView extends ConsumerWidget {
+  void saveToPrefs(String string) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('duties', string);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     DateTime focusDate = ref.watch(dataProvider).displayDate;
@@ -69,6 +75,9 @@ class CalendarWeekView extends ConsumerWidget {
                                                   .read(dataProvider.notifier)
                                                   .removeTemplateFromDate(
                                                       item.template, date);
+                                              saveToPrefs(ref
+                                                  .read(dataProvider.notifier)
+                                                  .dutiesAsJson());
                                               Navigator.popUntil(
                                                   context,
                                                   ModalRoute.withName(Navigator

@@ -4,6 +4,7 @@ import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/main.dart';
 import 'package:rota_checker/widgets/calendar_card_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarCard extends ConsumerWidget {
   final List<Widget> duties;
@@ -19,6 +20,11 @@ class CalendarCard extends ConsumerWidget {
       required this.isActiveMonth,
       required this.date,
       this.horizontalView = false});
+
+  void saveToPrefs(String string) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('duties', string);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -164,6 +170,7 @@ class CalendarCard extends ConsumerWidget {
                 .read(dataProvider.notifier)
                 .addTemplateToDates(template: data);
           }
+          saveToPrefs(ref.read(dataProvider.notifier).dutiesAsJson());
           if (errors.isNotEmpty) {
             showDialog(
                 context: context,

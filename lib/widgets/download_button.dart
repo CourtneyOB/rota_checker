@@ -71,6 +71,13 @@ class DownloadButton extends StatelessWidget {
         child: GestureDetector(
           onTap: () async {
             final pdf = pw.Document();
+            final pw.Image image = pw.Image(
+                pw.MemoryImage((await rootBundle
+                        .load('assets/rota_checker_logo_50x50.png'))
+                    .buffer
+                    .asUint8List()),
+                width: 40.0,
+                height: 40.0);
             pdf.addPage(pw.MultiPage(
               footer: (context) {
                 return pw.Footer(
@@ -79,13 +86,25 @@ class DownloadButton extends StatelessWidget {
               },
               pageFormat: PdfPageFormat.a4,
               build: (pw.Context context) => [
+                pw.Padding(
+                  padding: pw.EdgeInsets.only(bottom: 12.0),
+                  child: pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.center,
+                      children: [
+                        image,
+                        pw.Text('Junior Doctor Rota Checker',
+                            style: pw.TextStyle(
+                                fontSize: 18.0,
+                                color: PdfColor.fromHex('007787'))),
+                      ]),
+                ),
                 pw.Row(children: [
                   pw.Text('Your Rota Compliance',
                       style: pw.TextStyle(
-                          fontSize: 18.0, color: PdfColor.fromHex('007787'))),
+                          fontSize: 14.0, color: PdfColor.fromHex('007787'))),
                 ]),
                 pw.Padding(
-                  padding: pw.EdgeInsets.only(bottom: 8.0),
+                  padding: pw.EdgeInsets.only(bottom: 12.0),
                   child: pw.Row(children: [
                     pw.Text('Date entered: ${DateTime.now()}',
                         style: pw.TextStyle(color: PdfColor.fromHex('757575')))

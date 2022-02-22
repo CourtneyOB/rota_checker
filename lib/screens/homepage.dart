@@ -55,6 +55,12 @@ class HomePageState extends ConsumerState<HomePage> {
         //convert
         ref.read(dataProvider.notifier).loadTemplatesFromString(templates);
       }
+      //LOAD DUTIES
+      var duties = prefs.getString('duties');
+      if (duties != null) {
+        //convert
+        ref.read(dataProvider.notifier).loadDutiesFromString(duties);
+      }
     }
   }
 

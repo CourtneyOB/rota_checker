@@ -6,9 +6,15 @@ import 'package:rota_checker/widgets/calendar_week_view.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
 import 'package:rota_checker/widgets/coffee_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeMobileLayout extends ConsumerWidget {
   const HomeMobileLayout({Key? key}) : super(key: key);
+
+  void saveToPrefs(String string) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('duties', string);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,6 +95,9 @@ class HomeMobileLayout extends ConsumerWidget {
                                               ref
                                                   .read(dataProvider.notifier)
                                                   .clearCalendar();
+                                              saveToPrefs(ref
+                                                  .read(dataProvider.notifier)
+                                                  .dutiesAsJson());
                                               Navigator.of(context).pop();
                                             },
                                             isActive: true),

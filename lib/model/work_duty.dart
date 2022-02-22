@@ -18,4 +18,6 @@ abstract class WorkDuty {
         (startTime.weekday == 6 || startTime.weekday == 7) ? true : false;
     weekNumber = startTime.weekOfYear;
   }
+
+  Map<String, dynamic> toJson();
 }

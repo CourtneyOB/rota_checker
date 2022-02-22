@@ -4,6 +4,7 @@ import 'package:rota_checker/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rota_checker/widgets/text_icon_button.dart';
 import 'package:rota_checker/widgets/template_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TemplateBar extends ConsumerStatefulWidget {
   TemplateBar({this.isMini = false});
@@ -19,6 +20,11 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
   Color fontColour = kText;
   FontWeight fontWeight = FontWeight.normal;
   Duration animationDuration = Duration(milliseconds: 600);
+
+  void saveToPrefs(String string) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('duties', string);
+  }
 
   void animateText() {
     //Enlarge and decrease the size of the text informing the user what to do
@@ -83,6 +89,8 @@ class TemplateBarState extends ConsumerState<TemplateBar> {
                           List<String> errors = ref
                               .read(dataProvider.notifier)
                               .addTemplateToDates();
+                          saveToPrefs(
+                              ref.read(dataProvider.notifier).dutiesAsJson());
                           if (errors.isNotEmpty) {
                             showDialog(
                                 context: context,

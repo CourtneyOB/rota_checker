@@ -7,6 +7,8 @@ import 'package:rota_checker/extension_methods.dart';
 import 'package:rota_checker/model/on_call_template.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:rota_checker/model/shift.dart';
+import 'package:rota_checker/model/on_call.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/rota_length_exception.dart';
 import 'package:rota_checker/model/compliance_test.dart';
@@ -161,6 +163,32 @@ class DataProvider extends StateNotifier<Rota> {
     } else {
       state.selectedDates.add(date);
     }
+    state = state.clone();
+  }
+
+  String dutiesAsJson() {
+    List<String> dutiesJsons = [];
+    for (WorkDuty duty in state.duties) {
+      dutiesJsons.add(json.encode(duty.toJson()));
+    }
+    return json.encode(dutiesJsons);
+  }
+
+  void loadDutiesFromString(String jsonString) {
+    List<dynamic> parsed = json.decode(jsonString) as List;
+    List<WorkDuty> duties = [];
+    for (dynamic item in parsed) {
+      Map<String, dynamic> result = json.decode(item);
+      if (result['type'] == 'shift') {
+        Shift shift = Shift.fromJson(result);
+        duties.add(shift);
+      } else {
+        print(result['template']);
+        OnCall onCall = OnCall.fromJson(result);
+        duties.add(onCall);
+      }
+    }
+    state.duties = duties;
     state = state.clone();
   }
 
