@@ -83,14 +83,13 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
     if (formKey.currentState!.validate()) {
       if (!widget.isEdit) {
         //submit data
-        prefs.setString(
-            'templates',
-            ref.read(dataProvider.notifier).addTemplate(
-                widget.templateName!,
-                widget.selectedStartTime!,
-                widget.length!,
-                widget.dutyType == WorkDutyType.oncall ? true : false,
-                widget.expectedHours));
+
+        ref.read(dataProvider.notifier).addTemplate(
+            widget.templateName!,
+            widget.selectedStartTime!,
+            widget.length!,
+            widget.dutyType == WorkDutyType.oncall ? true : false,
+            widget.expectedHours);
       } else {
         if (ref
                 .read(dataProvider)
@@ -141,16 +140,16 @@ class _TemplateFormState extends ConsumerState<TemplateForm> {
           }
         }
         //edit data
-        prefs.setString(
-            'templates',
-            ref.read(dataProvider.notifier).editTemplate(
-                widget.template!,
-                widget.templateName!,
-                widget.selectedStartTime!,
-                widget.length!,
-                widget.dutyType == WorkDutyType.oncall ? true : false,
-                widget.expectedHours));
+        ref.read(dataProvider.notifier).editTemplate(
+            widget.template!,
+            widget.templateName!,
+            widget.selectedStartTime!,
+            widget.length!,
+            widget.dutyType == WorkDutyType.oncall ? true : false,
+            widget.expectedHours);
       }
+      prefs.setString(
+          'templates', ref.read(dataProvider.notifier).templatesAsJson());
       Navigator.of(context).pop();
     }
   }

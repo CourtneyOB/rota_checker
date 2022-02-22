@@ -67,11 +67,14 @@ class TemplateList extends ConsumerWidget {
                                     onPress: () async {
                                       final prefs =
                                           await SharedPreferences.getInstance();
+                                      ref
+                                          .read(dataProvider.notifier)
+                                          .deleteTemplate(item);
                                       prefs.setString(
                                           'templates',
                                           ref
                                               .read(dataProvider.notifier)
-                                              .deleteTemplate(item));
+                                              .templatesAsJson());
                                       Navigator.of(context).pop();
                                     },
                                     isActive: true),

@@ -18,8 +18,6 @@ import 'dart:convert';
 class DataProvider extends StateNotifier<Rota> {
   DataProvider(Rota rota) : super(rota);
 
-  List<String> templateJsons = [];
-
   List<ComplianceTest> checkCompliance() {
     List<ComplianceTest> results = [];
 
@@ -80,7 +78,7 @@ class DataProvider extends StateNotifier<Rota> {
     state = state.clone();
   }
 
-  String addTemplate(String name, TimeOfDay startTime, double length,
+  void addTemplate(String name, TimeOfDay startTime, double length,
       bool isOnCall, double? expectedHours) {
     if (!isOnCall) {
       ShiftTemplate template = ShiftTemplate(
@@ -89,7 +87,6 @@ class DataProvider extends StateNotifier<Rota> {
           length,
           kTemplateColors[state.getColour()]);
       state.templateLibrary.add(template);
-      templateJsons.add(json.encode(template.toJson()));
     } else {
       OnCallTemplate template = OnCallTemplate(
           name,
@@ -98,11 +95,9 @@ class DataProvider extends StateNotifier<Rota> {
           kTemplateColors[state.getColour()],
           expectedHours!);
       state.templateLibrary.add(template);
-      templateJsons.add(json.encode(template.toJson()));
     }
     state.colourTracker[state.getColour()]++;
     state = state.clone();
-    return json.encode(templateJsons);
   }
 
   void addDefaultTemplate() {
@@ -110,7 +105,7 @@ class DataProvider extends StateNotifier<Rota> {
         'Example Shift', TimeOfDay(hour: 9, minute: 0), 8.5, false, null);
   }
 
-  String editTemplate(Template template, String name, TimeOfDay startTime,
+  void editTemplate(Template template, String name, TimeOfDay startTime,
       double length, bool isOnCall, double? expectedHours) {
     if (isOnCall) {
       Template newTemplate = OnCallTemplate(
@@ -120,10 +115,6 @@ class DataProvider extends StateNotifier<Rota> {
           template.colour,
           expectedHours!);
       state.resetTemplate(template, newTemplate);
-      String oldJsonString = json.encode(template.toJson());
-      String newJsonString = json.encode(newTemplate.toJson());
-      int index = templateJsons.indexOf(oldJsonString);
-      templateJsons[index] = newJsonString;
     } else {
       Template newTemplate = ShiftTemplate(
           name,
@@ -131,25 +122,18 @@ class DataProvider extends StateNotifier<Rota> {
           length,
           template.colour);
       state.resetTemplate(template, newTemplate);
-      String oldJsonString = json.encode(template.toJson());
-      String newJsonString = json.encode(newTemplate.toJson());
-      int index = templateJsons.indexOf(oldJsonString);
-      templateJsons[index] = newJsonString;
     }
     state = state.clone();
-    return json.encode(templateJsons);
   }
 
-  String deleteTemplate(Template template) {
+  void deleteTemplate(Template template) {
     List<WorkDuty> duties = state.getDutiesByTemplate(template);
     for (WorkDuty duty in duties) {
       state.duties.remove(duty);
     }
     state.templateLibrary.remove(template);
     state.colourTracker[kTemplateColors.indexOf(template.colour)]--;
-    templateJsons.remove(json.encode(template.toJson()));
     state = state.clone();
-    return json.encode(templateJsons);
   }
 
   void selectTemplate(int index) {
@@ -176,6 +160,14 @@ class DataProvider extends StateNotifier<Rota> {
       dutiesJsons.add(json.encode(duty.toJson()));
     }
     return json.encode(dutiesJsons);
+  }
+
+  String templatesAsJson() {
+    List<String> templateJsons = [];
+    for (Template template in state.templateLibrary) {
+      templateJsons.add(json.encode(template.toJson()));
+    }
+    return json.encode(templateJsons);
   }
 
   void loadDutiesFromString(String jsonString) {
@@ -259,11 +251,3 @@ class DataProvider extends StateNotifier<Rota> {
         .toList();
   }
 }
-
-// Map<String, dynamic> test = json.decode(example);
-// ShiftTemplate template = ShiftTemplate(
-//     test['name'],
-//     DateTime(2022, 1, 1, test['startHour'], test['startMinute']),
-//     test['length'],
-//     kTemplateColors[test['colour']]);
-// state.templateLibrary.add(template);
