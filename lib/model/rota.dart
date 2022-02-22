@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:rota_checker/constants.dart';
 import 'package:rota_checker/model/template.dart';
 import 'package:rota_checker/model/shift_template.dart';
@@ -8,11 +7,12 @@ import 'package:rota_checker/model/work_duty.dart';
 import 'package:rota_checker/model/on_call.dart';
 import 'package:rota_checker/shift_overlap_exception.dart';
 import 'package:rota_checker/extension_methods.dart';
+import 'dart:math';
 
 class Rota {
   DateTime displayDate;
   List<Template> templateLibrary = [];
-  int currentColour = 0;
+  List<int> colourTracker = [0, 0, 0, 0, 0, 0, 0];
   Template? selectedTemplate;
   List<DateTime> selectedDates = [];
   List<WorkDuty> duties = [];
@@ -26,7 +26,7 @@ class Rota {
       ..selectedTemplate = this.selectedTemplate
       ..selectedDates = this.selectedDates
       ..duties = this.duties
-      ..currentColour = this.currentColour;
+      ..colourTracker = this.colourTracker;
   }
 
   void addShift(DateTime date, ShiftTemplate template) {
@@ -107,10 +107,7 @@ class Rota {
     }
   }
 
-  void nextColour() {
-    currentColour++;
-    if (currentColour >= kTemplateColors.length) {
-      currentColour = 0;
-    }
+  int getColour() {
+    return colourTracker.indexOf(colourTracker.reduce(min));
   }
 }

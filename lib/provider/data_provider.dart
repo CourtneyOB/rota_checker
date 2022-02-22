@@ -73,6 +73,9 @@ class DataProvider extends StateNotifier<Rota> {
         templates.add(template);
       }
     }
+    for (Template template in templates) {
+      state.colourTracker[kTemplateColors.indexOf(template.colour)]++;
+    }
     state.templateLibrary = templates;
     state = state.clone();
   }
@@ -84,7 +87,7 @@ class DataProvider extends StateNotifier<Rota> {
           name,
           DateTime(2022, 1, 1, startTime.hour, startTime.minute),
           length,
-          kTemplateColors[state.currentColour]);
+          kTemplateColors[state.getColour()]);
       state.templateLibrary.add(template);
       templateJsons.add(json.encode(template.toJson()));
     } else {
@@ -92,12 +95,12 @@ class DataProvider extends StateNotifier<Rota> {
           name,
           DateTime(2022, 1, 1, startTime.hour, startTime.minute),
           length,
-          kTemplateColors[state.currentColour],
+          kTemplateColors[state.getColour()],
           expectedHours!);
       state.templateLibrary.add(template);
       templateJsons.add(json.encode(template.toJson()));
     }
-    state.nextColour();
+    state.colourTracker[state.getColour()]++;
     state = state.clone();
     return json.encode(templateJsons);
   }
@@ -143,6 +146,7 @@ class DataProvider extends StateNotifier<Rota> {
       state.duties.remove(duty);
     }
     state.templateLibrary.remove(template);
+    state.colourTracker[kTemplateColors.indexOf(template.colour)]--;
     templateJsons.remove(json.encode(template.toJson()));
     state = state.clone();
     return json.encode(templateJsons);
@@ -183,7 +187,6 @@ class DataProvider extends StateNotifier<Rota> {
         Shift shift = Shift.fromJson(result);
         duties.add(shift);
       } else {
-        print(result['template']);
         OnCall onCall = OnCall.fromJson(result);
         duties.add(onCall);
       }
