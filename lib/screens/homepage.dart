@@ -22,6 +22,8 @@ class HomePageState extends ConsumerState<HomePage> {
     var isFirstTime = prefs.getBool('first_time');
     if (isFirstTime == null || isFirstTime) {
       ref.read(dataProvider.notifier).addDefaultTemplate();
+      prefs.setString(
+          'templates', ref.read(dataProvider.notifier).templatesAsJson());
       prefs.setBool('first_time', false);
       showDialog(
           context: context,
