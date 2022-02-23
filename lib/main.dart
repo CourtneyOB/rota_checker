@@ -17,12 +17,20 @@ final dataProvider =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: "AIzaSyDyQohDPNkvidHTuwv7DLdRwa0PpGeqRRM",
+          authDomain: "rota-debug-2bbcd.firebaseapp.com",
+          projectId: "rota-debug-2bbcd",
+          storageBucket: "rota-debug-2bbcd.appspot.com",
+          messagingSenderId: "697149596186",
+          appId: "1:697149596186:web:875794294dd05bc44967a3"));
   runApp(
     ProviderScope(child: MyApp()),
   );
 }
 
+//DefaultFirebaseOptions.currentPlatform
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
